@@ -62,6 +62,7 @@
                             }
                         } else {
                             logger.warning("Usuário ou senha inválidos.");
+                            consulta == '';
                         }
                     } else {
                         logger.error('O servidor não retornou os dados solicitado.');

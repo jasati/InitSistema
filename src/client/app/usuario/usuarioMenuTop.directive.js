@@ -38,6 +38,7 @@
                 DataserviseProvider.indexGeral.id_emp = '';
                 vm.logado = false;
                 vm.usuario = {};
+
             }
 
             function cadastroUsuarioLogado () {

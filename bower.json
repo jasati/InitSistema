@@ -2,7 +2,7 @@
   "name": "InitSistemas",
   "version": "0.0.1",
   "description": "bootstrap para sistemas",
-  "authors": ['Jorge Alan'],
+  "authors": ["Jorge Alan"],
   "license": "MIT",
   "ignore": [
     "**/.*",
