@@ -16,7 +16,7 @@
         appErrorPrefix: '[Sistema Error] ',
         appTitle: 'Base Sistema',
         appSubtitle : 'Base inicial de criação de sistemas',
-        urlWebService: 'http://ecold.alan.dev/ecold/',
+        urlWebService: 'http://ecold.alan.dev/v1/',
         urlImagem : 'http://ecold.alan.dev/App/Upload/'
     };
 

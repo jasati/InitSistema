@@ -27,6 +27,7 @@
 
             function getPrmWebService(){
                 var prmWebService = {
+                    "db":"",
                     "modulo":"",
                     "id_index_main":"",
                     "valor_id_main":"",
