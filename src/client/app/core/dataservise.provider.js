@@ -6,7 +6,7 @@
     DataserviseProvider.$inject = ['$locationProvider','$stateProvider'];
     /* @ngInject */
     function DataserviseProvider($locationProvider,$stateProvider) {
-    	this.$get = webService;
+        this.$get = webService;
 
         function webService() {
 
@@ -14,11 +14,17 @@
                 id_usuario : '',
                 id_emp : ''
             };
+            var userLogado = {
+                usuario:'',
+                modulos:'',
+                prefeitura:''
+            }
 
             var service = {
                 getPrmWebService    : getPrmWebService,
                 indexGeral          : indexGeral,
-                setDataset          : setDataset
+                setDataset          : setDataset,
+                userLogado          : userLogado
             }; 
 
             return service;
@@ -52,14 +58,14 @@
             }
 
             function clearPrmWebServise () {
-				prmWebService.modulo="";
-	            prmWebService.id_index_main="";
-	            prmWebService.valor_id_main="";
-	            prmWebService.id_tabela="";
-	            prmWebService.valor_id="";
-	            prmWebService.estrutura={"":""};
-	            prmWebService.consulta="";
-	            prmWebService.limit="";
+                prmWebService.modulo="";
+                prmWebService.id_index_main="";
+                prmWebService.valor_id_main="";
+                prmWebService.id_tabela="";
+                prmWebService.valor_id="";
+                prmWebService.estrutura={"":""};
+                prmWebService.consulta="";
+                prmWebService.limit="";
                 prmWebService.campos="";
                 prmWebService.inner_join="";
                 prmWebService.left_join="";

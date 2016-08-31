@@ -16,13 +16,14 @@
         return service;
 
         function dadosWeb(prmWebService, servico, msgErro, msgSucess) {
+            prmWebService.db = config.dbase;
             var req = {
                     url    : config.urlWebService+servico,
                     method : 'POST',
                     data   :  prmWebService,
                     withCredentials: false,
                     headers: {
-                       'Authorization': 'Basic bashe64usename:password'
+                       'Authorization': 'Basic bashe64usename:password',
                     }
                 }
 
@@ -33,13 +34,13 @@
             function success(response) {
                 if (response.data.status) {
                     if (response.data.status == "ok") {
-                        if ( msgSucess != null) {
+                        if ( msgSucess !== null) {
                             logger.success(msgSucess);
-                        };                        
+                        }                        
                     } else {
                         logger.error(msgErro+' Erro: '+response.data.msg);
                     }
-                };
+                }
                 return response.data;
             }
 

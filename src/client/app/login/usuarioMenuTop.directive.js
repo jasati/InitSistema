@@ -1,11 +1,12 @@
+
 (function() {
     'use strict';
     angular
-        .module('app.usuario')
+        .module('app.login')
         .directive('usuarioMenuTop', usuarioMenuTop);
-    usuarioMenuTop.$inject = ['DataserviseProvider', '$cookies', '$modal', 'dataservice'];
+    usuarioMenuTop.$inject = ['$q','DataserviseProvider', '$cookies', '$modal', 'dataservice', 'UsuarioService'];
     /* @ngInject */
-    function usuarioMenuTop (DataserviseProvider, $cookies, $modal, dataservice) {
+    function usuarioMenuTop ($q,DataserviseProvider, $cookies, $modal, dataservice, UsuarioService) {
         // Usage:
         //
         // Creates:
@@ -19,8 +20,9 @@
             	'usuario':'=',
             	'logado': '='
             },
-            templateUrl: 'app/usuario/usuario-menu-top.html'
+            templateUrl: 'app/login/usuario-menu-top.html'
         };
+
 
 
         function UsuarioMenuTopController () {
@@ -29,6 +31,14 @@
             vm.logoff = logoff;
             vm.cadastroUsuarioLogado = cadastroUsuarioLogado;
             vm.alterarSenha = alterarSenha;
+ 
+            //activate();
+            function activate() {
+                var promises = []
+                $q.all(promises);
+            }
+
+
 
             function logoff () {
                 delete($cookies['nomeUser']);
@@ -38,55 +48,31 @@
                 DataserviseProvider.indexGeral.id_emp = '';
                 vm.logado = false;
                 vm.usuario = {};
+                location.reload();
 
             }
 
             function cadastroUsuarioLogado () {
-
-                var modalInstance = $modal.open({
-                  templateUrl: 'app/usuario/usuario-cadastro.html',
-                  controller: 'UsuarioModalController',
-                  controllerAs: 'vm',
-                  size: '',
-                  backdrop:true,
-                  resolve: {
-                    Usuario: function () {
-                      return vm.usuario;
-                    }
-                  }              
-                });                
-	            modalInstance.result.then(function (save) {
-	                var msgErro = 'Falha na Atualização do Usuario.';
-	                var msgSucess = 'Atualização realizada com sucesso!';
-	                var servico = 'editar';
-	                prmWeb();
-	                DataserviseProvider.configPrmWebService('valor_id',save.id_usuario);
-	                DataserviseProvider.configPrmWebService('estrutura',save);
-	                dataservice.dadosWeb(DataserviseProvider.getPrmWebService(),servico,msgErro,msgSucess);
-	            });
+              UsuarioService.editPerfil(vm.usuario).then(function (save){
+                UsuarioService.update(save);
+              })
             }
 
             function alterarSenha () {
                 var modalInstance = $modal.open({
-                  templateUrl: 'app/usuario/usuario-alterar-senha.html',
+                  templateUrl: 'app/cadastros/usuario/templates/usuario-alterar-senha.html',
                   controller: 'UsuarioModalController',
                   controllerAs: 'vm',
                   size: 'sm',
                   backdrop:true,
                   resolve: {
-                    Usuario: function () {
-                      return vm.usuario;
+                    Dados: function () {
+                      return {usuario:vm.usuario};
                     }
                   }
                 });
 	            modalInstance.result.then(function (save) {
-	                var msgErro = 'Falha na Atualização do Usuario.';
-	                var msgSucess = 'Atualização realizada com sucesso!';
-	                var servico = 'editar';
-	                prmWeb();
-	                DataserviseProvider.configPrmWebService('valor_id',save.id_usuario);
-	                DataserviseProvider.configPrmWebService('estrutura',save);
-	                dataservice.dadosWeb(DataserviseProvider.getPrmWebService(),servico,msgErro,msgSucess);
+                    UsuarioService.update(save);
 	            });
             }
 
@@ -97,9 +83,9 @@
 	            DataserviseProvider.configPrmWebService('id_tabela','id_usuario');              
 	        }
 
-
-
         }
+
+
         return directive;
     }
 })();

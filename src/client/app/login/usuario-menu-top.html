@@ -1,4 +1,4 @@
-<ul class="nav navbar-nav navbar-right">
+<ul class="nav navbar-nav navbar-right" style="margin-right: 5px">
     <li class="dropdown"  dropdown>
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-user"></i> {{vm.usuario.nome}} <b class="caret"></b>
@@ -10,9 +10,9 @@
             <li>
                 <a href ng-click="vm.alterarSenha()" ><i class="fa fa-key"></i>Trocar Senha</a>
             </li>
-            <li>
-                <a href ng-click="vm.logoff()" ><i class="fa fa-sign-out"></i>Sair do Sistema</a>
-            </li>
-        </ul>                    
+        </ul>
     </li>
+    <li>
+        <a href="/" ng-click="vm.logoff()" ><i class="fa fa-sign-out"></i> Sair do Sistema</a>
+    </li>    
 </ul>

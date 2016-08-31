@@ -1,4 +1,4 @@
-<section class="mainbar">
+<section class="mainbar" ng-show="vm.permissao(1)">
     <section class="matter">
         <div class="container">
             <div class="row">
@@ -14,23 +14,33 @@
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                   </button>
-                                  <button type="button" class="btn btn-primary navbar-btn" data-ng-click="vm.newUsuario()" style="margin-top: 15px">Incluir</button>
+                                    <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Sub-Cadastros">
+                                        <i class="fa fa-bars"></i>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button> 
+                                    <ul class="dropdown-menu">
+                                        <li ng-show="vm.permissao(3)"><a href="#" ng-click="vm.cadPerfil()"><i class="fa fa-users"></i> Perfil</a></li>
+                                    </ul> 
+                                    <button type="button" class="btn btn-primary navbar-btn" data-ng-click="vm.newUsuario()" ng-disabled="!vm.permissao(2)"><i class="fa fa-plus" ></i> Novo Usuário</button>
                                 </div>                            
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                                    <form class="navbar-form navbar-right" role="search">
-                                        
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-sm" placeholder="Consultar Nome" ng-model="vm.consulta.nome">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-sm" placeholder="Consultar Email" ng-model="vm.consulta.email">
-                                        </div>                                    
-                                        <div class="form-group">
-                                            <select ng-options="consulta.desc for consulta in vm.optionConsulta track by consulta.valor" ng-model="vm.consulta.status" class="form-control input-sm" placeholder="Status"></select>
-                                        </div>                                    
-                                        <button type="button" class="btn btn-default navbar-btn" data-ng-click="vm.getUsuario()">Consultar</button>  
+                                        <div class="navbar-btn">
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                  <input type="text" class="form-control input-sm" placeholder="Consultar Usuário" ng-model="vm.consulta.nome" popover-title='{{vm.popover.title}}'  popover-template="vm.popover.templateUrl" popover-trigger="click" popover-placement="bottom"/>
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" ng-model="vm.consulta.avancado" ng-show="vm.consulta.avancado" title="Desativar Pesquisa Avançada.">
+                                                    </span>                                                  
+                                                  <div class="input-group-btn">
 
-                                    </form>
+                                                    <button type="button" class="btn btn-primary" data-ng-click="vm.getUsuario()" placeholder="Consultar"><i class="fa fa-search" aria-hidden="true"></i> Pesquisar</button>  
+                                                  </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>                                
+
                                 </div>
 
                             </div>
@@ -50,8 +60,8 @@
                                     <td>{{u.nome}}</td>
                                     <td>{{u.email}}</td>
                                     <td>{{u.status == 1 ? 'Ativo' : 'Inativo'}}</td>
-                                    <td><button type="button" class="btn btn-primary" data-ng-click="vm.editUsuario(u)">Alterar</button></td>
-                                    <td><button type="button" class="btn btn-danger" data-ng-click="vm.deleteUsuario(u)">Excluir</button></td>
+                                    <td><button type="button" class="btn btn-primary" data-ng-click="vm.editUsuario(u)" ng-disabled="!vm.permissao(2)">Alterar</button></td>
+                                    <td><button type="button" class="btn btn-danger" data-ng-click="vm.deleteUsuario(u)" ng-disabled="!vm.permissao(2)">Excluir</button></td>
                                 </tr>
                             </tbody>
                         </table>                      

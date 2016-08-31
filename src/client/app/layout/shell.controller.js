@@ -27,7 +27,7 @@
         activate();
 
         function activate() {
-            logger.success(config.appTitle + 'Carregado!', null);
+            logger.success(config.appTitle + ' Carregado!', null);
             hideSplash();
         }
 

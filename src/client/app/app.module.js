@@ -6,8 +6,9 @@
         'app.widgets',
         'app.dashboard',
         'app.layout',
-        'app.usuario',
-        'app.empresa'
+        'app.login',
+        'app.empresa',
+        'app.cadastro'
     ]);
 
 })();

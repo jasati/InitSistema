@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.usuario')
+        .module('cad.item')
         .run(appRun);
 
     appRun.$inject = ['routerHelper'];
@@ -14,16 +14,17 @@
     function getStates() {
         return [
             {
-                state: 'usuario',
+                state: 'item',
                 config: {
-                    url: '/usuario',
-                    templateUrl: 'app/usuario/usuario.html',
-                    controller: 'UsuarioController',
+                    url: '/item',
+                    templateUrl: 'app/cadastros/item/templates/item.html',
+                    controller: 'ItemController',
                     controllerAs: 'vm',
-                    title: 'usuario',
+                    title: 'item',
                     settings: {
-                        nav: 2,
-                        content: '<i class="fa fa-user"></i> Cadastrar Usuários'
+                        nav: 3,
+                        content: '<i class="fa fa-archive"></i> Cadastrar Itens',
+                        perm:5
                     }                    
                 }
             }
