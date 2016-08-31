@@ -17,7 +17,7 @@
             var userLogado = {
                 usuario:'',
                 modulos:'',
-                prefeitura:''
+                empresa:''
             }
 
             var service = {
