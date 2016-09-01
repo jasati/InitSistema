@@ -34,7 +34,10 @@
         urlWebService:prmAmbiente===0?ambiente.local.api:ambiente.producao.api,
         urlImagem    :prmAmbiente===0?ambiente.local.img:ambiente.producao.img,
         dbase        :prmAmbiente===0?ambiente.local.db:ambiente.producao.db,
-        report       :prmAmbiente===0?ambiente.local.report:ambiente.producao.report
+        report       :prmAmbiente===0?ambiente.local.report:ambiente.producao.report,
+        // true ou false para habilitar o modulo de permissao, caso esteja false
+        // o sistema ira libera os modulos sem verificar
+        modPerm : false 
     };
 
     core.value('config', config);
