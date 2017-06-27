@@ -1,54 +1,55 @@
-
-<div class="popover-html">
-
-    <form class="form-horizontal">
-        <div class="form-group">
-            <label for="codigo" class="col-sm-3 control-label">Código</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control"  ng-model="vm.consulta.codigo" id="codigo" tooltip-placement="top" tooltip="Código de identificação do item">
-            </div>
-        </div>     
-
-        <div class="form-group">
-            <label for="nome" class="col-sm-3 control-label">Nome</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control"  ng-model="vm.consulta.nome" id="nome" tooltip-placement="top" tooltip="Nome do usuário">
-            </div>
-        </div>           
+<div layout="column" class="painel" md-whiteframe="4">
 
 
-        <div class="form-group">
-            <label for="perfil" class="col-sm-3 control-label">Perfil</label>
-            <div class="col-sm-9">
-                <select ng-options="perfil.id_perfil as perfil.nome for perfil in vm.perfils" ng-model="vm.consulta.id_perfil" class="form-control input-sm" placeholder="Perfil do usuário" id="perfil" ></select>
-            </div>
-        </div> 
+    <div class="modal-header">
+        <h3 class="modal-title">Filtros Especificos</h3>
+    </div>
+    <div class="modal-body" layout-padding >
+        <div >
+            <form name="form" autocomplete="off" layout-gt-xs="row">
+                <md-input-container>
+                  <label>Campo do filtro</label>
+                  <md-select name="type" ng-model="filtro.campo" required style="min-width: 200px;">
+                    <md-option ng-repeat="f in vm.funcoes.filtros.fields" ng-value="f.field">
+                        {{f.alias}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
 
-        <div class="form-group">
-            <label for="status" class="col-sm-2 control-label">Status</label>
-            <div class="col-offset-3 col-sm-3">
-                <div class="radio">
-                  <label>Ativo</label>
-                    <input type="radio" class="form-control input-sm"  name="optionsRadios" data-ng-model="vm.consulta.status" value="1" checked>
-                </div>
-            </div>
-            <div class="col-offset-6 col-sm-3">
-                <div class="radio">
-                  <label>Inativo</label>
-                    <input type="radio" class="form-control input-sm"  name="optionsRadios" data-ng-model="vm.consulta.status" value="0">
-                </div>
-            </div>
-            <div class="col-offset-9 col-sm-3">
-                <div class="radio">
-                  <label>Todos</label>
-                    <input type="radio" class="form-control input-sm"  name="optionsRadios" data-ng-model="vm.consulta.status" value="" >
-                </div>  
-            </div>          
-        </div>        
-    </form>
-</div>
-    
-<div class="modal-footer">
-    <button class="btn btn-default" type="button" ng-click="vm.limparPesqAvancada()"><i class="fa fa-clear" aria-hidden="true"></i> Limpar Pesquisa</button>
-    <button class="btn btn-primary" type="button" ng-click="vm.pesquisaAvancada()"><i class="fa fa-search" aria-hidden="true"></i> Pesquisar</button>
+                <md-input-container>
+                  <label>Expressão</label>
+                  <md-select name="type" ng-model="filtro.express" required style="min-width: 200px;">
+                    <md-option value="=">Igual</md-option>
+                    <md-option value="LIKE">Contém</md-option>
+                    <md-option value="<>">Diferente</md-option>
+                  </md-select>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Valor a ser filtrado</label>
+                  <input required name="description" ng-model="filtro.value">
+                </md-input-container>
+
+                <md-button class="md-accent md-fab" ng-class="{'md-mini':vm.funcoes.mediaxs()}" ng-click="vm.funcoes.filtros.addFiltro(filtro)" ng-disabled="form.$invalid">
+                  <md-icon>{{form.$invalid?'block':'check'}}</md-icon>
+                  <md-tooltip>Adicionar Filtro</md-tooltip>
+                </md-button>
+            </form>
+
+        </div>
+        <md-chips ng-model="vm.funcoes.filtros.fildsQuery" readonly="true" md-removable="true">
+          <md-chip-template>
+            <span>{{$chip.campo}}:{{$chip.campo=='status'?($chip.value=='1'?'Ativo':'Inativo'):$chip.value}}</span>
+          </md-chip-template>
+        </md-chips>
+
+     
+        <div layout="row" layout-align="end center">
+          <md-button class="md-accent"  ng-click="vm.close();vm.funcoes.read()">
+            <md-icon>search</md-icon>
+            Filtrar
+          </md-button> 
+        </div>
+    </div>
+
 </div>

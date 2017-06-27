@@ -1,0 +1,76 @@
+
+<md-nav-bar class="md-accent">
+    <md-toolbar class="md-accent" md-whiteframe="4">
+        <div class="md-toolbar-tools">
+            <span ><md-icon>{{vm.icon}}</md-icon> {{vm.title}}</span>
+            <span flex></span>
+
+                    <md-datepicker ng-model="ctrl.myDate"  md-placeholder="Data inicio"></md-datepicker>
+
+                    <md-datepicker ng-model="ctrl.myDate1"  md-placeholder="Data Fim"></md-datepicker>
+
+
+        </div>
+    </md-toolbar>
+</md-nav-bar>
+
+
+
+<md-content flex>
+    <div style="height: {{vm.heigth}}">
+        <md-card>
+            <md-card-actions layout="row" >
+                <span class="md-headline">Grafico 1</span>
+                <md-card-icon-actions layout-align="end center">
+                    <md-button class="md-icon-button md-toggle" ng-click="vm.$showSource = !vm.$showSource " aria-label="Share" >
+                        <md-icon>keyboard_arrow_down</md-icon>
+                    </md-button>
+                </md-card-icon-actions>
+            </md-card-actions>
+            <div ng-hide="vm.$showSource" class="filter">
+                <md-card-content>
+                    <nvd3 options="vm.funcoes.chart1.options" data="vm.funcoes.chart1.data"></nvd3>
+                </md-card-content>
+
+            </div>
+        </md-card>
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Grafico 2</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <nvd3 options="vm.funcoes.chart2.options" data="vm.funcoes.chart2.data" class="with-3d-shadow with-transitions"></nvd3>
+            </md-card-content>
+        </md-card>
+        <div layout="row" layout-xs="column">
+            <md-card flex="50%">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Grafico 3</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <nvd3 options="vm.funcoes.chart3.options" data="vm.funcoes.chart3.data" ></nvd3>
+                </md-card-content>
+            </md-card>
+            <md-card flex="50%">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Grafico 4</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <nvd3 options="vm.funcoes.chart4.options" data="vm.funcoes.chart4.data" ></nvd3>
+                </md-card-content>
+            </md-card>        
+        </div>
+    </div>
+</md-content>
+
+
+
+
+
+

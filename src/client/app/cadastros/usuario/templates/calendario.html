@@ -1,0 +1,30 @@
+
+<md-content>
+	<div layout="row" layout-xs="column" flex>
+		<div flex-xs layout-xs="column" layout="row">
+			<md-card>
+				<md-card-content>
+					<p>Data Inicio</p>
+					<md-calendar hide-xs ng-model="vm.dtIni"></md-calendar>
+					<md-datepicker hide-gt-xs ng-model="vm.dtIni"  md-placeholder="Data Inicio"></md-datepicker>
+				</md-card-content>
+			</md-card>
+			<md-card>
+				<md-card-content>
+					<p>Data Fim</p>
+					<md-calendar hide-xs ng-model="vm.dtFim"></md-calendar>
+					<md-datepicker hide-gt-xs  ng-model="vm.dtFim" md-placeholder="Data Fim"></md-datepicker>
+				</md-card-content>
+
+			</md-card>
+		</div>
+	</div>
+	<div layout="column">
+		<md-card>
+			<md-card-actions layout="row" layout-align="end center">
+				<md-button class="md-accent" ng-click="vm.closeDialog()">Aplicar</md-button>
+				<md-button>Cancelar</md-button>
+			</md-card-actions>
+		</md-card>
+	</div>
+</md-content>

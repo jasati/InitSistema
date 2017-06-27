@@ -31,12 +31,14 @@ module.exports = function() {
         html: client + '**/*.html',
         htmltemplates: clientApp + '**/*.html',
         images: client + 'images/**/*.*',
+        script:client + 'script/**/*.js',
         index: client + 'index.html',
         // app js, with no specs
         js: [
             clientApp + '**/*.module.js',
             clientApp + '**/*.js',
-            '!' + clientApp + '**/*.spec.js'
+            '!' + clientApp + '**/*.spec.js',
+            client+'script/**/*.js'
         ],
         jsOrder: [
             '**/app.module.js',

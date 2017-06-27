@@ -4,10 +4,10 @@
     angular.module('app', [
         'app.core',
         'app.widgets',
-        'app.dashboard',
+        'app.start',
         'app.layout',
         'app.login',
-        'app.empresa',
+        'app.sistema',
         'app.cadastro'
     ]);
 

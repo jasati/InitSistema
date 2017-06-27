@@ -14,20 +14,55 @@
     function getStates() {
         return [
             {
-                state: 'usuario',
+                state: 'layout.usuario',
                 config: {
                     url: '/usuario',
-                    templateUrl: 'app/cadastros/usuario/templates/usuario.html',
-                    controller: 'UsuarioController',
-                    controllerAs: 'vm',
-                    title: 'usuario',
+                    component:'usuario',
                     settings: {
-                        nav: 2,
-                        content: '<i class="fa fa-user"></i> Cadastrar Usuários',
-                        perm:1
-                    }                    
+                        nav    : 2,
+                        icon   : 'account_circle',
+                        content: 'Controle de Acesso',
+                        perm   :1
+                    },
+                    resolve:{
+                        funcoes: function (UsuarioFuncService) {
+                            var funcoes = new UsuarioFuncService.funcoes();
+                            funcoes.read();
+                            funcoes.showTable();
+                            return funcoes;
+                        }
+                    }
                 }
-            }
+            },
+
+            {
+                state: 'layout.usuario.lista',
+                config: {
+                    url:'/lista',
+                    component:'usuarioLista',
+                    resolve : {
+                        funcoes : function (funcoes) {
+                            return funcoes
+                        }
+
+                    }
+                }
+            },
+
+            {
+                state: 'layout.usuario.cad',
+                config: {
+                    url:'/cadastro',
+                    component:'usuarioCadastro',
+                    resolve : {
+                        funcoes : function (funcoes) {
+                            return funcoes
+                        }
+
+                    }
+                }
+            }            
+
         ];
     }
 })();

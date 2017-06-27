@@ -1,0 +1,20 @@
+
+<md-toolbar md-whiteframe="5">
+	<div class="md-toolbar-tools">
+		<md-button class="menu md-icon-button" hide-gt-sm ng-click="$ctrl.funcoes.openSideNave()">
+			<md-icon>menu</md-icon>
+		</md-button>
+		<div>
+			<span>{{$ctrl.funcoes.title}}</span>
+		</div>
+		<span flex></span>
+        <md-button class="md-icon-button" aria-label="Notificação">
+          <md-icon>notifications</md-icon>
+        </md-button>
+		<md-list>
+        	<md-list-item class="avatar-user">
+  				<a href ng-click="$ctrl.funcoes.showUser()"><img ng-src="{{$ctrl.funcoes.usuario.image}}" class="md-avatar" alt="{{$ctrl.funcoes.usuario.nome}}" /></a>
+			</md-list-item>
+		</md-list>
+	</div>
+</md-toolbar>

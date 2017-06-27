@@ -3,9 +3,9 @@
     angular
         .module('blocks.utils')
         .factory('UtilsFunctions', UtilsFunctions);
-    UtilsFunctions.$inject = ['$filter', 'Extencio'];
+    UtilsFunctions.$inject = ['$filter','$uibModal', 'Extencio'];
     /* @ngInject */
-    function UtilsFunctions($filter, Extencio) {
+    function UtilsFunctions($filter,$uibModal, Extencio) {
         var service = {
             formatData: formatData,
             formatDataView : formatDataView,
@@ -13,7 +13,13 @@
             soma  : soma,
             permissao : permissao,
             copiarObjecto: copiarObjecto,
-            porExtencio:porExtencio
+            porExtencio:porExtencio,
+            validaCPF:validaCPF,
+            existe : existe,
+            zoomImg : zoomImg,
+            isset  : isset,
+            convDate : convDate,
+            getPrmPanel : getPrmPanel,
         };
         return service;
         ////////////////
@@ -25,7 +31,7 @@
             d = data.getDate();
             m = data.getMonth()+1; //janeiro = 0
             y = data.getFullYear();
-            if (hr != '') {
+            if (hr !== '') {
                 dt = y+'-'+m+'-'+d+' '+hr;  
             } else {
                 dt = y+'-'+m+'-'+d;  
@@ -41,7 +47,7 @@
             d = data.getDate();
             m = data.getMonth()+1; //janeiro = 0
             y = data.getFullYear();
-            if (hr != '') {
+            if (hr !== '') {
                 dt = m+'/'+d+'/'+y+' '+hr;  
             } else {
                 dt = m+'/'+d+'/'+y;  
@@ -52,14 +58,14 @@
         function removeCamposInvalidos (dados,camposInv) {
           for (var i = 0; i < camposInv.length; i++) {
             delete dados[camposInv[i]];
-          };
+          }
           return dados;
         }
 
         function soma(array,rowQt,rowValue) {
             var total = 0;
             angular.forEach(array, function(row, key){
-                if (rowQt!='') {
+                if (rowQt!=='') {
                     var valor = row[rowQt]*row[rowValue];
                     total = total + valor;
                 } else {
@@ -99,5 +105,151 @@
         function porExtencio(valor) {
             return Extencio.porExtencio(valor);
         }
+
+      function validaCPF(str) {
+        if (str) {
+          str = str.replace('.', '');
+          str = str.replace('.', '');
+          str = str.replace('-', '');
+
+          var cpf = str;
+          var numeros, digitos, soma, i, resultado, digitos_iguais;
+          digitos_iguais = 1;
+          if (cpf.length < 11)
+            return false;
+          for (i = 0; i < cpf.length - 1; i++)
+            if (cpf.charAt(i) != cpf.charAt(i + 1)) {
+              digitos_iguais = 0;
+              break;
+            }
+          if (!digitos_iguais) {
+            numeros = cpf.substring(0, 9);
+            digitos = cpf.substring(9);
+            soma = 0;
+            for (i = 10; i > 1; i--)
+              soma += numeros.charAt(10 - i) * i;
+            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+            if (resultado != digitos.charAt(0))
+              return false;
+            numeros = cpf.substring(0, 10);
+            soma = 0;
+            for (i = 11; i > 1; i--)
+              soma += numeros.charAt(11 - i) * i;
+            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+            if (resultado != digitos.charAt(1))
+              return false;
+            return true;
+          }
+          else
+            return false;
+        }
+      }
+        function existe(index,array) {
+            /*verifica se um determinado valor existe em um array*/
+          var x = false;
+          for (var i = 0; i < array.length; i++) {
+            if (array[i] == index) {
+              return true;
+            }
+          }
+          return x;
+        }
+
+        function zoomImg(i) {
+            var data = {
+              img:i,
+            };
+            var modalZoom = $uibModal.open({
+              templateUrl: 'app/blocks/utils/templates/zoom-img.html',
+              controller: controllModalZoom,
+              controllerAs: 'vm',
+              size: '',
+              resolve: {
+                Data: function () {
+                  return data;
+                }
+              }
+            });
+
+            controllModalZoom.$inject = ['$uibModalInstance','Data','config'];
+            function controllModalZoom($uibModalInstance,Data,config) {
+                var vm = this;
+                vm.img = Data.img;
+                vm.pathImg = config.urlImagem;
+
+                vm.ok = ok;
+                vm.cancel = cancel;
+
+                function ok(data) {
+                    $uibModalInstance.close(data);
+                }
+                function cancel(){
+                    $uibModalInstance.dismiss('cancel');
+                }
+            }
+        }
+
+        function isset(arg) {
+            if (arg === undefined) {
+                return false;
+            } else if (arg === null) {
+                return false;
+            } else if (arg === '') {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function convDate (date) {
+          var dt = new Date(date);
+          return dt;
+        }
+
+        function getPrmPanel(prm,mdPanelRef) {
+            var position;
+            switch (prm.position){
+                case 'center' :
+                    position = prm.painel.newPanelPosition()
+                      .absolute()
+                      .center();
+                    break;
+                case 'event' :
+                    position = prm.painel.newPanelPosition()
+                        .relativeTo('#'+prm.event.currentTarget.id)
+                        .addPanelPosition(
+                            prm.painel.xPosition.ALIGN_START,
+                            prm.painel.yPosition.BELOW
+                        );
+                    break;
+            };
+
+            var config = {
+                    attachTo: angular.element(document.body),
+                    controller: function (Data,mdPanelRef) {
+                        this.funcoes = Data;
+                        this.close = function () {
+                            mdPanelRef.close();
+                        }
+                    },
+                    controllerAs: 'vm',
+                    disableParentScroll:false,
+                    templateUrl: null,
+                    hasBackdrop: false,
+                    position: position,
+                    trapFocus: false,
+                    zIndex: 2,
+                    clickOutsideToClose: true,
+                    escapeToClose: true,
+                    focusOnOpen: true,
+                    fullscreen:false,
+                    locals: {
+                      Data: prm.data
+                    }
+            };
+            return config;
+
+        }
+
     }
 })();

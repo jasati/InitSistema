@@ -83,6 +83,15 @@ gulp.task('fonts', ['clean-fonts'], function() {
         .pipe(gulp.dest(config.build + 'fonts'));
 });
 
+/*script*/
+gulp.task('script',['clean-script'], function() {
+    log('Copying script');
+
+    return gulp
+        .src(config.script)
+        .pipe(gulp.dest(config.build + 'script'));
+});
+
 /**
  * Compress images
  * @return {Stream}
@@ -191,7 +200,7 @@ gulp.task('build-specs', ['templatecache'], function(done) {
  * This is separate so we can run tests on
  * optimize before handling image or fonts
  */
-gulp.task('build', ['optimize', 'images', 'fonts'], function() {
+gulp.task('build', ['optimize', 'images', 'fonts','script'], function() {
     log('Building everything');
 
     var msg = {
@@ -209,7 +218,7 @@ gulp.task('build', ['optimize', 'images', 'fonts'], function() {
  * and inject them into the new index.html
  * @return {Stream}
  */
-gulp.task('optimize', ['inject', 'test'], function() {
+gulp.task('optimize', ['inject'], function() {
     log('Optimizing the js, css, and html');
 
     var assets = $.useref.assets({searchPath: './'});
@@ -287,6 +296,10 @@ gulp.task('clean-styles', function(done) {
     clean(files, done);
 });
 
+
+gulp.task('clean-script', function(done) {
+    clean(config.build + 'script/**/*.*', done);
+});
 /**
  * Remove all js and html from the build and temp folders
  * @param  {Function} done - callback when complete
