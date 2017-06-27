@@ -15,7 +15,7 @@
     var ambiente = {
         0:{//local
             api:"http://mucontratos.alan.dev/v1/",
-            db:"locdress",
+            db:"base_inicial",
             img:"http://mucontratos.alan.dev/App/Upload/",
             report:"http://mucontratos.alan.dev/App/Tmp/",
             urlSistema:"http://localhost:3000/",
