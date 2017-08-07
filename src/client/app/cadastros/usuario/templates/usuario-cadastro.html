@@ -1,12 +1,12 @@
 <div layout="column" flex>
-  <md-card>
+  <div>
     <md-card-content>
       <form name="form" novalidate autocomplete="off">
         <div layout-padding layout-gt-xs="row">
           <div flex-gt-xs="50">
             <md-input-container class="md-block">
               <label>Nome Completo</label>
-              <input required  name="nome" ng-model="$ctrl.funcoes.usuario.nome" ng-change="$ctrl.funcoes.onChange()">
+              <input required  name="nome" ng-model="$ctrl.funcoes.dados.row.nome" ng-change="$ctrl.funcoes.onChange()">
               <div ng-messages="form.nome.$error" ng-show="form.nome.$invalid">
                 <p ng-message="required">Nome de usuario é obrigatório</p>
               </div>
@@ -14,12 +14,12 @@
 
             <md-input-container class="md-block">
               <label>Nome</label>
-              <input name="login" ng-model="$ctrl.funcoes.usuario.login">
+              <input name="login" ng-model="$ctrl.funcoes.dados.row.login">
             </md-input-container>
 
             <md-input-container class="md-block">
               <label>Email</label>
-              <input required type="email" name="email" ng-model="$ctrl.funcoes.usuario.email"ng-pattern="/^.+@.+\..+$/" />
+              <input required type="email" name="email" ng-model="$ctrl.funcoes.dados.row.email"ng-pattern="/^.+@.+\..+$/" />
 
               <div ng-messages="form.email.$error" role="alert" ng-show="form.email.$error">
                 <div ng-message-exp="['required', 'pattern']">
@@ -28,7 +28,7 @@
               </div>
             </md-input-container>
             <md-input-container class="md-block">
-              <md-switch class="md-accent" name="status"  ng-change="$ctrl.funcoes.onChange()" ng-model="$ctrl.funcoes.usuario.status" required ng-true-value="1" ng-false-value="0">
+              <md-switch class="md-accent" name="status"  ng-change="$ctrl.funcoes.dados.onChange()" ng-model="$ctrl.funcoes.dados.row.status" required ng-true-value="1" ng-false-value="0">
                 {{$ctrl.funcoes.usuario.status==1?'Ativo':'Inativo'}}
               </md-switch>
             </md-input-container>
@@ -36,9 +36,10 @@
           <div flex-gt-xs="50">
             <md-input-container class="md-block">
               <label>Perfil do usuário</label>
-              <md-select name="type" ng-model="project.type" required ng-change="$ctrl.funcoes.onChange()">
-                <md-option value="app">Administrador</md-option>
-                <md-option value="web">Usuario</md-option>
+              <md-select name="type" ng-model="$ctrl.funcoes.dados.row.id_perfil" required ng-change="$ctrl.funcoes.dados.onChange()">
+                <md-option ng-repeat="perfil in $ctrl.funcoes.perfils.dados.rows" ng-value="perfil.id_perfil">
+                    {{perfil.nome}}
+                </md-option>
               </md-select>
             </md-input-container>
           </div>
@@ -49,12 +50,11 @@
       <md-card-actions layout="row" layout-align="start center">
           <md-button class="md-accent"  ng-click="cadastro = false">
             Salvar
-          </md-button>  
+          </md-button>
           <md-button class="md-accent" ng-click="vm.close()">
             Cancelar
-          </md-button>  
+          </md-button>
       </md-card-actions>
     </md-card-content>
-  </md-card>
+  </div>
 </div>
-

@@ -2,19 +2,16 @@
 <md-toolbar class="md-default md-hue-3"  md-whiteframe="4" md-scroll-shrink ng-if="true">
     <div class="md-toolbar-tools">
         <md-nav-bar md-selected-nav-item="'usuario'" md-truncate>
-            <md-nav-item md-nav-sref="layout.usuario.lista" name="usuario" md-truncate>
-                <p><b>Usuários</b></p>
+            <md-nav-item md-nav-sref="layout.ctrlAcesso.usuarios" name="usuario" md-truncate>
+                Usuários
             </md-nav-item>
-            <md-nav-item md-nav-sref="''" name="perfil" md-truncate>
+            <md-nav-item md-nav-sref="layout.ctrlAcesso.perfils" name="perfil" md-truncate>
                 Perfils
             </md-nav-item>
-            <md-nav-item md-nav-sref="''" name="outro" md-truncate>
-                Outro nav bar
-            </md-nav-item>    
         </md-nav-bar>
     </div>
 </md-toolbar>
 
 <md-content flex>
     <ui-view></ui-view>
-</md-content>    
+</md-content>

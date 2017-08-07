@@ -1,0 +1,85 @@
+<div layout-padding>
+  <div id="add-filtro" class="animacao" ng-show="$ctrl.filtros.configFiltro">
+    <md-divider></md-divider>
+    <form name="form" autocomplete="off" layout-gt-xs="row" layout-aling="start center" >
+
+        <md-input-container>
+          <span>Adicionar filtros : </span>
+        </md-input-container>
+
+        <md-input-container>
+          <label>Campo do filtro</label>
+          <md-select name="campo" ng-model="$ctrl.filtros.filtro.campo"  style="min-width: 200px;">
+            <md-option ng-repeat="f in $ctrl.filtros.fields" ng-blur="$ctrl.filtros.onCheangeFields(f)" ng-value="f.field">
+                {{f.alias}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container ng-show="$ctrl.filtros.filtro.campo">
+          <label>Operador</label>
+          <md-select name="express" ng-model="$ctrl.filtros.filtro.express"  style="min-width: 200px;">
+            <md-option value="=">Igual</md-option>
+            <md-option value="LIKE">Contém</md-option>
+            <md-option value="<>">Diferente</md-option>
+          </md-select>
+        </md-input-container>
+
+        <div ng-show="$ctrl.filtros.filtro.express">
+          <div ng-switch="$ctrl.filtros.filtro.type">
+
+            <div ng-switch-when="string">
+              <md-input-container>
+                <label>Filtro</label>
+                <input required name="valueText" type="text" ng-model="$ctrl.filtros.filtro.value">
+              </md-input-container>
+            </div>
+
+            <div ng-switch-when="number">
+              <md-input-container>
+                <label>Filtro</label>
+                <input required name="valueNumber" type="number" ng-model="$ctrl.filtros.filtro.value">
+              </md-input-container>
+            </div>
+
+            <div ng-switch-when="fixed">
+              <md-input-container>
+                <label>Filtro</label>
+                <md-select name="valueFixed" ng-model="$ctrl.filtros.filtro.value"  style="min-width: 200px;">
+                  <md-option ng-repeat="f in $ctrl.filtros.filtro.typeValues" ng-value="f.value">
+                      {{f.alias}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
+
+            </div>
+          </div>
+        </div>
+
+        <md-input-container ng-show="$ctrl.filtros.filtro.express">
+          <md-button class="md-raised md-accent" ng-click="$ctrl.filtros.addFiltro()" ng-disabled="form.$invalid">
+            <md-icon>search</md-icon>
+            <md-tooltip>Adicionar Filtro</md-tooltip>
+          </md-button>
+        </md-input-container>
+    </form>
+
+  </div>
+
+  <div id="filtros-added" class="animacao" ng-show="$ctrl.filtros.fildsQuery.length > 0">
+    <md-divider></md-divider>
+    <div layout-gt-xs="row" layout-aling="start center">
+
+      <md-input-container>
+        <span>Filtros Ativos : </span>
+      </md-input-container>
+
+      <md-chips ng-model="$ctrl.filtros.fildsQuery" readonly="true" md-removable="true" md-on-remove="$ctrl.filtros.functionRead()">
+        <md-chip-template>
+          <span>{{$chip.alias}}:{{$chip.campo=='status'?($chip.value=='1'?'Ativo':'Inativo'):$chip.value}}</span>
+        </md-chip-template>
+      </md-chips>
+
+    </div>
+  </div>
+</div>

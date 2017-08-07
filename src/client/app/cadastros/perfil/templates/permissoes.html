@@ -1,0 +1,36 @@
+<div layout="column" layout-fill>
+    <md-toolbar class="md-accent" >
+      <div class="md-toolbar-tools">
+       	<md-button class="md-icon-button" ng-click="$ctrl.funcoes.perfil.showState({state:'layout.ctrlAcesso.perfils'})" aria-label="voltar">
+              <md-icon>arrow_back</md-icon>
+        </md-button>
+        <span>Permissões para {{$ctrl.funcoes.perfil.row.nome}}</span>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <!--Note: for scrollShrink to work, the toolbar must be a sibling of a md-content element, placed before it.-->
+    <md-content>
+
+      <div ng-show="$ctrl.funcoes.verificarModulos()" class="alert alert-warning" role="alert">
+        Os modulos do perfil estão desatualizados, click
+        <a href ng-click="$ctrl.funcoes.atualizarModulos()">aqui</a>
+        para atualizar.
+      </div>
+      <aply-updates
+        funcoes="$ctrl.funcoes.modulos" divider="$ctrl.funcoes.divider">
+      </aply-updates>
+
+      <md-list>
+        <div ng-repeat="mg in $ctrl.funcoes.modulosGrp.rows">
+          <md-subheader class="md-no-sticky">{{mg.descricao}}</md-subheader>
+          <md-list-item  ng-repeat="m in $ctrl.funcoes.modulos.rows | filter:{'id_mg':mg.id_mg}">
+            <p>{{m.modulo}}</p>
+            <md-checkbox class="md-secondary" ng-true-value="1" ng-false-value="0"  ng-change="$ctrl.funcoes.modulos.onChange(m)" ng-model="m.permitido" ng-disabled="m.action==='c'"></md-checkbox>
+          </md-list-item>
+          <md-divider></md-divider>
+        </div>
+
+      </md-list>
+
+    </md-content>
+</div>

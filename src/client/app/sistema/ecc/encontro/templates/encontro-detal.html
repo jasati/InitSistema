@@ -1,0 +1,36 @@
+<div layout="column">
+  <md-card>
+    <md-toolbar class="md-accent" >
+      <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" ng-click="$ctrl.funcoes.encontro.showState({state:'layout.ecc'})" aria-label="voltar">
+              <md-icon>arrow_back</md-icon>
+        </md-button>
+        <span>{{$ctrl.funcoes.encontro.row.descricao}}</span>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <md-toolbar class="md-default md-hue-3"  md-whiteframe="4" md-scroll-shrink ng-if="true">
+        <div class="md-toolbar-tools">
+            <md-nav-bar  md-truncate>
+                <md-nav-item md-nav-sref="layout.ecc.detal.encontreiros" name="encontreiros" md-truncate>
+                    Encontreiros
+                </md-nav-item>
+                <md-nav-item md-nav-sref="layout.ecc.detal.encontristas" name="encontristas" md-truncate>
+                    Encontristas
+                </md-nav-item>
+                <md-nav-item md-nav-sref="layout.ecc.detal.equipes" name="equipes" md-truncate>
+                    Equipes
+                </md-nav-item>
+                <md-nav-item md-nav-sref="layout.ecc.detal.circulos" name="circulos" md-truncate>
+                    Circulos
+                </md-nav-item>
+            </md-nav-bar>
+        </div>
+    </md-toolbar>
+    <md-content layout-padding >
+      <div ui-view>
+
+      </div>
+    </md-content>
+  <md-card>
+</div>

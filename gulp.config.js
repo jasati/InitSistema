@@ -46,6 +46,7 @@ module.exports = function() {
             '**/*.js'
         ],
         less: client + 'styles/styles.less',
+        icons:bower.directory + 'material-design-icons/iconfont/**/*.*',
         report: report,
         root: root,
         server: server,

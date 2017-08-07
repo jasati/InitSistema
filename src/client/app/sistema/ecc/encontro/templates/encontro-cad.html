@@ -1,0 +1,64 @@
+<div layout="column" flex>
+  <md-card>
+    <md-toolbar class="md-default md-hue-2">
+      <div class="md-toolbar-tools">
+        <md-button ng-show="vm.funcoes.encontro.row.id_encontro" class="md-accent md-fab md-mini" ng-click="vm.funcoes.encontro.novo({})">
+          <md-icon>add</md-icon>
+          <md-tooltip>Novo encontro</md-tooltip>
+        </md-button>
+        <span>{{vm.funcoes.encontro.label+vm.funcoes.title}}</span>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.ok()" aria-label="close">
+            <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-card-content>
+      <form name="form" novalidate autocomplete="off">
+        <div layout-padding layout-gt-xs="row">
+          <div flex-gt-xs="30">
+            <md-input-container class="md-block">
+              <label>Logomarca</label>
+              <div ng-show="vm.uploader.progress" class="progress" style="margin: 0; padding: 0">
+                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': vm.uploader.progress + '%' }"></div>
+              </div>
+              <div class="md-media-lg card-media">
+                <img src="{{vm.funcoes.encontro.pathImg}}{{vm.funcoes.encontro.row.logo?vm.funcoes.encontro.row.logo:'noImg.jpg'}}" height="80">
+              </div>
+              <input type="file" class="btn btn-default btn-sm form-control" nv-file-select uploader="vm.uploader"/>
+            </md-input-container>
+          </div>
+          <div flex-gt-xs="70">
+            <md-input-container class="md-block">
+              <label>Descrição do encontro</label>
+              <input required  name="descricao" ng-model="vm.funcoes.encontro.row.descricao" >
+              <div ng-messages="form.nome.$error" ng-show="form.descricao.$invalid">
+                <p ng-message="required">A descrição do encontro é obrigatório</p>
+              </div>
+            </md-input-container>
+
+            <md-input-container >
+              <label>Data Inicio</label>
+              <md-datepicker ng-model="vm.funcoes.encontro.row.data_ini"  md-placeholder="Data inicio"></md-datepicker>
+            </md-input-container>
+
+            <md-input-container>
+              <label>Data Final</label>
+              <md-datepicker ng-model="vm.funcoes.encontro.row.data_fim"  md-placeholder="Data final"></md-datepicker>
+            </md-input-container>
+          </div>
+
+        </div>
+
+      </form>
+    </md-card-content>
+    <md-card-footer>
+      <md-divider></md-divider>
+    </md-card-footer>
+    <div class="md-actions" layout="row" layout-align="end center">
+       <md-button class="md-accent" ng-click="vm.funcoes.encontro.salvar()">Salvar</md-button>
+       <md-button class="md-warn" ng-click="vm.close()">Cancelar</md-button>
+     </div>
+  </md-card>
+
+</div>

@@ -83,6 +83,15 @@ gulp.task('fonts', ['clean-fonts'], function() {
         .pipe(gulp.dest(config.build + 'fonts'));
 });
 
+// icons
+gulp.task('icons', ['clean-icons'], function() {
+    log('Copying icons');
+
+    return gulp
+        .src(config.icons)
+        .pipe(gulp.dest(config.build + 'styles'));
+});
+
 /*script*/
 gulp.task('script',['clean-script'], function() {
     log('Copying script');
@@ -200,7 +209,7 @@ gulp.task('build-specs', ['templatecache'], function(done) {
  * This is separate so we can run tests on
  * optimize before handling image or fonts
  */
-gulp.task('build', ['optimize', 'images', 'fonts','script'], function() {
+gulp.task('build', ['optimize', 'images', 'fonts','script','icons'], function() {
     log('Building everything');
 
     var msg = {
@@ -299,6 +308,10 @@ gulp.task('clean-styles', function(done) {
 
 gulp.task('clean-script', function(done) {
     clean(config.build + 'script/**/*.*', done);
+});
+
+gulp.task('clean-icons', function(done) {
+    clean(config.build + 'styles/**/*.*', done);
 });
 /**
  * Remove all js and html from the build and temp folders

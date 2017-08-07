@@ -40,15 +40,15 @@
             var promises = [getEmpresa(),getLojas(),getModContrato(),getLicenca()];
             return $q.all(promises).then(function() {
                 logger.info('Janela Configurações Ativada');
-            });            
-            
+            });
+
         }
 
         function getEmpresa() {
             EmpresaService.load().then(function(data){
-              vm.empresa = data.reg[0];            
-            });            
-        } 
+              vm.empresa = data.reg[0];
+            });
+        }
 
         function getLojas(){
             LojasService.read('').then(function(lojas){
@@ -62,7 +62,7 @@
             } else {
                 logger.error(response.msg);
             }
-        };        
+        };
 
         function getModContrato() {
             ModContratoService.load().then(function(cont){
@@ -124,7 +124,7 @@
                 var modalInstance = $uibModal.open({
                   templateUrl: 'app/empresa/templates/cadastro-loja.html',
                   controller: controllModel,
-                  controllerAs: 'vm',              
+                  controllerAs: 'vm',
                   size: '',
                   backdrop:true,
                   resolve: {

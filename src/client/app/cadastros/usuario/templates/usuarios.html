@@ -1,0 +1,59 @@
+
+<div layout="column" flex>
+  <md-card >
+      <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+          <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.dados.mediaxs()}" ng-click="$ctrl.funcoes.novo()">
+            <md-icon>add</md-icon>
+            <md-tooltip>Novo Usuário</md-tooltip>
+          </md-button>
+          <div flex></div>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.dados.filtros.onClick()" aria-label="Filtro">
+            <md-icon ng-hide="$ctrl.funcoes.dados.filtros.digitando">search</md-icon>
+            <md-progress-circular ng-show="$ctrl.funcoes.dados.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+          </button>
+          <form class="animacao" flex="{{$ctrl.funcoes.dados.filtros.flex}}" layout="row">
+              <md-tooltip>Esse filtro lista todos os registros de usuários que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+              <input id="filtro" ng-model="$ctrl.funcoes.dados.filtros.mainField"  ng-change="$ctrl.funcoes.dados.filtros.onChange()" placeholder="Localizar usuário">
+          </form>
+          <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.dados.filtros.showField" ng-click="$ctrl.funcoes.dados.filtros.onClick()" aria-label="close">
+            <md-tooltip>Remover filtro</md-tooltip>
+            <md-icon>close</md-icon>
+          </button>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.dados.filtros.setConfigFiltro()" aria-label="Filtro">
+            <md-tooltip>filtro Avançado</md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </button>
+        </div>
+      </md-toolbar>
+      <ui-view class="animacao"></ui-view>
+      <filtro
+        filtros="$ctrl.funcoes.dados.filtros">
+      </filtro>
+
+
+
+      <md-table-container>
+        <md-divider></md-divider>
+        <table md-table>
+          <thead md-head md-order="myOrder">
+            <tr md-row>
+              <th md-column md-order-by="nome"><span><b>Nome</b></span></th>
+              <th md-column md-order-by="email"><span><b>Email</b></span></th>
+              <th md-column><span><b>Status</b></span></th>
+            </tr>
+          </thead>
+          <tbody md-body class="row-hover">
+            <tr md-row class="striped" ng-mouseenter="exibir=true" ng-mouseleave="exibir=!exibir" md-select="u" md-select-id="id_usuario" md-auto-select ui-sref="layout.ctrlAcesso.usuarios.cad" ng-click="$ctrl.funcoes.alterar(u)" ng-repeat="u in $ctrl.funcoes.dados.rows | orderBy: myOrder">
+              <td md-cell><md-icon ng-show="exibir" class="animacao-opc" aria-label="Alarm Icon">edit</md-icon> {{u.nome}}</td>
+              <td md-cell>{{u.email}}</td>
+              <td md-cell>{{u.status==1?'Ativo':'Inativo'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-card-actions >
+        <md-table-pagination md-limit="$ctrl.funcoes.dados.pagination.limit" md-limit-options="$ctrl.funcoes.dados.pagination.limitOptions" md-page="$ctrl.funcoes.dados.pagination.pagina" md-total="{{$ctrl.funcoes.dados.pagination.total}}"  md-on-paginate="$ctrl.funcoes.filtrar" md-page-select md-label="{{$ctrl.funcoes.dados.pagination.label}}"></md-table-pagination>
+      </md-card-actions>
+  </md-card>
+</div>

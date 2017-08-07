@@ -20,6 +20,7 @@
             isset  : isset,
             convDate : convDate,
             getPrmPanel : getPrmPanel,
+            validarDataset : validarDataset,
         };
         return service;
         ////////////////
@@ -32,11 +33,11 @@
             m = data.getMonth()+1; //janeiro = 0
             y = data.getFullYear();
             if (hr !== '') {
-                dt = y+'-'+m+'-'+d+' '+hr;  
+                dt = y+'-'+m+'-'+d+' '+hr;
             } else {
-                dt = y+'-'+m+'-'+d;  
+                dt = y+'-'+m+'-'+d;
             }
-            return dt;              
+            return dt;
         }
 
         function formatDataView (data, hora) {
@@ -48,12 +49,12 @@
             m = data.getMonth()+1; //janeiro = 0
             y = data.getFullYear();
             if (hr !== '') {
-                dt = m+'/'+d+'/'+y+' '+hr;  
+                dt = m+'/'+d+'/'+y+' '+hr;
             } else {
-                dt = m+'/'+d+'/'+y;  
+                dt = m+'/'+d+'/'+y;
             }
-            return dt;              
-        }        
+            return dt;
+        }
 
         function removeCamposInvalidos (dados,camposInv) {
           for (var i = 0; i < camposInv.length; i++) {
@@ -227,28 +228,42 @@
             var config = {
                     attachTo: angular.element(document.body),
                     controller: function (Data,mdPanelRef) {
-                        this.funcoes = Data;
-                        this.close = function () {
-                            mdPanelRef.close();
+                      var vm = this;
+                        vm.funcoes = Data;
+                        vm.close = function () {
+                          mdPanelRef.close();
+                        }
+                        vm.ok = function () {
+                          vm.funcoes.filtrar();
+                          mdPanelRef.close();
                         }
                     },
                     controllerAs: 'vm',
                     disableParentScroll:false,
-                    templateUrl: null,
-                    hasBackdrop: false,
+                    templateUrl: prm.templateUrl,
+                    hasBackdrop: prm.hasBackdrop,
                     position: position,
                     trapFocus: false,
                     zIndex: 2,
-                    clickOutsideToClose: true,
-                    escapeToClose: true,
+                    clickOutsideToClose: false,
+                    escapeToClose: prm.escapeToClose,
                     focusOnOpen: true,
-                    fullscreen:false,
+                    fullscreen:prm.fullscreen,
                     locals: {
                       Data: prm.data
                     }
             };
             return config;
 
+        }
+
+        function validarDataset(dataset) {
+          if (!isset(dataset.left_join[0])) {
+            delete dataset['left_join'];
+          }
+          if (!isset(dataset.inner_join[0])) {
+            delete dataset['inner_join'];
+          }
         }
 
     }

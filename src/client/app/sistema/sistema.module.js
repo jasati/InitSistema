@@ -2,6 +2,7 @@
     'use strict';
     angular
         .module('app.sistema', [
-			'app.dashboard'
+		       'app.dashboard',
+           'app.ecc',
         ]);
 })();

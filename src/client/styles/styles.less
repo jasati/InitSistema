@@ -1,7 +1,12 @@
 html,body{
 	background-color: #f2f2f2;
+	font-size: 1.6rem;
 /*	height: 100%;*/
 	/*margin: 0;*/
+}
+html {
+  font-size: 62.5%;
+  line-height: 1.4;
 }
 .main-sidenav {
  min-width: 200px !important;
@@ -38,9 +43,13 @@ html,body{
 }
 
 .animacao {
-  transition: all linear 0.5s;
+  transition: all linear 0.2s;
   height: 100%;
   width: 100%;
+  opacity: 1;
+}
+.animacao-opc {
+  transition: all linear 0.2s;
   opacity: 1;
 }
 
@@ -72,6 +81,14 @@ md-toolbar.md-table-toolbar form > input:focus {
 .striped:nth-child(even){
 	background-color: #f5f5ef;
 }
+.row-hover>tr:hover{
+	background-color: #f2f2f2;
+	cursor: pointer;
+}
+.row-hover>tr:hover>td{
+	// font-weight: bold;
+	color: #01579b;
+}
 .label{
   color:black;
 }
@@ -80,4 +97,10 @@ md-toolbar.md-table-toolbar form > input:focus {
 }
 .painel {
   background-color: white;
+}
+.cl-blue {
+	color: #0277bd;
+}
+.cl-silver{
+	color: #f2f2f2;
 }

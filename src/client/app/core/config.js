@@ -15,7 +15,7 @@
     var ambiente = {
         0:{//local
             api:"http://mucontratos.alan.dev/v1/",
-            db:"base_inicial",
+            db:"ecc",
             img:"http://mucontratos.alan.dev/App/Upload/",
             report:"http://mucontratos.alan.dev/App/Tmp/",
             urlSistema:"http://localhost:3000/",
@@ -33,7 +33,7 @@
             img:"",
             report:"",
             urlSistema:"",
-        }        
+        }
     };
     var config = {
         versao        :'0.0.0',
@@ -45,11 +45,11 @@
         dbase         :ambiente[prmAmbiente].db,
         report        :ambiente[prmAmbiente].report,
         urlSistema    :ambiente[prmAmbiente].urlSistema,
-        getResponseKey:'e2f46f53a4c7c590c472f65c0f3504b1',
+
 
         // true ou false para habilitar o modulo de permissao, caso esteja false
         // o sistema ira libera os modulos sem verificar
-        modPerm : true, 
+        modPerm : true,
     };
 
     core.value('config', config);
@@ -78,7 +78,10 @@
             .backgroundPalette('grey',{
                 'default':'200'
             });
-
+        $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
+        $mdThemingProvider.theme('dark-orange').backgroundPalette('orange').dark();
+        $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
+        $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
         //configurar formato da data
         $mdDateLocaleProvider.formatDate = function(date) {
             return moment(date).format('DD/MM/YYYY');

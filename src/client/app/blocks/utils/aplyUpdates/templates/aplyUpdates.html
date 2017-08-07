@@ -1,0 +1,11 @@
+<div ng-show="$ctrl.showAplyUpdates($ctrl.funcoes.rows)">
+  <md-divider ng-show="$ctrl.divider=='top'"></md-divider>
+  <div layout-gt-xs="row" layout-align-gt-xs="end center" layout-xs="column" layout-align-xs="center center">
+    <md-button class="md-raised md-warn" ng-click="$ctrl.funcoes.aplyUpdates()"  ng-disabled="$ctrl.funcoes.salvando" aria-label="confirmar alteraçoes">
+      <i ng-show="$ctrl.funcoes.salvando" class="fa fa-spinner fa-spin"></i>
+      Confirmar Alterações
+    </md-button>
+    <md-button class="md-raised" ng-click="$ctrl.funcoes.read('',false)" aria-label="cancelar alterações">Cancelar Alterações</md-button>
+  </div>
+  <md-divider ng-show="$ctrl.divider=='botton'"></md-divider>
+</div>
