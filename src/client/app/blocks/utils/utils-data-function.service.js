@@ -5,10 +5,10 @@
         .module('blocks.utils')
         .service('UtilsDataFunctionService', UtilsDataFunctionService);
 
-    UtilsDataFunctionService.$inject = ['UtilsFunctions','config','$state','$mdDialog','$mdMedia','$mdPanel'];
+    UtilsDataFunctionService.$inject = ['UtilsFunctions','config','FileUploader','$state','$mdDialog','$mdMedia','$mdPanel','$uibModal','$document'];
 
     /* @ngInject */
-    function UtilsDataFunctionService(UtilsFunctions,config,$state,$mdDialog,$mdMedia,$mdPanel) {
+    function UtilsDataFunctionService(UtilsFunctions,config,FileUploader,$state,$mdDialog,$mdMedia,$mdPanel,$uibModal,$document) {
         this.dataFuncoes = dataFuncoes;
 
         function dataFuncoes(dataSetProvider) {
@@ -21,6 +21,7 @@
           vm.empresa = dataSetProvider.empresa;
           vm.camposFiltro = dataSetProvider.camposFiltro;
           vm.filtroDefault = dataSetProvider.filtroDefault;
+          vm.uploader = {}; //tratamento de imagens,
           vm.filtros = {};
           vm.salvando = false;
           vm.reading = false;
@@ -81,7 +82,7 @@
 
           //funçao que atualiza os valores do array rows que estao marcados o campos
           //active com c u d caso nao tenha esse campo presente nao será enviado nenhum registro
-          vm.aplyUpdates = function () {
+          vm.aplyUpdates = function (filterAfterPost) {
             vm.salvando = true;
             var nData = UtilsFunctions.copiarObjecto(vm.rows);
             var dts = vm.getDataset(false);
@@ -95,7 +96,9 @@
             return dataSetProvider.api.aplayUpdates(post).then(function (resp) {
               vm.salvando = false;
               if (isset(resp[0])||isset(resp[1])||isset(resp[2])) {
-                vm.read('');
+                if (filterAfterPost) {
+                  vm.read('');
+                }
                 return true;
               } else {
                 return false;
@@ -127,6 +130,7 @@
       				vm.salvando = false;
       				if (resp[0].status == 'ok') {
                 vm.row[dataSetProvider.id_tabela] = resp[0].last_insert;
+                vm.rows.push(vm.row);//adiciona novo row em rows;
                 vm.actionRow = 'update';
                 vm.label = 'Alterar ';
       					return true;
@@ -222,8 +226,10 @@
             vm.actionRow = 'create';
             vm.label = 'Cadastrando ';
             vm.row.action = 'c';
-            if (dataSetProvider.indexEmp) {
-              vm.row.id_empresa = vm.empresa.id_empresa;
+            if (dataSetProvider.setForeignKey) {
+              for (var i = 0; i < dataSetProvider.camposForeignKey.length; i++) {
+                vm.row[dataSetProvider.camposForeignKey[i]] = dataSetProvider.valueForeignKey[i];
+              }
             }
           }
 
@@ -242,8 +248,14 @@
           }
 
           //adiciona um registro a lista de registros
-          vm.adicionar = function () {
-            vm.rows.push(vm.row);
+          vm.adicionar = function (data) {
+            data.action = 'c';
+            if (dataSetProvider.setForeignKey) {
+              for (var i = 0; i < dataSetProvider.camposForeignKey.length; i++) {
+                data[dataSetProvider.camposForeignKey[i]] = dataSetProvider.valueForeignKey[i];
+              }
+            }
+            vm.rows.push(data);
           }
           //seta para ser excluido no aplyUpdates
           vm.remover = function (data) {
@@ -274,6 +286,11 @@
             vm.actionRow = 'update';
             vm.label = 'Alterar ';
             vm.row = data;
+          }
+
+          vm.select = function () {
+            vm.actionRow = 'select';
+            vm.label = 'Selecionar ';
           }
 
           vm.onChange = function (row) {
@@ -317,6 +334,68 @@
             var show = UtilsFunctions.getPrmPanel(conf);
             painel.open(show);
           }
+
+          vm.showModal = function (prm,parentSelector) {
+
+            var parentElem = parentSelector?angular.element(parentSelector):angular.element('body');
+            prm.modal = $uibModal.open({
+              templateUrl: prm.templateUrl,
+              controller: controller,
+              ariaLabelledBy: prm.ariaLabelledBy,
+              ariaDescribedBy: prm.ariaDescribedBy,
+              controllerAs: '$ctrl',
+              size: prm.size,
+              appendTo: parentElem,
+              backdrop:prm.backdrop,
+              resolve: {
+                Data: function () {
+                  return prm.data;
+                }
+              }
+            });
+            controller.$inject = ['$uibModalInstance','Data'];
+            function controller($uibModalInstance,Data) {
+               this.funcoes = Data;
+               this.ok = function(data) {
+                $uibModalInstance.close(data);
+              }
+              this.cancel = function (){
+                $uibModalInstance.dismiss('cancel');
+              }
+            }
+            return prm.modal.result.then(function (data) {
+              return data;
+            }, function () {
+              return false;
+            });
+          }
+
+          //tratamento de upload de imagens
+          var upload = function(idEmp,tipo) {
+            var Uploader = new FileUploader({
+                url:config.urlWebService+'upload/'+idEmp+',true,'+config.dbase+','+tipo,
+                autoUpload:true,
+                removeAfterUpload:true,
+                withCredentials:false,
+            });
+            return Uploader;
+          }
+          vm.uploader = upload(dataSetProvider.valor_id_main,0);
+          vm.uploader.filters.push({
+            name: 'imageFilter',
+            fn: function(i /*{File|FileLikeObject}*/, options) {
+                var type = '|' + i.type.slice(i.type.lastIndexOf('/') + 1) + '|';
+                return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            }
+          });
+          vm.uploader.onSuccessItem = function(item, response, status, headers) {
+              if (response.status === 'ok') {
+                  vm.row.id_galeria = response.last_insert;
+                  vm.row[dataSetProvider.campoImagem] = response.imagem;
+              } else {
+                  logger.error(response.msg);
+              }
+          };
 
         }
     }

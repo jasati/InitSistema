@@ -8,12 +8,12 @@
 			<span>{{$ctrl.funcoes.title}}</span>
 		</div>
 		<span flex></span>
-        <md-button class="md-icon-button" aria-label="Notificação">
+        <!-- <md-button class="md-icon-button" aria-label="Notificação">
           <md-icon>notifications</md-icon>
-        </md-button>
+        </md-button> -->
 		<md-list>
         	<md-list-item class="avatar-user">
-  				<a href ng-click="$ctrl.funcoes.showUser()"><img ng-src="{{$ctrl.funcoes.usuario.image}}" class="md-avatar" alt="{{$ctrl.funcoes.usuario.nome}}" /></a>
+  				<a href ng-click="$ctrl.funcoes.showUser()"><img ng-src="{{$ctrl.funcoes.pathImg}}{{$ctrl.funcoes.usuario.image?$ctrl.funcoes.usuario.image:'noImg.jpg'}}" class="md-avatar" alt="{{$ctrl.funcoes.usuario.nome}}" /></a>
 			</md-list-item>
 		</md-list>
 	</div>

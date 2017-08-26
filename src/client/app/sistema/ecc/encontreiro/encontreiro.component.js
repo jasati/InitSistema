@@ -2,11 +2,11 @@
     'use strict';
     angular
         .module('app.ecc')
-        .component('casais', casais());
+        .component('encontreiros', encontreiros());
 
-        function casais() {
+        function encontreiros() {
           var component = {
-            templateUrl: 'app/sistema/ecc/casais/templates/casais.html',
+            templateUrl: 'app/sistema/ecc/encontreiro/templates/encontreiros.html',
             bindings: {
                 funcoes: '<',
             }

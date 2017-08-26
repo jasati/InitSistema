@@ -36,7 +36,9 @@ html {
   background-color: #f2f2f2;
 }
 .form-login {
-	max-width: 600px;
+	max-width: 400px;
+	z-index: 10;
+	position: relative;
 }
 .form-login>md-input-container{
 	width: 100%;
@@ -103,4 +105,11 @@ md-toolbar.md-table-toolbar form > input:focus {
 }
 .cl-silver{
 	color: #f2f2f2;
+}
+.modal-backdrop {
+	z-index: 79 !important;
+
+}
+.modal {
+	z-index: 80 !important;
 }

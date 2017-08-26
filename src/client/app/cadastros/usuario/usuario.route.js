@@ -23,6 +23,9 @@
                         icon   : 'assignment_ind',
                         content: 'Controle de Acesso',
                         perm   :1
+                    },
+                    resolve : {
+                        funcoes: resolveUsuario
                     }
                 }
             },
@@ -32,9 +35,7 @@
                 config: {
                     url:'/usuarios',
                     component:'usuarios',
-                    resolve : {
-                        funcoes: resolveUsuario
-                    }
+
                 }
             },
 
@@ -43,12 +44,6 @@
                 config: {
                     url:'/cadastro',
                     component:'usuarioCadastro',
-                    // resolve : {
-                    //     funcoes : function (funcoes) {
-                    //         return funcoes
-                    //     }
-                    //
-                    // }
                 }
             }
 

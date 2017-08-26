@@ -29,6 +29,7 @@
                     }
                 }
             },
+
             {
               state: 'layout.ecc.detal',
               config: {
@@ -42,6 +43,7 @@
 
     function resolveEncontro(EncontroFuncService,FiltroService) {
       var funcoes = new EncontroFuncService.funcoes();
+      //configurar filtros
       var funcFiltros = new FiltroService.funcoes();
       funcFiltros.filtros.fields = funcoes.encontro.camposFiltro;//setar os campos de consulta
       funcFiltros.filtros.fildsQuery = funcoes.encontro.filtroDefault;//setar o filtro default

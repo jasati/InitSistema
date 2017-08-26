@@ -7,13 +7,15 @@
 
     EncontroFuncService.$inject = [
       'UtilsFunctions','EccDataset','UtilsDataFunctionService',
-      '$mdDialog','$filter'
+      'EncontreirosFuncService','EncontristaFuncService','EquipeFuncService',
+      '$state','$mdDialog','$filter'
     ];
 
     /* @ngInject */
     function EncontroFuncService(
       UtilsFunctions,EccDataset,UtilsDataFunctionService,
-      $mdDialog,$filter
+      EncontreirosFuncService,EncontristaFuncService,EquipeFuncService,
+      $state,$mdDialog,$filter
     ) {
         this.funcoes = funcoes;
 
@@ -21,7 +23,6 @@
           var vm = this;
           var isset = UtilsFunctions.isset;
           var dataSetProvider = EccDataset.encontro();
-
           vm.encontro = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
           vm.divider = 'botton';
           vm.title = 'Encontro';
@@ -54,16 +55,16 @@
                 break;
               default:
             }
+
             var config = {
               templateUrl: 'app/sistema/ecc/encontro/templates/encontro-cad.html',
-              position :'center',
-              event:ev,
+              size:'',
               data:vm,
-              hasBackdrop:false,
-              escapeToClose:true,
+              backdrop:'static',
               fullscreen:false,
+              modal:{},
             };
-            vm.encontro.showPainel(config);
+            vm.encontro.showModal(config);
           }
 
           vm.deletar = function (ev,data) {
@@ -78,6 +79,24 @@
             });
           }
 
+          vm.goToEncontreiros = function (id) {
+            if (!isset(vm.encontreiros)) {
+              vm.encontreiros = new EncontreirosFuncService.funcoes(vm.encontro);
+            }
+            vm.encontreiros.startFiltro();
+          }
+          vm.goToEncontristas = function (id) {
+            if (!isset(vm.encontrista)) {
+              vm.encontrista = new EncontristaFuncService.funcoes(id);
+            }
+            vm.encontrista.startFiltro();
+          }
+          vm.goToEquipes = function (id) {
+            if (!isset(vm.equipe)) {
+              vm.equipe = new EquipeFuncService.funcoes(id);
+            }
+            vm.equipe.startFiltro();
+          }
         }
     }
 })();

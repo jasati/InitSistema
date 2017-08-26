@@ -1,23 +1,23 @@
-<div layout="row" layout-align="center center" class="login">
+<div layout="column" layout-align="center center" layout-padding class="login">
 
-    <div>
+
         <div class="form-login">
+                <md-card >
+                  <img src="images/logo.png" class="md-media-lg">
+                  <md-card-title layout-align="center center">
+                    <md-card-title-text layout-align="center center">
+                      <h4>Ecc WebApp</h4>
+                    </md-card-title-text>
+                  </md-card-title>
 
-                <img src="images/logo-blue.png" class="img-responsive">
+                  <md-card-content >
+
+
+
 
                 <form name="formLogin" novalidate>
                     <div ng-show="!recSenha">
-<!--                         <div class="form-group">
-                            <input type="email" id="username" name="login" class="form-control input-lg" placeholder="Seu Email" data-ng-model="vm.login.usuario.email" required>
-                        </div>
 
-                        <div class="form-group">
-                            <input type="password" id="password" name="senha" class="form-control input-lg" placeholder="Senha" data-ng-model="vm.login.usuario.senha" required>
-                        </div>
-
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block btn-lg" type="button" ng-click="vm.login.logar()" ng-disabled="formLogin.login.$invalid||formLogin.senha.$invalid">Acessar <i class="fa fa-cog fa-spin orange" ng-show="vm.login.usuario.logando"></i> </button>
-                        </div> -->
                         <md-input-container class="md-block">
                             <input type="email" id="username" name="email" class="input-lg" placeholder="Seu email" ng-model="vm.login.fieldsQry.email" required>
                         </md-input-container>
@@ -27,25 +27,28 @@
                         </md-input-container>
 
                         <div  layout="column" layout-align="center" >
-                            <md-button class="md-raised md-primary"  ng-click="vm.login.login()" >Acessar</md-button>
+                            <md-button class="md-raised md-accent"  ng-click="vm.login.login()" ng-disabled="formLogin.$invalid" >Acessar</md-button>
                             <md-button ng-click="recSenha=true" >Esqueci Minha Senha</md-button>
                         </div>
 
                     </div>
+                  </form>
+                  <form name="formLembraSenha" novalidate>
+
+
                     <div ng-show="recSenha">
-                        <div class="form-group">
-                            <input type="email" id="username" name="email" class="form-control input-lg" placeholder="Informe seu email" data-ng-model="vm.login.usuario.email" required>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block btn-lg" type="button" ng-click="vm.login.recuperarSenha(vm.login.usuario.email)" ng-disabled="formLogin.email.$invalid">Enviar senha para email <i class="fa fa-cog fa-spin orange" ng-show="vm.login.usuario.rec"></i></button>
-                        </div>
-                        <div class="form-group">
-                            <a href ng-click="recSenha=false" class="orange">Voltar para login</a>
+                        <md-input-container class="md-block">
+                            <input type="email" id="username" name="email" class="input-lg" placeholder="Informe seu email" data-ng-model="vm.login.usuario.email" required>
+                        </md-input-container>
+                        <div  layout="column" layout-align="center" >
+                            <md-button class="md-raised md-accent" type="button" ng-click="vm.login.recuperarSenha(vm.login.usuario.email)" ng-disabled="formLembraSenha.email.$invalid">Enviar senha para email <i class="fa fa-cog fa-spin orange" ng-show="vm.login.usuario.rec"></i></md-button>
+                            <md-button ng-click="recSenha=false" >Voltar para login</md-button>
                         </div>
                     </div>
-               </form>
+                  </form>
+             </md-card-content>
+           </md-card>
         </div>
 
-    </div>
 
 </div>

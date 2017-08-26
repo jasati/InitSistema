@@ -3,16 +3,17 @@
     angular
         .module('app.layout')
         .service('LayoutService', LayoutService);
-    LayoutService.$inject = ['$mdSidenav','routerHelper','$mdPanel','Provider','$state'];
+    LayoutService.$inject = ['$mdSidenav','routerHelper','$mdPanel','Provider','$state','config'];
     /* @ngInject */
-    function LayoutService($mdSidenav,routerHelper,$mdPanel,Provider,$state) {
+    function LayoutService($mdSidenav,routerHelper,$mdPanel,Provider,$state,config) {
         this.funcoes = funcoes;
         ////////////////
         function funcoes() {
 	        var vm = this;
 	        var states = routerHelper.getStates();
+          vm.pathImg = config.urlImagem;
 	        vm.usuario = Provider.getSessaoUsuario();
-	        vm.title = "Sistema";
+	        vm.title = "Ecc WebApp";
 
 	        vm.openSideNave = function () {
 	            $mdSidenav('left').toggle();

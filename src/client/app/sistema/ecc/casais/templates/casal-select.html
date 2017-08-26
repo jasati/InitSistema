@@ -1,0 +1,91 @@
+<div layout="column" flex>
+  <md-toolbar class="md-default md-hue-2">
+    <div class="md-toolbar-tools">
+      <span>{{$ctrl.funcoes.casal.label+$ctrl.funcoes.title}}</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card>
+    <md-card-content>
+      <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+          <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.casal.mediaxs()}" ng-click="$ctrl.funcoes.novoCasal({})">
+            <md-icon>add</md-icon>
+            <md-tooltip md-autohide="true">Novo Casal</md-tooltip>
+          </md-button>
+          <div flex></div>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.casal.filtros.onClick()" aria-label="Filtro">
+            <md-icon ng-hide="$ctrl.funcoes.casal.filtros.digitando">search</md-icon>
+            <md-progress-circular ng-show="$ctrl.funcoes.casal.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+          </button>
+          <form class="animacao" flex="{{$ctrl.funcoes.casal.filtros.flex}}" layout="row">
+              <md-tooltip>Esse filtro lista todos os registros de usuários que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+              <input id="filtro" ng-model="$ctrl.funcoes.casal.filtros.mainField"  ng-change="$ctrl.funcoes.casal.filtros.onChange()" placeholder="Localizar Casal">
+          </form>
+          <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.casal.filtros.showField" ng-click="$ctrl.funcoes.casal.filtros.onClick()" aria-label="close">
+            <md-tooltip>Remover filtro</md-tooltip>
+            <md-icon>close</md-icon>
+          </button>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.casal.filtros.setConfigFiltro()" aria-label="Filtro">
+            <md-tooltip>filtro Avançado</md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </button>
+        </div>
+      </md-toolbar>
+      <filtro
+        filtros="$ctrl.funcoes.casal.filtros">
+      </filtro>
+      <md-divider></md-divider>
+
+      <div ng-if="$ctrl.funcoes.casal.rows.length === 0" layout-padding layout-margin layout-align=" center center" layout="row" class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.casal.reading,'alert-info':$ctrl.funcoes.casal.reading}" role="alert">
+        <div ng-if="$ctrl.funcoes.casal.reading" >
+          <md-progress-circular ng-disabled="!$ctrl.funcoes.casal.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+          <p>Buscando Registros...</p>
+        </div>
+        <div ng-if="!$ctrl.funcoes.casal.reading">
+          <p><b>Descupe!</b> Os registros não foram encontrados, talvez você ainda não tenha cadastrado.</p>
+        </div>
+      </div>
+
+      <md-table-container ng-if="$ctrl.funcoes.casal.rows.length > 0">
+        <table md-table md-row-select multiple ng-model="$ctrl.funcoes.casal.rowsSelected">
+          <thead md-head md-order="myOrder">
+            <tr md-row>
+              <th style="width: 1% !important" md-column><md-button class="md-icon-button" ng-click="$ctrl.funcoes.casal.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button></th>
+              <th style="width: 50% !important" md-column md-order-by="casal"><span><b>Casal</b></span></th>
+              <th style="width: 30% !important" md-column md-order-by="cidade"><span><b>Cidade</b></span></th>
+              <th style="width: 9% !important" md-column md-order-by="telefone1"><span><b>Tel 1</b></span></th>
+              <th style="width: 10% !important" md-column md-order-by="email"><span><b>email</b></span></th>
+            </tr>
+          </thead>
+          <tbody md-body class="row-hover">
+            <tr md-row class="striped" ng-mouseenter="exibir=true" ng-mouseleave="exibir=!exibir" md-select="c" md-select-id="id_casal" ng-repeat="c in $ctrl.funcoes.casal.rows | orderBy: myOrder">
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.casal.alterar(c)" aria-label="edit"><md-icon show-gt-xs="exibir" class="animacao-opc" aria-label="editar">edit</md-icon></md-button></td>
+              <td md-cell>{{c.casal}}</td>
+              <td md-cell>{{c.cidade}}</td>
+              <td md-cell>{{c.telefone1}}</td>
+              <td md-cell>{{c.email}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-card-actions >
+        <md-table-pagination md-limit="$ctrl.funcoes.casal.pagination.limit" md-limit-options="$ctrl.funcoes.casal.pagination.limitOptions" md-page="$ctrl.funcoes.casal.pagination.pagina" md-total="{{$ctrl.funcoes.casal.pagination.total}}"  md-on-paginate="$ctrl.funcoes.filtrar" md-page-select md-label="{{$ctrl.funcoes.casal.pagination.label}}"></md-table-pagination>
+      </md-card-actions>
+  </md-card-content>
+  <md-card-footer>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="start center">
+      <md-card-icon-actions ng-show="$ctrl.funcoes.casal.rowsSelected.length>0">
+        <span>{{$ctrl.funcoes.casal.rowsSelected.length}} {{$ctrl.funcoes.casal.rowsSelected.length===1?' Casal selecionado':' Casais selecionados'}}</span>
+      </md-card-icon-actions>
+    <md-button class="md-accent" ng-disabled="$ctrl.funcoes.casal.rowsSelected.length === 0" ng-click="$ctrl.ok($ctrl.funcoes.casal.rowsSelected)">Confirmar</md-button>
+  </md-card-actions>
+  </md-card-footer>
+
+</md-card>
+
+</div>

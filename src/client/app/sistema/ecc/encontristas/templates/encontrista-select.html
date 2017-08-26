@@ -1,0 +1,68 @@
+
+<div layout="column" flex>
+
+      <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+          <md-button ng-if="$ctrl.funcoes.crud" class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.encontrista.mediaxs()}" ng-click="$ctrl.funcoes.showCasais($event)">
+            <md-icon>add</md-icon>
+            <md-tooltip md-autohide="true">Nova Ficha</md-tooltip>
+          </md-button>
+          <div flex></div>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.encontrista.filtros.onClick()" aria-label="Filtro">
+            <md-icon ng-hide="$ctrl.funcoes.encontrista.filtros.digitando">search</md-icon>
+            <md-progress-circular ng-show="$ctrl.funcoes.encontrista.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+          </button>
+          <form class="animacao" flex="{{$ctrl.funcoes.encontrista.filtros.flex}}" layout="row">
+              <md-tooltip>Esse filtro lista todos os registros de encontristas que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+              <input id="filtro" ng-model="$ctrl.funcoes.encontrista.filtros.mainField"  ng-change="$ctrl.funcoes.encontrista.filtros.onChange()" placeholder="Localizar Casal">
+          </form>
+          <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.encontrista.filtros.showField" ng-click="$ctrl.funcoes.encontrista.filtros.onClick()" aria-label="close">
+            <md-tooltip>Remover filtro</md-tooltip>
+            <md-icon>close</md-icon>
+          </button>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.encontrista.filtros.setConfigFiltro()" aria-label="Filtro">
+            <md-tooltip>filtro Avançado</md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </button>
+        </div>
+      </md-toolbar>
+      <filtro
+        filtros="$ctrl.funcoes.encontrista.filtros">
+      </filtro>
+      <md-divider></md-divider>
+
+      <div ng-if="$ctrl.funcoes.encontrista.rows.length === 0" layout-padding layout-margin layout-align=" center center" layout="row" class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.encontrista.reading,'alert-info':$ctrl.funcoes.encontrista.reading}" role="alert">
+        <div ng-if="$ctrl.funcoes.encontrista.reading" >
+          <md-progress-circular ng-disabled="!$ctrl.funcoes.encontrista.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+          <p>Buscando Registros...</p>
+        </div>
+        <div ng-if="!$ctrl.funcoes.encontrista.reading">
+          <p><b>Descupe!</b> Os registros não foram encontrados, talvez você ainda não tenha cadastrado.</p>
+        </div>
+      </div>
+
+      <md-table-container ng-if="$ctrl.funcoes.encontrista.rows.length > 0">
+        <table md-table>
+          <thead md-head md-order="myOrder">
+            <tr md-row>
+              <th style="width: 25%" md-column md-order-by="casal"><span><b>Casal</b></span></th>
+              <th style="width: 29%" md-column md-order-by="endereco"><span><b>Endereço</b></span></th>
+              <th style="width: 20%" md-column md-order-by="cidade"><span><b>Cidade</b></span></th>
+              <th style="width: 1%" md-column></th>
+            </tr>
+          </thead>
+          <tbody md-body class="row-hover">
+            <tr md-row md-select="u" md-select-id="id_enc_eiro" ng-repeat="e in $ctrl.funcoes.encontrista.rows | orderBy: myOrder">
+              <td md-cell>{{e.casal}}</td>
+              <td md-cell>{{e.endereco}}</td>
+              <td md-cell>{{e.cidade}}</td>
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.deletar($event,e)" aria-label="edit"><md-icon aria-label="deletar">delete</md-icon></md-button></td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-card-actions >
+        <md-table-pagination md-limit="$ctrl.funcoes.encontrista.pagination.limit" md-limit-options="$ctrl.funcoes.encontrista.pagination.limitOptions" md-page="$ctrl.funcoes.encontrista.pagination.pagina" md-total="{{$ctrl.funcoes.encontrista.pagination.total}}"  md-on-paginate="$ctrl.funcoes.filtrar" md-page-select md-label="{{$ctrl.funcoes.encontrista.pagination.label}}"></md-table-pagination>
+      </md-card-actions>
+
+</div>

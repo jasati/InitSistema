@@ -9,28 +9,45 @@
         <span flex></span>
       </div>
     </md-toolbar>
-    <md-toolbar class="md-default md-hue-3"  md-whiteframe="4" md-scroll-shrink ng-if="true">
-        <div class="md-toolbar-tools">
-            <md-nav-bar  md-truncate>
-                <md-nav-item md-nav-sref="layout.ecc.detal.encontreiros" name="encontreiros" md-truncate>
-                    Encontreiros
-                </md-nav-item>
-                <md-nav-item md-nav-sref="layout.ecc.detal.encontristas" name="encontristas" md-truncate>
-                    Encontristas
-                </md-nav-item>
-                <md-nav-item md-nav-sref="layout.ecc.detal.equipes" name="equipes" md-truncate>
-                    Equipes
-                </md-nav-item>
-                <md-nav-item md-nav-sref="layout.ecc.detal.circulos" name="circulos" md-truncate>
-                    Circulos
-                </md-nav-item>
-            </md-nav-bar>
-        </div>
-    </md-toolbar>
-    <md-content layout-padding >
-      <div ui-view>
 
-      </div>
-    </md-content>
+    <md-tabs md-dynamic-height md-selected="selectedIndexInteger">
+        <md-tab label=""  md-on-select="$ctrl.funcoes.goToEncontreiros($ctrl.funcoes.encontro.row.id_encontro)" md-on-deselect="">
+            <md-tab-label>
+                <span hide-xs>Encontreiros</span>
+                <md-icon hide-gt-xs>supervisor_account</md-icon>
+            </md-tab-label>
+            <md-tab-body>
+              <encontreiros  layout-margin funcoes="$ctrl.funcoes.encontreiros"></encontreiros>
+            </md-tab-body>
+        </md-tab>
+        <md-tab label="" md-on-select="$ctrl.funcoes.goToEncontristas($ctrl.funcoes.encontro.row.id_encontro)" md-on-deselect="">
+          <md-tab-label>
+                <span hide-xs>Encontristas</span>
+                <md-icon hide-gt-xs>wc</md-icon>
+          </md-tab-label>
+          <md-tab-body>
+            <encontristas  layout-margin funcoes="$ctrl.funcoes.encontrista"></encontristas>
+          </md-tab-body>
+        </md-tab>
+        <md-tab label="" md-on-select="$ctrl.funcoes.goToEquipes($ctrl.funcoes.encontro.row.id_encontro)" md-on-deselect="">
+          <md-tab-label>
+              <span hide-xs>Equipes</span>
+              <md-icon hide-gt-xs>device_hub</md-icon>
+          </md-tab-label>
+          <md-tab-body>
+            <equipes layout-margin funcoes="$ctrl.funcoes.equipe"></equipes>
+          </md-tab-body>
+        </md-tab>
+        <md-tab label="" disabled md-on-select="" md-on-deselect="">
+          <md-tab-label>
+              <span hide-xs>Circulos</span>
+              <md-icon hide-gt-xs>bubble_chart</md-icon>
+          </md-tab-label>
+          <md-tab-body>
+            <h1>Circulos</h1>
+          </md-tab-body>
+        </md-tab>
+    </md-tabs>
+
   <md-card>
 </div>

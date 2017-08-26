@@ -1,0 +1,22 @@
+
+<div ng-switch="$ctrl.funcoes.casal.actionRow">
+  <div ng-switch-when="select">
+    <div ng-include="'app/sistema/ecc/casais/templates/casal-select.html'">
+
+    </div>
+  </div>
+  <div ng-switch-default>
+    <div ng-include="'app/sistema/ecc/casais/templates/casal-cad.html'">
+
+    </div>
+    <div ng-if="$ctrl.funcoes.casal.selected">
+      <md-button class="md-icon-button" aria-label="Favorite" ng-click="$ctrl.funcoes.casal.select()">
+        <md-icon>arrow_back</md-icon>
+        <md-tooltip md-autohide="true" md-z-index="10000">
+            Retornar para lista de casais
+        </md-tooltip>
+      </md-button>
+    </div>
+  </div>
+
+</div>

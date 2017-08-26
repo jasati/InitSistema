@@ -123,7 +123,8 @@
                     withCredentials: false,
                     headers: {
                        'Authorization': 'Basic bashe64usename:password',
-                    }
+                    },
+                    timeout :30000,
                 }
 
             return $http(req)

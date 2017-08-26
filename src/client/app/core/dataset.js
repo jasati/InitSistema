@@ -121,11 +121,12 @@
   	    	var left_join = {
   	            0:"",
   	        };
-
+          var camposData = [];
+          var camposForeignKey = ['id_empresa'];
 	        var camposInvalidos = ['action'];
           var emp = empresa();
         	var dataset = {
-            indexEmp        : true,//esse campo determina se a cada novo registro será recibido o campo id_empresa
+            setForeignKey   : true,//esse campo determina se a cada novo registro será recibido o campo id_empresa
             api             : api,
         		empresa         : emp,
         		campos          : campos,
@@ -143,6 +144,10 @@
             provider        : Provider,
             camposFiltro    : camposFiltro,
             filtroDefault   : filtroDefault,
+            camposData      : camposData,
+            camposForeignKey: camposForeignKey,
+            valueForeignKey : [emp.id_empresa],//será preenchido quando dentro da classe que chamar essa função
+            campoImagem     : '',
         	};
         	return dataset;
         }
@@ -150,7 +155,7 @@
         function perfilModulos() {
           // campos são os campos da tabela que são visiveis no sistema
           //se nao for preenchido vira todos os campos
-        	var campos = 'pm.id_pm, pm.id_modulo, pm.id_perfil, m.nome as modulo, m.id_mg';
+        	var campos = 'pm.id_pm, pm.id_modulo, pm.id_perfil, pm.permitido, m.nome as modulo, m.id_mg';
           // camposFiltro são os campos usados para fazer a filtros avançados no sistema
           var camposFiltro = [];
           // filtroDefault é a pesquisa que ja vem padrao pelo sistema

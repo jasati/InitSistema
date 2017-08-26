@@ -2,11 +2,11 @@
     'use strict';
     angular
         .module('app.ecc')
-        .component('encontro', encontro());
+        .component('encontristas', encontristas());
 
-        function encontro() {
+        function encontristas() {
           var component = {
-            templateUrl: 'app/sistema/ecc/encontro/templates/encontros.html',
+            templateUrl: 'app/sistema/ecc/encontristas/templates/encontristas.html',
             bindings: {
                 funcoes: '<',
             }
@@ -19,13 +19,13 @@
     'use strict';
     angular
         .module('app.ecc')
-        .component('detalhes', detalhes());
+        .component('encontristasSel', encontristasSel());
 
-        function detalhes() {
+        function encontristasSel() {
           var component = {
-            templateUrl: 'app/sistema/ecc/encontro/templates/encontro-detal.html',
+            templateUrl: 'app/sistema/ecc/encontristas/templates/encontrista-select.html',
             bindings: {
-                funcoes:'<',
+                funcoes: '<',
             }
           }
           return component;

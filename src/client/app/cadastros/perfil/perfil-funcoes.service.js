@@ -67,12 +67,10 @@
               if (isset(result)) {
                 var perfil = {nome:result};
                 vm.perfil.novo(perfil);
-                vm.perfil.salvar().then(function (result) {
-                  if (result) {
-                    vm.perfil.rows.push(vm.perfil.row);
-                  }
-                });
+                vm.perfil.salvar();
               }
+            }, function (result) {
+              console.log('cancelou');
             });
           }
           vm.alterarPerfil = function(ev,data) {
@@ -92,6 +90,8 @@
                 vm.perfil.alterar(data);
                 vm.perfil.salvar();
               }
+            }, function (result) {
+              console.log('cancelou');
             });
           }
 
@@ -127,8 +127,8 @@
                   modulo   :vm.modulosSis.rows[i].nome,
                   id_mg    :vm.modulosSis.rows[i].id_mg,
                 };
-                vm.modulos.novo(row);
-                vm.modulos.adicionar();
+                // vm.modulos.novo(row);
+                vm.modulos.adicionar(row);
               }
             }
           }

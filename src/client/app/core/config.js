@@ -11,7 +11,7 @@
         toastr.options.timeOut = 4000;
         toastr.options.positionClass = 'toast-bottom-right';
     }
-    var prmAmbiente = 0;//0:local 1:teste 2:producao
+    var prmAmbiente = 2;//0:local 1:teste 2:producao
     var ambiente = {
         0:{//local
             api:"http://mucontratos.alan.dev/v1/",
@@ -28,11 +28,11 @@
             urlSistema:"",
         },
         2:{//producao
-            api:"",
-            db:"",
-            img:"",
-            report:"",
-            urlSistema:"",
+            api:"https://ws.ecc.pibdecoite.com.br/v1/",
+            db:"pibcoite_ecc",
+            img:"https://ws.ecc.pibdecoite.com.br/App/Upload/",
+            report:"https://ws.ecc.pibdecoite.com.br/App/Tmp/",
+            urlSistema:"http://localhost:3000/",
         }
     };
     var config = {

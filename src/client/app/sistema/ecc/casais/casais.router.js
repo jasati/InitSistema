@@ -14,20 +14,28 @@
     function getStates() {
         return [
             {
-              state: 'layout.ecc.detal.encontreiros',
-              config: {
-                  url:'/encontreiros',
-                  component:'encontreiros',
-              }
-            },
-            {
-              state: 'layout.ecc.detal.encontristas',
-              config: {
-                  url:'/encontristas',
-                  component:'encontristas',
-              }
+                state: 'layout.casais',
+                config: {
+                    url: '/casais',
+                    component:'casais',
+                    settings: {
+                        nav    : 3,
+                        icon   : 'supervisor_account',
+                        content: 'Casais',
+                        perm   :1
+                    },
+                    resolve : {
+                        funcoes: resolveCasais
+                    }
+                }
             }
         ];
     }
+    resolveCasais.$inject = ['CasaisFuncService'];
 
+    function resolveCasais(CasaisFuncService) {
+      var funcoes = new CasaisFuncService.funcoes();
+      funcoes.startFiltro('');
+      return funcoes;
+    }
 })();

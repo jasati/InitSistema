@@ -1,0 +1,53 @@
+
+
+    <md-card>
+        <md-card-title>
+           <md-card-title-text layout-gt-xs="row">
+             <md-card-title-media layout-align="center center">
+               <div ng-class="{'md-media-lg':!$ctrl.funcoes.encontreiros.mediaxs()}">
+                 <img src="{{$ctrl.funcoes.encontreiros.pathImg}}{{$ctrl.funcoes.encontreiros.row.foto?$ctrl.funcoes.encontreiros.row.foto:'noImg.jpg'}}" class="img-responsive img-rounded" height="200">
+               </div>
+             </md-card-title-media>
+             <div layout-padding layout="column" layout-align="start center">
+               <span class="md-headline">{{$ctrl.funcoes.encontreiros.row.marido}} & {{$ctrl.funcoes.encontreiros.row.esposa}}</span>
+               <md-switch ng-model="$ctrl.funcoes.encontreiros.row.pago" aria-label="pago" ng-true-value="1" ng-false-value="0">
+                   {{$ctrl.funcoes.encontreiros.row.pago?'Inscrição Paga':'Pendente de pagamento'}}
+               </md-switch>
+             </div>
+             <div layout="column" layout-padding layout-align="start center">
+               <span class="md-subhead"><b>Inscrição</b></span>
+               <p>{{$ctrl.funcoes.encontreiros.row.valor_insc|currency}}</p>
+               <span class="md-subhead"><b>Fichas</b></span>
+               <p>{{$ctrl.funcoes.encontreiros.row.total_conv|currency}}</p>
+             </div>
+             <div layout="column" layout-padding layout-align="start center">
+               <span class="md-subhead"><b>Total</b></span>
+               <p>{{$ctrl.funcoes.encontreiros.row.total_invest|currency}}</p>
+             </div>
+           </md-card-title-text>
+         </md-card-title>
+         <md-card-content>
+           <p><b>Contatos</b></b>
+           <md-divider></md-divider>
+           <div layout-gt-xs="row" >
+             <div layout="column" flex-gt-xs="50">
+               <p>{{$ctrl.funcoes.encontreiros.row.telefone1}}</p>
+               <p>{{$ctrl.funcoes.encontreiros.row.telefone2}}</p>
+             </div>
+             <div layout="column" flex-gt-xs="50">
+                <p>{{$ctrl.funcoes.encontreiros.row.email}}</p>
+             </div>
+           </div>
+           <p><b>Endereço</b></p>
+           <md-divider></md-divider>
+           <p>{{$ctrl.funcoes.encontreiros.row.cidade}}</p>
+           <p>{{$ctrl.funcoes.encontreiros.row.endereco}}</p>
+         </md-card-content>
+    <md-card-footer>
+      <md-divider></md-divider>
+      <md-card-actions layout="row" layout-align="end center">
+        <md-button class="md-accent" ng-click="$ctrl.funcoes.encontreiros.salvar()">Salvar</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.close()">Cancelar</md-button>
+      </md-card-actions>
+    </md-card-footer>
+  </md-card>

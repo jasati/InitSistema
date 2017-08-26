@@ -227,24 +227,14 @@
 
             var config = {
                     attachTo: angular.element(document.body),
-                    controller: function (Data,mdPanelRef) {
-                      var vm = this;
-                        vm.funcoes = Data;
-                        vm.close = function () {
-                          mdPanelRef.close();
-                        }
-                        vm.ok = function () {
-                          vm.funcoes.filtrar();
-                          mdPanelRef.close();
-                        }
-                    },
+                    controller: ctrlPanel,
                     controllerAs: 'vm',
-                    disableParentScroll:false,
+                    disableParentScroll:true,
                     templateUrl: prm.templateUrl,
                     hasBackdrop: prm.hasBackdrop,
                     position: position,
-                    trapFocus: false,
-                    zIndex: 2,
+                    trapFocus: true,
+                    //zIndex: 150,
                     clickOutsideToClose: false,
                     escapeToClose: prm.escapeToClose,
                     focusOnOpen: true,
@@ -253,6 +243,19 @@
                       Data: prm.data
                     }
             };
+
+            ctrlPanel.$inject= ['Data','mdPanelRef'];
+            function ctrlPanel(Data,mdPanelRef) {
+              var vm = this;
+                vm.funcoes = Data;
+                vm.close = function () {
+                  mdPanelRef.close();
+                }
+                vm.ok = function () {
+                  vm.funcoes.filtrar();
+                  mdPanelRef.close();
+                }
+            }
             return config;
 
         }
