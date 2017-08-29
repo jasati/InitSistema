@@ -21,6 +21,7 @@
             convDate : convDate,
             getPrmPanel : getPrmPanel,
             validarDataset : validarDataset,
+            isNumber    : isNumber,
         };
         return service;
         ////////////////
@@ -54,6 +55,10 @@
                 dt = m+'/'+d+'/'+y;
             }
             return dt;
+        }
+
+        function isNumber(val){
+          return typeof val === "number"
         }
 
         function removeCamposInvalidos (dados,camposInv) {

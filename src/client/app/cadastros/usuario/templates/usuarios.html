@@ -3,7 +3,7 @@
   <md-card >
       <md-toolbar class="md-table-toolbar md-default" >
         <div class="md-toolbar-tools">
-          <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.dados.mediaxs()}" ng-click="$ctrl.funcoes.novo()">
+          <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.dados.mediaxs()}" ng-click="$ctrl.funcoes.cadastro('create',{})">
             <md-icon>add</md-icon>
             <md-tooltip>Novo Usuário</md-tooltip>
           </md-button>
@@ -44,8 +44,8 @@
             </tr>
           </thead>
           <tbody md-body class="row-hover">
-            <tr md-row class="striped" ng-mouseenter="exibir=true" ng-mouseleave="exibir=!exibir" md-select="u" md-select-id="id_usuario" md-auto-select ui-sref="layout.ctrlAcesso.usuarios.cad" ng-click="$ctrl.funcoes.alterar(u)" ng-repeat="u in $ctrl.funcoes.dados.rows | orderBy: myOrder">
-              <td md-cell><md-icon ng-show="exibir" class="animacao-opc" aria-label="Alarm Icon">edit</md-icon> {{u.nome}}</td>
+            <tr md-row class="striped" ng-mouseenter="exibir=true" ng-mouseleave="exibir=!exibir" md-select="u" md-select-id="id_usuario" md-auto-select  ng-click="$ctrl.funcoes.cadastro('update',u)" ng-repeat="u in $ctrl.funcoes.dados.rows | orderBy: myOrder">
+              <td md-cell><md-icon aria-label="Alarm Icon">edit</md-icon> {{u.nome}}</td>
               <td md-cell>{{u.email}}</td>
               <td md-cell>{{u.status==1?'Ativo':'Inativo'}}</td>
             </tr>

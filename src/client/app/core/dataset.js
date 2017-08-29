@@ -66,7 +66,7 @@
           ];
           // filtroDefault é a pesquisa que ja vem padrao pelo sistema
           var filtroDefault = [
-            {campo:"status",express:"=",value:"1",alias:"Status"},
+            {campo:"status",express:"=",value:"1",alias:"Status",aliasValue:"Ativo",type:"fixed"},
           ];
 
   	    	var inner_join = {
@@ -76,11 +76,12 @@
   	    	var left_join = {
   	            0:"",
   	        };
-
+          var camposData = [];
+          var camposForeignKey = ['id_empresa'];
 	        var camposInvalidos = ['action'];
           var emp = empresa();
         	var dataset = {
-            indexEmp        : true,//esse campo determina se a cada novo registro será recibido o campo id_empresa
+            setForeignKey   : true,//esse campo determina se a cada novo registro será recibido o campo id_empresa
             api             : api,
         		empresa         : emp,
         		campos          : campos,
@@ -98,6 +99,11 @@
             provider        : Provider,
             camposFiltro    : camposFiltro,
             filtroDefault   : filtroDefault,
+            camposData      : camposData,
+            camposForeignKey: camposForeignKey,
+            valueForeignKey : [emp.id_empresa],//será preenchido quando dentro da classe que chamar essa função
+            campoImagem     : '',
+
         	};
         	return dataset;
         }

@@ -1,5 +1,14 @@
 <div layout="column" flex>
-  <div>
+  <md-toolbar class="md-default md-hue-2">
+    <div class="md-toolbar-tools">
+      <span>{{$ctrl.funcoes.dados.label+$ctrl.funcoes.title}}</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card>
     <md-card-content>
       <form name="form" novalidate autocomplete="off">
         <div layout-padding layout-gt-xs="row">
@@ -10,11 +19,6 @@
               <div ng-messages="form.nome.$error" ng-show="form.nome.$invalid">
                 <p ng-message="required">Nome de usuario é obrigatório</p>
               </div>
-            </md-input-container>
-
-            <md-input-container class="md-block">
-              <label>Nome</label>
-              <input name="login" ng-model="$ctrl.funcoes.dados.row.login">
             </md-input-container>
 
             <md-input-container class="md-block">
@@ -37,24 +41,43 @@
             <md-input-container class="md-block">
               <label>Perfil do usuário</label>
               <md-select name="type" ng-model="$ctrl.funcoes.dados.row.id_perfil" required ng-change="$ctrl.funcoes.dados.onChange()">
-                <md-option ng-repeat="perfil in $ctrl.funcoes.perfils.dados.rows" ng-value="perfil.id_perfil">
+                <md-option ng-repeat="perfil in $ctrl.funcoes.perfils.perfil.rows" ng-value="perfil.id_perfil">
                     {{perfil.nome}}
                 </md-option>
               </md-select>
             </md-input-container>
+            <div ng-show="$ctrl.funcoes.dados.row.id_usuario===1">
+              <md-subheader>Alterar Senha</md-subheader>
+              <!--You can use md-no-sticky class-->
+              <md-input-container class="md-block">
+                <label>Senha Atual</label>
+                <input name="senha-atual" ng-model="$ctrl.funcoes.dados.row.login">
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>Nova Senha</label>
+                <input name="senha-atual" ng-model="$ctrl.funcoes.dados.row.login">
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>Repita a nova senha</label>
+                <input name="senha-atual" ng-model="$ctrl.funcoes.dados.row.login">
+              </md-input-container>
+
+            </div>
+
+
           </div>
         </div>
 
       </form>
       <md-divider></md-divider>
       <md-card-actions layout="row" layout-align="start center">
-          <md-button class="md-accent"  ng-click="cadastro = false">
+          <md-button class="md-accent"  ng-click="$ctrl.funcoes.dados.salvar()">
             Salvar
           </md-button>
-          <md-button class="md-accent" ng-click="vm.close()">
+          <md-button class="md-accent" ng-click="$ctrl.close()">
             Cancelar
           </md-button>
       </md-card-actions>
     </md-card-content>
-  </div>
+  </md-card>
 </div>

@@ -35,7 +35,7 @@
             if (isset(vm.encontrista.filtros.mainField)) {
               query += " and CONCAT(c.marido,c.esposa) LIKE '%"+vm.encontrista.filtros.mainField+"%'";
             }
-            vm.encontrista.read(query);
+            vm.encontrista.read(query,true);
           }
 
           vm.cadastro = function (action,row,ev) {

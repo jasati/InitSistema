@@ -6,13 +6,13 @@
         .service('PerfilFuncService', PerfilFuncService);
 
     PerfilFuncService.$inject = [
-      'UtilsFunctions','Dataset','UtilsDataFunctionService',
+      'UtilsFunctions','Dataset','UtilsDataFunctionService','FiltroService',
       '$state','$mdDialog','$filter'
     ];
 
     /* @ngInject */
     function PerfilFuncService(
-      UtilsFunctions,Dataset,UtilsDataFunctionService,
+      UtilsFunctions,Dataset,UtilsDataFunctionService,FiltroService,
       $state,$mdDialog,$filter
     ) {
         this.funcoes = funcoes;
@@ -131,6 +131,15 @@
                 vm.modulos.adicionar(row);
               }
             }
+          }
+
+          vm.startFiltro = function () {
+            var funcFiltros = new FiltroService.funcoes();
+            funcFiltros.filtros.fields = vm.perfil.camposFiltro;//setar os campos de consulta
+            funcFiltros.filtros.fildsQuery = vm.perfil.filtroDefault;//setar o filtro default
+            funcFiltros.filtros.functionRead = vm.filtrar;//setar a função de gatilho para consulta
+            vm.perfil.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
+            vm.perfil.filtros.functionRead();//chama a consulta
           }
 
 

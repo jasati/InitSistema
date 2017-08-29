@@ -21,6 +21,7 @@
           vm.empresa = dataSetProvider.empresa;
           vm.camposFiltro = dataSetProvider.camposFiltro;
           vm.filtroDefault = dataSetProvider.filtroDefault;
+          vm.filtroExterno = '';
           vm.uploader = {}; //tratamento de imagens,
           vm.filtros = {};
           vm.salvando = false;

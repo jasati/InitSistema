@@ -26,7 +26,6 @@
       	var dataSetProvider = Dataset.usuario();
         var datasetPerfil = Dataset.perfil();
         func.dados = new UtilsDataFunctionService.dataFuncoes(dataSetProvider)
-        func.perfils = new UtilsDataFunctionService.dataFuncoes(datasetPerfil);
       	func.soma = UtilsFunctions.soma;
       	func.convDate = UtilsFunctions.convDate;
         func.title = 'Cadastro de usuários';
@@ -102,6 +101,20 @@
     			});
     		}
 
+        func.validarSenha = function (prm) {
+          var dts = func.dados.getDataset(true);
+          var query = " and email = '"+prm.email+"' and senha = '"+prm.senha+"'";
+          dataSetProvider.provider.setValor(dts,'consulta',query);
+          var post = {
+            dataSet:dts,
+            msgErro:'Falha ao validar a senha.',
+            msgSucess:'',
+          };
+          return dataSetProvider.api.read(post).then(function (resp) {
+            return resp;
+          });
+        }
+
         func.fazerLogin = function () {
             if ($cookies.get('idUser')) {
                 func.fieldsQry.id_usuario = $cookies.get('idUser');//getUserLogado('idUser')
@@ -140,19 +153,39 @@
     			};
     		}
 
+        func.ativaPerfil = function () {
+          if (!isset(func.perfils)) {
+            func.perfils = new PerfilFuncService.funcoes();
+            func.perfils.startFiltro();
+          }
+        }
         func.showTable = function () {
           $state.go('layout.ctrlAcesso.usuarios');
-          func.perfils.filtrar();
         }
 
-        func.novo = function () {
-          func.dados.novo({});
-          $state.go('layout.ctrlAcesso.usuarios.cad');
-        }
-
-        func.alterar = function (data) {
-          func.dados.alterar(data);
-          // $state.go('layout.ctrlAcesso.usuarios.cad');
+        func.cadastro = function (action,row,parent) {
+          switch (action) {
+            case 'create':
+              func.dados.novo(row);
+              break;
+            case 'update':
+              func.dados.alterar(row);
+              break;
+          }
+          func.ativaPerfil();
+          var config = {
+            templateUrl: 'app/cadastros/usuario/templates/usuario-cadastro.html',
+            ariaLabelledBy: 'Usuario',
+            ariaDescribedBy: 'Usuario-modal',
+            size:'',
+            data:func,
+            backdrop:'static',
+            fullscreen:false,
+            modal:{},
+          };
+          return func.dados.showModal(config,parent).then(function (data) {
+            return data
+          });
         }
 
         /*executar ao instanciar*/

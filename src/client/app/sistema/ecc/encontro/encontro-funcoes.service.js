@@ -32,7 +32,7 @@
             if (isset(vm.encontro.filtros.mainField)) {
               query += " and descricao LIKE '%"+vm.encontro.filtros.mainField+"%'";
             }
-            vm.encontro.read(query);
+            vm.encontro.read(query,true);//limitar os registro
           }
 
           vm.showEncontro = function (row) {
@@ -81,7 +81,7 @@
 
           vm.goToEncontreiros = function (id) {
             if (!isset(vm.encontreiros)) {
-              vm.encontreiros = new EncontreirosFuncService.funcoes(vm.encontro);
+              vm.encontreiros = new EncontreirosFuncService.funcoes(id);
             }
             vm.encontreiros.startFiltro();
           }

@@ -7,7 +7,7 @@
             <md-icon>add</md-icon>
             <md-tooltip md-autohide="true">Nova Equipe</md-tooltip>
           </md-button>
-          <span ng-class="{'md-subhead':$ctrl.funcoes.encontreiros.mediaxs()}" ng-show="!$ctrl.funcoes.encontreiros.filtros.showField">Equipes</span>
+          <span ng-class="{'md-subhead':$ctrl.funcoes.equipe.mediaxs()}" ng-show="!$ctrl.funcoes.equipe.filtros.showField">Equipes</span>
           <div flex></div>
           <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.equipe.filtros.onClick()" aria-label="Filtro">
             <md-icon ng-hide="$ctrl.funcoes.equipe.filtros.digitando">search</md-icon>
@@ -36,29 +36,57 @@
 
       <md-card-content>
         <md-list>
-          <div ng-repeat="e in $ctrl.funcoes.equipe.rows">
-            <md-subheader class="md-no-sticky">
-              <md-button class="md-icon-button pull-rigth" aria-label="adicionar" md-no-ink="true" ng-click="$ctrl.funcoes">
-                <md-tooltip md-autohide="true">
-                  Incluir casais na equipe
-                </md-tooltip>
-                <md-icon>add_circle</md-icon>
-              </md-button>
-              <!-- <md-button class="md-icon-button" aria-label="edit" md-no-ink="true" ng-click="$ctrl.funcoes.cadastro('update',e,$event)">
-                <md-tooltip md-autohide="true">
-                  Alterar descricão da equipe
-                </md-tooltip>
-                <md-icon>edit</md-icon>
-              </md-button> -->
-              <span>{{e.descricao}}</span>
-            </md-subheader>
-            <md-list-item  ng-repeat="ec in $ctrl.funcoes.equipeCasais.rows | filter:{'id_enc_eq':e.id_enc_eq}">
-              <p>{{ec.casal}}</p>
+          <div ng-repeat="e in $ctrl.funcoes.equipe.rows track by $index">
 
-            </md-list-item>
-            <md-divider></md-divider>
+            <md-toolbar class="md-table-toolbar md-accent md-hue-1">
+              <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="edit" md-no-ink="true" ng-click="$ctrl.funcoes.cadastro('update',e,$event)">
+                  <md-tooltip md-autohide="true">
+                    Alterar descricão da equipe
+                  </md-tooltip>
+                  <md-icon>edit</md-icon>
+                </md-button>
+                <span flex ng-class="{'md-caption':$ctrl.funcoes.equipe.mediaxs()}">{{e.descricao}}</span>
+                <md-button class="md-icon-button pull-rigth md-secondary" aria-label="adicionar" md-no-ink="true" ng-click="$ctrl.funcoes.addCasais(e)">
+                  <md-tooltip md-autohide="true">
+                    Incluir casais na equipe
+                  </md-tooltip>
+                  <md-icon>group_add</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="excluir" md-no-ink="true" ng-click="$ctrl.funcoes.deletar($event,e)">
+                  <md-tooltip md-autohide="true">
+                    Excluir Equipe
+                  </md-tooltip>
+                  <md-icon>delete</md-icon>
+                </md-button>
+              </div>
+            </md-toolbar>
+            <div class="table-responsive" layout-padding>
+              <table class="table table-condensed table-striped">
+                <thead>
+                  <tr>
+                    <th style="width: 20%"></th>
+                    <th style="width: 30%"></th>
+                    <th style="width: 20%"></th>
+                    <th style="width: 14%"></th>
+                    <th style="width: 15%"></th>
+                    <th style="width: 1%"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="ec in $ctrl.funcoes.equipeCasais.equipeCasais.rows | filter:{'id_enc_eq':e.id_enc_eq}">
+                    <td>{{ec.casal}}</td>
+                    <td>{{ec.endereco}}</td>
+                    <td>{{ec.cidade}}</td>
+                    <td>{{ec.telefone1}}</td>
+                    <td>{{ec.email}}</td>
+                    <td><md-button class="md-icon-button" ng-click="$ctrl.funcoes.equipeCasais.deletar($event,ec)" aria-label="excluir"><md-icon aria-label="deletar">clear</md-icon><md-tooltip md-autohide="true">Remover membro da equipe</md-tooltip></md-button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
           </div>
-
         </md-list>
       </md-card-content>
 

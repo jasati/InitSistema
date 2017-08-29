@@ -20,6 +20,7 @@
         function funcoes(idEncontro) {
           var vm = this;
           var isset = UtilsFunctions.isset;
+          var isNumber = UtilsFunctions.isNumber;
           var dataSetProvider = EccDataset.casal();
           var usuario = dataSetProvider.provider.getSessaoUsuario();
           dataSetProvider.valueForeignKey.push(usuario.id_usuario);
@@ -30,16 +31,19 @@
           vm.selected = false;//exibir o botão no form de cadastro que foi chamado pela tabela de selecionados
 
           vm.filtrar = function (filtro) {
-            var query = filtro?filtro:'';
+            var query = '';
+            if (!isNumber(filtro)) {
+              query = filtro?filtro:'';
+            }
             if (isset(vm.casal.filtros.mainField)) {
               query += " and CONCAT(marido,esposa) LIKE '%"+vm.casal.filtros.mainField+"%'";
             }
             if (isset(vm.filtroExterno)) {
               query += vm.filtroExterno;
             }
-            vm.casal.read(query);
+            vm.casal.read(query,true);
           }
-          
+
           vm.novoCasal = function (data) {
             if (isset(idEncontro)) {
               data.id_encontro = idEncontro;

@@ -37,16 +37,11 @@
             }
         ];
     }
-    resolvePerfil.$inject = ['PerfilFuncService','FiltroService'];
+    resolvePerfil.$inject = ['PerfilFuncService'];
 
-    function resolvePerfil(PerfilFuncService,FiltroService) {
+    function resolvePerfil(PerfilFuncService) {
       var funcoes = new PerfilFuncService.funcoes();
-      var funcFiltros = new FiltroService.funcoes();
-      funcFiltros.filtros.fields = funcoes.perfil.camposFiltro;//setar os campos de consulta
-      funcFiltros.filtros.fildsQuery = funcoes.perfil.filtroDefault;//setar o filtro default
-      funcFiltros.filtros.functionRead = funcoes.filtrar;//setar a função de gatilho para consulta
-      funcoes.perfil.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
-      funcoes.perfil.filtros.functionRead();//chama a consulta
+      funcoes.startFiltro();
       return funcoes;
     }
 })();

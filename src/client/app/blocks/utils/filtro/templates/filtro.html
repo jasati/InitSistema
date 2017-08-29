@@ -48,7 +48,7 @@
               <md-input-container >
                 <label>Filtro</label>
                 <md-select name="valueFixed" ng-model="$ctrl.filtros.filtro.value"  style="min-width: 200px;">
-                  <md-option ng-repeat="f in $ctrl.filtros.filtro.typeValues" ng-value="f.value" ng-selected="$ctrl.filtros.filtro.aliasValue=f.alias">
+                  <md-option ng-repeat="f in $ctrl.filtros.filtro.typeValues" ng-value="f.value" ng-blur="$ctrl.filtros.filtro.aliasValue=f.alias">
                       {{f.alias}}
                   </md-option>
                 </md-select>

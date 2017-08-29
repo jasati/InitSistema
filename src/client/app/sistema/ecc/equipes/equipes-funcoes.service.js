@@ -6,13 +6,13 @@
         .service('EquipeFuncService', EquipeFuncService);
 
     EquipeFuncService.$inject = [
-      'UtilsFunctions','EccDataset','UtilsDataFunctionService','FiltroService','EquipeCasaisFuncService',
+      'UtilsFunctions','EccDataset','UtilsDataFunctionService','FiltroService','EquipeCasaisFuncService','EncontreirosFuncService',
       '$mdDialog','$filter','$uibModal'
     ];
 
     /* @ngInject */
     function EquipeFuncService(
-      UtilsFunctions,EccDataset,UtilsDataFunctionService,FiltroService,EquipeCasaisFuncService,
+      UtilsFunctions,EccDataset,UtilsDataFunctionService,FiltroService,EquipeCasaisFuncService,EncontreirosFuncService,
       $mdDialog,$filter,$uibModal
     ) {
         this.funcoes = funcoes;
@@ -33,7 +33,7 @@
             if (isset(vm.equipe.filtros.mainField)) {
               query += " and ee.descricao LIKE '%"+vm.equipe.filtros.mainField+"%'";
             }
-            vm.equipe.read(query);
+            vm.equipe.read(query,true);//limitar os registros
           }
 
           vm.cadastro = function (action,row,ev) {
@@ -86,6 +86,25 @@
                 break;
               default:
             }
+          }
+
+          vm.addCasais = function (equipe) {
+            var encontreiros = new EncontreirosFuncService.funcoes(idEncontro);
+            var prm = ' and ce.id_enc_eiro not in (select eq.id_enc_eiro from enc_equipe_eiro eq INNER JOIN enc_equipe ecq ON eq.id_enc_eq = ecq.id_enc_eq WHERE ecq.id_encontro = '+idEncontro+')';
+            encontreiros.encontreiros.filtroExterno = prm;
+            encontreiros.startFiltro();
+            encontreiros.showSelectEncontreiro().then(function (result) {
+              if (result) {
+                for (var i = 0; i < result.length; i++) {
+                  result[i].id_enc_eq = equipe.id_enc_eq;
+                  vm.equipeCasais.equipeCasais.adicionar(result[i]);
+                }
+                vm.equipeCasais.equipeCasais.aplyUpdates();
+              }
+            },function (result) {
+              console.log(result);
+            });
+
           }
 
           vm.deletar = function (ev,data) {

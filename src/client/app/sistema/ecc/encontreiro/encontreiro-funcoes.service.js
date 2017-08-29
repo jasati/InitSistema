@@ -17,21 +17,24 @@
     ) {
         this.funcoes = funcoes;
 
-        function funcoes(encontro) {
+        function funcoes(idEncontro) {
           var vm = this;
           var isset = UtilsFunctions.isset;
-          var dataSetProvider = EccDataset.encontreiros(encontro.row.id_encontro);
+          var dataSetProvider = EccDataset.encontreiros(idEncontro);
 
           vm.encontreiros = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
           vm.divider = 'botton';
           vm.title = 'Encontreiro';
 
           vm.filtrar = function () {
-            var query = ' and ce.id_encontro = '+encontro.row.id_encontro;
+            var query = ' and ce.id_encontro = '+idEncontro;
             if (isset(vm.encontreiros.filtros.mainField)) {
               query += " and CONCAT(c.marido,c.esposa) LIKE '%"+vm.encontreiros.filtros.mainField+"%'";
             }
-            vm.encontreiros.read(query);
+            if (isset(vm.encontreiros.filtroExterno)) {
+              query += vm.encontreiros.filtroExterno;
+            }
+            vm.encontreiros.read(query,true);//limitar os registros
           }
 
           vm.cadastro = function (action,row,ev) {
@@ -44,11 +47,27 @@
                 break;
               default:
             }
-            vm.encontrista = new EncontristaFuncService.funcoes(row.id_encontro,row.id_enc_eiro);
+            vm.encontrista = new EncontristaFuncService.funcoes(idEncontro,row.id_enc_eiro);
             vm.encontrista.crud = true;//habilitar as opçoes de criar atualizar e deletar
             vm.encontrista.startFiltro();
             var config = {
               templateUrl: 'app/sistema/ecc/encontreiro/templates/encontreiro-tab.html',
+              ariaLabelledBy: 'encontreiro',
+              ariaDescribedBy: 'encontreiro-modal',
+              size:'',
+              data:vm,
+              backdrop:'static',
+              fullscreen:false,
+              modal:{},
+            };
+            return vm.encontreiros.showModal(config).then(function (data) {
+              return data
+            });
+          }
+
+          vm.showSelectEncontreiro = function () {
+            var config = {
+              templateUrl: 'app/sistema/ecc/encontreiro/templates/encontreiro-select.html',
               ariaLabelledBy: 'encontreiro',
               ariaDescribedBy: 'encontreiro-modal',
               size:'',
@@ -87,7 +106,7 @@
 
           vm.showCasais = function (ev) {
             vm.casal = new CasaisFuncService.funcoes();
-            var prm = ' and c.id_casal not in (select ee.id_casal from enc_encontreiro ee where ee.id_encontro = '+encontro.row.id_encontro+') and (c.id_encontro <> '+encontro.row.id_encontro+' or c.id_encontro is null)';
+            var prm = ' and c.id_casal not in (select ee.id_casal from enc_encontreiro ee where ee.id_encontro = '+idEncontro+') and (c.id_encontro <> '+idEncontro+' or c.id_encontro is null)';
             vm.casal.filtroExterno = prm;
             vm.casal.startFiltro();
             vm.casal.selected = true;

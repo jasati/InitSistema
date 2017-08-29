@@ -354,9 +354,19 @@
             'telefone1',
             'telefone2',
             'email',
+            'valor_insc',
+            'total_invest',
+            'total_conv',
+            'pago',
+            'id_usuario',
+            'id_empresa',
+            'id_casal',
+            'foto',
+            'esposa',
+            'marido',
           ];
         var camposData = [];
-        var camposForeignKey = ['id_enc_eq'];
+        var camposForeignKey = [];
         var emp = empresa();
         var dataset = {
           setForeignKey   : true,//esse campo determina se a cada novo registro será recibido o campo id_empresa
@@ -379,7 +389,7 @@
           filtroDefault   : filtroDefault,
           camposData      : camposData,
           camposForeignKey: camposForeignKey,
-          valueForeignKey : [idEquipe],//será preenchido quando dentro da classe que chamar essa função
+          valueForeignKey : [],//será preenchido quando dentro da classe que chamar essa função
           campoImagem     : '',
         };
         return dataset;
