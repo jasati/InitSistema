@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.ecc')
+        .module('app.psclse')
         .run(appRun);
 
     appRun.$inject = ['routerHelper'];
@@ -14,28 +14,27 @@
     function getStates() {
         return [
             {
-                state: 'layout.casais',
+                state: 'layout.cores',
                 config: {
-                    url: '/casais',
-                    component:'casais',
+                    url: '/cores',
+                    component:'cores',
                     settings: {
                         nav    : 3,
-                        icon   : 'supervisor_account',
-                        content: 'Casais',
-                        perm   : 8,
+                        icon   : 'invert_colors',
+                        content: 'Cores',
+                        perm   :0
                     },
                     resolve : {
-                        funcoes: resolveCasais
+                        funcoes: resolveCores
                     }
                 }
             }
         ];
     }
-    resolveCasais.$inject = ['CasaisFuncService'];
+    resolveCores.$inject = ['CoresFuncService'];
 
-    function resolveCasais(CasaisFuncService) {
-      var funcoes = new CasaisFuncService.funcoes();
-      funcoes.startFiltro('');
+    function resolveCores(CoresFuncService) {
+      var funcoes = new CoresFuncService.funcoes();
       return funcoes;
     }
 })();

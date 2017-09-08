@@ -1,0 +1,237 @@
+<style media="screen">
+  #primeira-cor{
+    background-color:{{$ctrl.funcoes.usuario.color_one}};
+    width:100px;
+    height:100px;
+    border-radius:5%;
+  }
+  #segunda-cor{
+    background-color:{{$ctrl.funcoes.usuario.color_two}};
+    width:100px;
+    height:100px;
+    border-radius:5%;
+  }
+  .shape{
+    position:relative;
+    height:50px;
+    width:50px;
+    border-radius:50%;
+  }
+</style>
+
+<div layout="row" flex class="visao">
+  <md-content layout="column" flex layout-align="start center">
+  <wizard on-finish="finishedWizard()" style="width:100%" indicators-position="top">
+      <wz-step wz-title="" >
+        <div layout="column" flex layout-align="center stretch" layout-padding>
+          <div layout="row" layout-align="center center">
+              <h3>Escolha a primeira cor</h3>
+          </div>
+          <div layout="row" layout-align="center center">
+            <a href ng-click="$ctrl.funcoes.color.changeHue(1,cor)" class="shape" layout-margin ng-repeat="cor in $ctrl.funcoes.color.hues" style="background-color:hsl({{cor}},100%,50%)!important" ></a>
+          </div>
+          <div layout="row" layout-align="center center" layout-margin>
+            <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" >
+
+            </div>
+          </div>
+
+          <div layout="row" layout-align="center center">
+            <md-button class="md-raised" wz-next ng-disabled="!$ctrl.funcoes.usuario.color_one" aria-label="Proximo" md-no-ink="true" >
+              Proximo
+              <md-icon>arrow_forward</md-icon>
+            </md-button>
+          </div>
+        </div>
+      </wz-step>
+      <wz-step wz-title="">
+        <md-content layout="column" flex layout-align="center stretch" layout-padding>
+          <div layout="row" layout-align="center center">
+              <h3>Definir o contraste da cor</h3>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-slider-container flex="80">
+              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(1)" ng-model="$ctrl.funcoes.color.sat1" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+            </md-slider-container>
+          </div>
+
+          <div layout="row" layout-align="center center" layout-margin>
+            <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" >
+
+            </div>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-button class="md-raised" wz-previous aria-label="Proximo">
+              <md-icon>arrow_back</md-icon>
+              Anterior
+            </md-button>
+            <md-button class="md-raised" wz-next aria-label="Proximo">
+              Proximo
+              <md-icon>arrow_forward</md-icon>
+            </md-button>
+          </div>
+        </md-content>
+      </wz-step>
+      <wz-step wz-title="">
+        <md-content layout="column" flex layout-align="center stretch" layout-padding>
+          <div layout="row" layout-align="center center">
+              <h3>Definir o Brilho da cor</h3>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-slider-container flex="80">
+              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(1)" ng-model="$ctrl.funcoes.color.light1" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+            </md-slider-container>
+          </div>
+
+          <div layout="row" layout-align="center center" layout-margin>
+            <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" >
+
+            </div>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-button class="md-raised" wz-previous aria-label="Proximo" >
+              <md-icon>arrow_back</md-icon>
+              Anterior
+            </md-button>
+            <md-button class="md-raised" wz-next aria-label="Proximo" >
+              Proximo
+              <md-icon>arrow_forward</md-icon>
+            </md-button>
+          </div>
+        </md-content>
+      </wz-step>
+      <wz-step wz-title="" >
+        <div layout="column" flex layout-align="center stretch" layout-padding>
+          <div layout="row" layout-align="center center">
+              <h3>Escolha a segunda cor</h3>
+          </div>
+          <div layout="row" layout-align="center center">
+            <a href ng-click="$ctrl.funcoes.color.changeHue(2,cor)" class="shape" layout-margin ng-repeat="cor in $ctrl.funcoes.color.hues" style="background-color:hsl({{cor}},100%,50%)!important" ></a>
+          </div>
+          <div layout="row" layout-align="center center" layout-margin>
+            <div ng-show="$ctrl.funcoes.usuario.color_two" id="segunda-cor">
+
+            </div>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-button class="md-raised" wz-previous aria-label="anterior" >
+              <md-icon>arrow_back</md-icon>
+              Anterior
+            </md-button>
+            <md-button class="md-raised" wz-next ng-disabled="!$ctrl.funcoes.usuario.color_two" aria-label="Proximo" >
+              Proximo
+              <md-icon>arrow_forward</md-icon>
+            </md-button>
+          </div>
+        </div>
+      </wz-step>
+      <wz-step wz-title="">
+        <md-content layout="column" flex layout-align="center stretch" layout-padding>
+          <div layout="row" layout-align="center center">
+              <h3>Definir o contraste da cor</h3>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-slider-container flex="80">
+              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(2)" ng-model="$ctrl.funcoes.color.sat2" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+            </md-slider-container>
+          </div>
+
+          <div layout="row" layout-align="center center" layout-margin>
+            <div ng-show="$ctrl.funcoes.usuario.color_two" id="segunda-cor" >
+
+            </div>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-button class="md-raised" wz-previous aria-label="Proximo">
+              <md-icon>arrow_back</md-icon>
+              Anterior
+            </md-button>
+            <md-button class="md-raised" wz-next aria-label="Proximo">
+              Proximo
+              <md-icon>arrow_forward</md-icon>
+            </md-button>
+          </div>
+        </md-content>
+      </wz-step>
+      <wz-step wz-title="">
+        <md-content layout="column" flex layout-align="center stretch" layout-padding>
+          <div layout="row" layout-align="center center">
+              <h3>Definir o Brilho da cor</h3>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-slider-container flex="80">
+              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(2)" ng-model="$ctrl.funcoes.color.light2" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+            </md-slider-container>
+          </div>
+
+          <div layout="row" layout-align="center center" layout-margin>
+            <div ng-show="$ctrl.funcoes.usuario.color_two" id="segunda-cor" >
+
+            </div>
+          </div>
+          <div layout="row" layout-align="center center">
+            <md-button class="md-raised" wz-previous aria-label="Proximo">
+              <md-icon>arrow_back</md-icon>
+              Anterior
+            </md-button>
+            <md-button class="md-raised md-accent" wz-next aria-label="Proximo">
+              Proximo
+              <md-icon>arrow_forward</md-icon>
+            </md-button>
+          </div>
+        </md-content>
+      </wz-step>
+      <wz-step wz-title="">
+        <md-content layout="column" flex layout-align="center stretch" layout-padding>
+          <div layout="row" layout-align="center center">
+              <h3>Salvar dados</h3>
+          </div>
+          <div layout="row">
+            <div layout="column" flex="40" layout-padding>
+              <form name="form" novalidate autocomplete="off">
+                <md-input-container class="md-block">
+                  <label>Nome</label>
+                  <input type="text" required  name="nome" ng-model="$ctrl.funcoes.usuario.nome" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label>Descrição</label>
+                  <input type="text" required  name="nome" ng-model="$ctrl.funcoes.usuario.descricao" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label>Data</label>
+                  <md-datepicker ng-model="$ctrl.funcoes.usuario.data"  md-placeholder="Data"></md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label>Senha para acesso externo</label>
+                  <input type="text"  name="nome" ng-model="$ctrl.funcoes.usuario.senha" >
+                </md-input-container>
+
+                <md-button class="md-raised md-accent" aria-label="start" ng-click="$ctrl.funcoes.salvar()" >Salvar</md-button>
+                <md-button class="md-raised md-primary" aria-label="start" ng-click="$ctrl.funcoes.showPainel()" >Show Cores</md-button>
+              </form>
+            </div>
+            <div layout="column" flex layout-align="center center" layout-margin>
+              <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" >
+
+              </div>
+              <div ng-show="$ctrl.funcoes.usuario.color_two" id="segunda-cor" >
+
+              </div>
+            </div>
+          </div>
+
+          <div layout="row" layout-align="end center">
+            <md-button class="md-raised" wz-previous aria-label="anterior">
+              <md-icon>arrow_forward</md-icon>
+              Anterior
+            </md-button>
+            <md-button class="md-raised md-accent" wz-next aria-label="Proximo">
+              Concluir
+              <md-icon>check</md-icon>
+            </md-button>
+          </div>
+        </md-content>
+      </wz-step>
+  </wizard>
+  </md-content>
+</div>

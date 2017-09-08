@@ -38,16 +38,20 @@
         <table md-table>
           <thead md-head md-order="myOrder">
             <tr md-row>
+              <th md-column></th>
               <th md-column md-order-by="nome"><span><b>Nome</b></span></th>
               <th md-column md-order-by="email"><span><b>Email</b></span></th>
               <th md-column><span><b>Status</b></span></th>
+              <th md-column></th>
             </tr>
           </thead>
           <tbody md-body class="row-hover">
-            <tr md-row class="striped" ng-mouseenter="exibir=true" ng-mouseleave="exibir=!exibir" md-select="u" md-select-id="id_usuario" md-auto-select  ng-click="$ctrl.funcoes.cadastro('update',u)" ng-repeat="u in $ctrl.funcoes.dados.rows | orderBy: myOrder">
-              <td md-cell><md-icon aria-label="Alarm Icon">edit</md-icon> {{u.nome}}</td>
+            <tr md-row class="striped" ng-mouseenter="exibir=true" ng-mouseleave="exibir=!exibir" md-select="u" md-select-id="id_usuario" md-auto-select  ng-repeat="u in $ctrl.funcoes.dados.rows | orderBy: myOrder">
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.cadastro('update',u)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon></md-button></td>
+              <td md-cell>{{u.nome}}</td>
               <td md-cell>{{u.email}}</td>
               <td md-cell>{{u.status==1?'Ativo':'Inativo'}}</td>
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.deletar($event,u)" aria-label="excluir"><md-icon aria-label="deletar">delete</md-icon></md-button></td>
             </tr>
           </tbody>
         </table>

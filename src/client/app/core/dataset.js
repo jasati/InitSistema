@@ -44,6 +44,7 @@
             update       : ApiService.update,
             deletar      : ApiService.deletar,
             aplayUpdates : ApiService.aplayUpdates,
+            enviarEmail  : ApiService.enviarEmail,
         };
         var service = {
         	usuario        : usuario,

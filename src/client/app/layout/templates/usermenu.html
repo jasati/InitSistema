@@ -14,7 +14,7 @@
 			<md-card-title>
 				<md-card-title-media>
 					<div class="md-media-sm card-media">
-						<img ng-src="{{vm.funcoes.pathImg}}{{vm.funcoes.usuario.image?vm.funcoes.usuario.image:'noImg.jpg'}}" class="img-rounded" alt="{{vm.usuario.nome}}" />
+						<img ng-src="{{vm.funcoes.dados.pathImg}}{{vm.usuario.image?vm.usuario.image:'noImg.jpg'}}" class="img-rounded" alt="{{vm.usuario.nome}}" />
 					</div>
 				</md-card-title-media>
 				<md-card-title-text>
@@ -22,7 +22,7 @@
 					<span class="md-subhead">{{vm.usuario.email}}</span>
 				</md-card-title-text>
 				<md-card-actions layout="row">
-					<md-button class="md-fab md-mini">
+					<md-button class="md-fab md-mini" ng-click="vm.funcoes.cadastro('update',vm.usuario)">
 						<md-tooltip>Configurações da conta</md-tooltip>
 						<md-icon>settings</md-icon>
 					</md-button>

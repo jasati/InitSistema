@@ -17,6 +17,7 @@
                 empresa:'',
                 cliente:'',
                 usuario:'',
+                permissoes:'',
             };
 
             var service = {
@@ -31,7 +32,9 @@
                 finishSessao        : finishSessao,
                 setPubId            : setPubId,
                 getPubId            : getPubId,
-            }; 
+                setPermissoes       : setPermissoes,
+                getPermissoes       : getPermissoes, 
+            };
 
             return service;
             /////////////
@@ -55,7 +58,7 @@
                     "limit":"",
                     "nomeImg":""
 
-                } ;                
+                } ;
                 return prmWebService;
             }
 
@@ -78,7 +81,7 @@
                 prmWebService.consulta="";
                 prmWebService.limit="";
                 prmWebService.nomeImg="";
-            } 
+            }
 
             function setSessaoEmpresa(empresa) {
                 sessao.empresa = empresa;
@@ -108,6 +111,7 @@
                 sessao.cliente = '';
                 sessao.usuario = '';
                 sessao.empresa = '';
+                sessao.permissoes = '';
             }
 
             function setPubId(id) {
@@ -116,6 +120,14 @@
 
             function getPubId() {
                 return pub.id;
+            }
+
+            function setPermissoes(perm) {
+              sessao.permissoes = perm;
+            }
+
+            function getPermissoes() {
+              return sessao.permissoes;
             }
 
         }

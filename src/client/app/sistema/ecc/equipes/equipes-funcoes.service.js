@@ -54,11 +54,7 @@
                       descricao:result,
                     };
                     vm.equipe.novo(equipe);
-                    vm.equipe.salvar().then(function (result) {
-                      if (result) {
-                        vm.equipe.rows.push(vm.equipe.row);
-                      }
-                    });
+                    vm.equipe.salvar();
                   }
                 },function (result) {
                   console.log('cancelou');
@@ -90,7 +86,7 @@
 
           vm.addCasais = function (equipe) {
             var encontreiros = new EncontreirosFuncService.funcoes(idEncontro);
-            var prm = ' and ce.id_enc_eiro not in (select eq.id_enc_eiro from enc_equipe_eiro eq INNER JOIN enc_equipe ecq ON eq.id_enc_eq = ecq.id_enc_eq WHERE ecq.id_encontro = '+idEncontro+')';
+            var prm = ' and ce.id_enc_eiro not in (select eq.id_enc_eiro from enc_equipe_eiro eq WHERE eq.id_enc_eq = '+equipe.id_enc_eq+')';
             encontreiros.encontreiros.filtroExterno = prm;
             encontreiros.startFiltro();
             encontreiros.showSelectEncontreiro().then(function (result) {
@@ -99,7 +95,9 @@
                   result[i].id_enc_eq = equipe.id_enc_eq;
                   vm.equipeCasais.equipeCasais.adicionar(result[i]);
                 }
-                vm.equipeCasais.equipeCasais.aplyUpdates();
+                vm.equipeCasais.equipeCasais.aplyUpdates().then(function () {
+                  vm.equipeCasais.filtrar(equipe.id_enc_eq);
+                });
               }
             },function (result) {
               console.log(result);
@@ -128,7 +126,6 @@
             funcFiltros.filtros.functionRead = vm.filtrar;//setar a função de gatilho para consulta
             vm.equipe.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
             vm.equipe.filtros.functionRead();//chama a consulta
-            vm.equipeCasais.startFiltro();
           }
 
         }

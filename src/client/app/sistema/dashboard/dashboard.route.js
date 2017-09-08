@@ -24,7 +24,8 @@
                     settings: {
                         nav: 1,
                         icon : 'dashboard',
-                        content: 'Visão Geral'
+                        content: 'Visão Geral',
+                        perm:1,
                     }
                 }
             }

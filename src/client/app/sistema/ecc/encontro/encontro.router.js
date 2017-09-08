@@ -22,7 +22,7 @@
                         nav    : 3,
                         icon   : 'favorite',
                         content: 'Encontros',
-                        perm   :1
+                        perm   :11
                     },
                     resolve : {
                         funcoes: resolveEncontro

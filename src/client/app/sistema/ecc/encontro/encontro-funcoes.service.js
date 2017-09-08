@@ -25,7 +25,7 @@
           var dataSetProvider = EccDataset.encontro();
           vm.encontro = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
           vm.divider = 'botton';
-          vm.title = 'Encontro';
+          vm.title = 'Lista de encontros';
 
           vm.filtrar = function () {
             var query = '';

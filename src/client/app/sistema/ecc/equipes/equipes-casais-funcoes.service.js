@@ -20,7 +20,7 @@
         function funcoes(idEncontro,idEquipe) {
           var vm = this;
           var isset = UtilsFunctions.isset;
-          var dataSetProvider = EccDataset.equipesCasais(idEncontro,idEquipe);
+          var dataSetProvider = EccDataset.equipesCasais(idEncontro);
 
           vm.equipeCasais = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
           vm.divider = 'botton';
@@ -29,7 +29,7 @@
           vm.filtrar = function (filtroEquipe) {
             var query = ' and e.id_encontro = '+idEncontro;
             if (filtroEquipe) {
-              query += "  and eq.id_enc_eq = "+idEquipe;
+              query += "  and eq.id_enc_eq = "+filtroEquipe;
             }
 
             if (isset(vm.equipeCasais.filtros.mainField)) {

@@ -53,7 +53,7 @@
         return function(exception, cause) {
             var appErrorPrefix = exceptionHandler.config.appErrorPrefix || '';
             var errorData = {exception: exception, cause: cause};
-            exception.message = appErrorPrefix + exception.message;
+            exception = appErrorPrefix + exception;
             $delegate(exception, cause);
             /**
              * Could add the error to a service's collection,
@@ -64,7 +64,7 @@
              * @example
              *     throw { message: 'error message we added' };
              */
-            logger.error(exception.message, errorData);
+            logger.error(exception, errorData);
         };
     }
 })();

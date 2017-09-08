@@ -9,13 +9,13 @@
     	<md-content layout="column" flex style="background-color: rgb(97,97,97);">
     		<div style="height: 60px">
 	    		<header class="md-primary">
-	    			<a href="/" class="navbar-brand"><img alt="Jasati Sistemas" src="images/logo.png" height="60"></a>
+	    			<a href="/" class="navbar-brand"><img alt="Jasati Sistemas" src="images/logo-blue.png" height="30"></a>
 	    		</header>
 
     		</div>
     		<div >
 				<md-list>
-					<md-list-item class="md-2-line" theme="forest" ng-repeat="r in $ctrl.funcoes.navRoutes" ng-click="$ctrl.funcoes.setTitle(r.settings.content)" ui-sref="{{r.name}}" ui-sref-active="active" >
+					<md-list-item class="md-2-line" theme="forest" ng-repeat="r in $ctrl.funcoes.navRoutes" ng-click="$ctrl.funcoes.setTitle(r.settings.content)" ng-if="$ctrl.funcoes.verPermissao(r.settings.perm)||r.settings.perm==0" ui-sref="{{r.name}}" ui-sref-active="active" >
 						<md-icon style="color: rgba(255,255,255,0.87)">{{r.settings.icon}}</md-icon>
 						<div  class="md-list-item-text" layout="column">
 							<p style="color: rgba(255,255,255,0.87)">{{r.settings.content}}</p>

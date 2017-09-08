@@ -14,7 +14,7 @@
         <div layout-padding layout-gt-xs="row">
           <div flex-gt-xs="50">
             <md-input-container class="md-block">
-              <label>Nome Completo</label>
+              <label>Nome</label>
               <input required  name="nome" ng-model="$ctrl.funcoes.dados.row.nome" ng-change="$ctrl.funcoes.onChange()">
               <div ng-messages="form.nome.$error" ng-show="form.nome.$invalid">
                 <p ng-message="required">Nome de usuario é obrigatório</p>
@@ -32,7 +32,7 @@
               </div>
             </md-input-container>
             <md-input-container class="md-block">
-              <md-switch class="md-accent" name="status"  ng-change="$ctrl.funcoes.dados.onChange()" ng-model="$ctrl.funcoes.dados.row.status" required ng-true-value="1" ng-false-value="0">
+              <md-switch class="md-accent" name="status"  ng-model="$ctrl.funcoes.dados.row.status" required ng-true-value="1" ng-false-value="0">
                 {{$ctrl.funcoes.usuario.status==1?'Ativo':'Inativo'}}
               </md-switch>
             </md-input-container>
@@ -40,38 +40,57 @@
           <div flex-gt-xs="50">
             <md-input-container class="md-block">
               <label>Perfil do usuário</label>
-              <md-select name="type" ng-model="$ctrl.funcoes.dados.row.id_perfil" required ng-change="$ctrl.funcoes.dados.onChange()">
+              <md-select name="type" ng-model="$ctrl.funcoes.dados.row.id_perfil" required>
                 <md-option ng-repeat="perfil in $ctrl.funcoes.perfils.perfil.rows" ng-value="perfil.id_perfil">
                     {{perfil.nome}}
                 </md-option>
               </md-select>
             </md-input-container>
-            <div ng-show="$ctrl.funcoes.dados.row.id_usuario===1">
-              <md-subheader>Alterar Senha</md-subheader>
-              <!--You can use md-no-sticky class-->
-              <md-input-container class="md-block">
-                <label>Senha Atual</label>
-                <input name="senha-atual" ng-model="$ctrl.funcoes.dados.row.login">
-              </md-input-container>
-              <md-input-container class="md-block">
-                <label>Nova Senha</label>
-                <input name="senha-atual" ng-model="$ctrl.funcoes.dados.row.login">
-              </md-input-container>
-              <md-input-container class="md-block">
-                <label>Repita a nova senha</label>
-                <input name="senha-atual" ng-model="$ctrl.funcoes.dados.row.login">
-              </md-input-container>
-
+            <div ng-show="$ctrl.funcoes.dados.row.id_usuario===$ctrl.funcoes.userLogado.id_usuario">
+              <md-button class="md-raised md-accent" ng-click="showAltSenha=true">
+                Alterar Senha
+              </md-button>
             </div>
-
-
           </div>
         </div>
 
       </form>
+      <div ng-show="showAltSenha">
+        <md-subheader>Alterar senha</md-subheader>
+        <!--You can use md-no-sticky class-->
+        <form name="formAltSenha" layout="row">
+          <md-input-container class="md-block">
+            <label>Senha atual</label>
+            <input type="password" required name="oldSenha" ng-model="$ctrl.funcoes.alterarSenha.oldSenha">
+            <div ng-show="$ctrl.funcoes.alterarSenha.senhaInvalida">
+              <p class="text-danger">Senha atual não está correta!</p>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Nova senha</label>
+            <input type="password" required  name="newSenha" ng-model="$ctrl.funcoes.alterarSenha.newSenha">
+            <div ng-show="$ctrl.funcoes.alterarSenha.newSenha==$ctrl.funcoes.alterarSenha.repSenha && $ctrl.funcoes.alterarSenha.newSenha">
+              <p><md-icon class="text-success">done</md-icon></p>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Repita a nova senha</label>
+            <input type="password" required  name="repSenha" ng-model="$ctrl.funcoes.alterarSenha.repSenha">
+            <p ng-show="$ctrl.funcoes.alterarSenha.newSenha==$ctrl.funcoes.alterarSenha.repSenha && $ctrl.funcoes.alterarSenha.newSenha"><md-icon class="text-success">done</md-icon></p>
+            <p ng-show="$ctrl.funcoes.alterarSenha.newSenha!=$ctrl.funcoes.alterarSenha.repSenha && $ctrl.funcoes.alterarSenha.repSenha"><md-icon class="text-danger">error</md-icon></p>
+          </md-input-container>
+
+        </form>
+        <md-button class="md-raised md-accent" ng-hide="$ctrl.funcoes.alterarSenha.senhaAlterada" ng-disabled="formAltSenha.$invalid||$ctrl.funcoes.alterarSenha.newSenha!=$ctrl.funcoes.alterarSenha.repSenha||$ctrl.funcoes.dados.salvando" ng-click="$ctrl.funcoes.validarSenha($ctrl.funcoes.dados.row.email);">
+          <i ng-show="$ctrl.funcoes.dados.salvando" class="fa fa-spinner fa-spin"></i>
+          Confirmar Alteração
+        </md-button>
+        <p ng-show="$ctrl.funcoes.alterarSenha.senhaAlterada" class="text-success">Senha alterada com sucesso!</p>
+      </div>
+
       <md-divider></md-divider>
       <md-card-actions layout="row" layout-align="start center">
-          <md-button class="md-accent"  ng-click="$ctrl.funcoes.dados.salvar()">
+          <md-button class="md-accent"  ng-click="$ctrl.funcoes.salvarUsuario()">
             Salvar
           </md-button>
           <md-button class="md-accent" ng-click="$ctrl.close()">

@@ -1,0 +1,32 @@
+<style media="screen">
+  #cor-pai{
+    position:relative;
+    background-color:{{vm.funcoes.usuario.color_one}};
+    width:100%;
+    height:-webkit-fill-available;
+  }
+  #cor-filho{
+    transition: all linear 0.1s;
+    position:absolute;
+    bottom:0px;
+    width:5%;
+    height:5%;
+    background-color:{{vm.funcoes.usuario.color_two}};
+  }
+</style>
+<div class="visao">
+  <md-content>
+    <md-card md-theme="dark-grey">
+      <div class="md-actions" layout="row" layout-align="start center">
+        <md-button class="md-raised md-accent" ng-disabled="iniciado" aria-label="start" ng-click="vm.funcoes.movimentar();iniciado=true" >Iniciar</md-button>
+        <md-button class="md-raised md-warn" ng-disabled="!iniciado" aria-label="start" ng-click="vm.funcoes.reiniciar()" >Repetir</md-button>
+        <md-button class="md-raised " aria-label="start" ng-click="vm.close()" >Parar</md-button>
+       </div>
+    </md-card>
+    <div id="cor-pai" flex>
+      <div id="cor-filho">
+      </div>
+    </div>
+
+  </md-content>
+</div>

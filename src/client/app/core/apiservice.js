@@ -16,6 +16,7 @@
             update              : update,
             deletar             : deletar,
             aplayUpdates        : aplayUpdates,
+            enviarEmail         : enviarEmail,
         };
 
         return service;
@@ -65,6 +66,14 @@
             var api = 'delete';
             return API(prm.dataset,api,prm.msgErro,prm.msgSucess)
                 .then(function (result){
+                    return result;
+                });
+        }
+
+        function enviarEmail(email) {
+            var api = 'enviarEmail';
+            return API(email,api)
+                .then(function (result) {
                     return result;
                 });
         }

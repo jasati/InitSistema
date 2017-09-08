@@ -3,9 +3,9 @@
     angular
         .module('blocks.utils')
         .factory('UtilsFunctions', UtilsFunctions);
-    UtilsFunctions.$inject = ['$filter','$uibModal', 'Extencio'];
+    UtilsFunctions.$inject = ['$filter','$uibModal', 'Extencio','Provider'];
     /* @ngInject */
-    function UtilsFunctions($filter,$uibModal, Extencio) {
+    function UtilsFunctions($filter,$uibModal, Extencio,Provider) {
         var service = {
             formatData: formatData,
             formatDataView : formatDataView,
@@ -22,6 +22,7 @@
             getPrmPanel : getPrmPanel,
             validarDataset : validarDataset,
             isNumber    : isNumber,
+            getPermissao : getPermissao,
         };
         return service;
         ////////////////
@@ -271,6 +272,16 @@
           }
           if (!isset(dataset.inner_join[0])) {
             delete dataset['inner_join'];
+          }
+        }
+
+        function getPermissao(modulo) {
+          var modulos = Provider.getPermissoes();
+          var perm = $filter('filter')(modulos,{'id_modulo':modulo},true);
+          if (perm.length > 0) {
+            return true;
+          } else {
+            return false;
           }
         }
 

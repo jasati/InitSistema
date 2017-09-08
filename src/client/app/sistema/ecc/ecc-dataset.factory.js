@@ -16,6 +16,7 @@
           update       : ApiService.update,
           deletar      : ApiService.deletar,
           aplayUpdates : ApiService.aplayUpdates,
+          enviarEmail  : ApiService.enviarEmail,
       };
       var service = {
           encontro: encontro,
@@ -142,6 +143,7 @@
         +' CONCAT(c.marido," - ",c.esposa) as casal, g.imagem as foto';
         // camposFiltro são os campos usados para fazer a pesquisa no sistema
         var camposFiltro = [
+            {field:"ce.pago",alias:"Situação do Pagamento",type:"fixed",values:[{value:1,alias:"Pago"},{value:0,alias:"Pendente"}]},
             {field:"c.cidade",alias:"Cidade",type:"string"},
             {field:"c.id_casal",alias:"Código",type:"number"}
         ];

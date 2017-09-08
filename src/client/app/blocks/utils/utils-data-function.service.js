@@ -14,6 +14,7 @@
         function dataFuncoes(dataSetProvider) {
           var vm = this;
           var isset = UtilsFunctions.isset;
+          vm.verPermissao = UtilsFunctions.getPermissao;
           vm.pathImg = config.urlImagem;
           vm.rows = [];//lista de objetos
           vm.row = {};//obeto unico
@@ -165,11 +166,12 @@
               msgErro:'Ocorreu uma falha na busca dos dados',
               msgSucess:'',
             };
-            dataSetProvider.api.read(post).then(function (resp) {
+            return dataSetProvider.api.read(post).then(function (resp) {
               vm.rows = resp.reg;
               vm.pagination.total = resp.qtde;
               setOptionLimitPagination(resp.qtde);
               vm.reading = false;
+              return resp;
             });
           }
 
@@ -218,6 +220,12 @@
               } else {
                 return false;
               }
+            });
+          }
+
+          vm.enviarEmail = function (email) {
+            return dataSetProvider.api.enviarEmail(email).then(function (resp) {
+              return resp;
             });
           }
 
@@ -295,7 +303,7 @@
           }
 
           vm.onChange = function (row) {
-            if (!row.action) {
+            if (!isset(row.action)) {
               row.action = 'u';
             }
           }

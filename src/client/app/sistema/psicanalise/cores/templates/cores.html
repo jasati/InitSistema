@@ -1,0 +1,75 @@
+<style media="screen">
+  #primeira-cor{
+    background-color:{{$ctrl.funcoes.usuario.color_one}};
+    width:50%;
+  }
+  #segunda-cor{
+    background-color:{{$ctrl.funcoes.usuario.color_two}};
+    width:50%;
+  }
+  .shape{
+    position:relatve;
+    height:50px;
+    width:50px;
+    border-radius:50%;
+  }
+</style>
+<div layout="row" flex class="visao">
+
+  <md-sidenav md-component-id="left-cor" md-is-locked-open="true" class="md-sidenav-left" >
+    <div layout="column" layout-padding>
+      <form name="form" novalidate autocomplete="off">
+        <md-input-container class="md-block">
+          <label>Nome</label>
+          <input type="text" required  name="nome" ng-model="$ctrl.funcoes.usuario.nome" >
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Data</label>
+          <md-datepicker ng-model="$ctrl.funcoes.usuario.data"  md-placeholder="Data"></md-datepicker>
+        </md-input-container>
+        <div class="form-group">
+            <label>
+                Cor Primaria
+            </label>
+            <div class="md-block">
+                <color-picker ng-model="$ctrl.funcoes.usuario.color_one" options="$ctrl.funcoes.colorOptions" uib-tooltip="Primeira cor"></color-picker>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>
+                Cor Secundária
+            </label>
+            <div class="md-block">
+                <color-picker ng-model="$ctrl.funcoes.usuario.color_two" uib-tooltip="Segunda Cor"></color-picker>
+            </div>
+        </div>
+      </form>
+      <md-button class="md-raised md-accent" aria-label="start" ng-click="$ctrl.funcoes.showPainel()" >Show Cores</md-button>
+
+    </div>
+
+  </md-sidenav>
+  <md-content layout="column" flex layout-align="center center" layout-padding>
+    <h3>Escolha a primeira cor:</h3>
+    <div layout="row" flex>
+      <a href ng-click="$ctrl.funcoes.color.changeHue(1,cor)" class="shape" layout-margin ng-repeat="cor in $ctrl.funcoes.color.hues" style="background-color:hsl({{cor}},100%,50%)!important" ></a>
+    </div>
+
+    <md-slider-container flex>
+      <h5>Contraste</h5>
+      <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(1)" ng-model="$ctrl.funcoes.color.satSel" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+    </md-slider-container>
+
+    <md-slider-container flex>
+      <h5>Brilho</h5>
+      <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(1)" ng-model="$ctrl.funcoes.color.lightSel" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+    </md-slider-container>
+
+    <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" layout="row" layout-margin flex>
+
+    </div>
+    <div id="segunda-cor" layout-margin flex="50">
+
+    </div>
+  </md-content>
+</div>

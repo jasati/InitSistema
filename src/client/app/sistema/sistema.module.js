@@ -2,7 +2,8 @@
     'use strict';
     angular
         .module('app.sistema', [
-		       'app.dashboard',
-           'app.ecc',
+		      //  'app.dashboard',
+          //  'app.ecc',
+           'app.psclse',
         ]);
 })();
