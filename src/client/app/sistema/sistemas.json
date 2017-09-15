@@ -1,0 +1,57 @@
+[
+  {
+    "codigo"      : 0,
+    "sistema"     : "psicanalise",
+    "corLayoute"  : "default",
+    "versao"      : "0.0.1",
+    "appTitle"    : "WebApp Swishi",
+    "appSubtitle" : "Aplicativo para psicanálise",
+    "modPerm"     : true,
+    "ambiente":[
+      {
+        "posicao":"local",
+        "api":"http://mucontratos.alan.dev/v1/",
+        "db":"psclse",
+        "img":"http://mucontratos.alan.dev/App/Upload/",
+        "report":"http://mucontratos.alan.dev/App/Tmp/",
+        "urlSistema":"http://localhost:3000/"
+      },
+      {
+        "posicao":"producao",
+        "api":"",
+        "db":"",
+        "img":"",
+        "report":"",
+        "urlSistema":""
+      }
+    ]
+  },
+
+  {
+    "codigo"      : 1,
+    "sistema"     : "ecc",
+    "corLayoute"  : "default",
+    "versao"      : "0.0.1",
+    "appTitle"    : "Ecc WebApp",
+    "appSubtitle" : "Aplicação para controle e gerenciamento de ECC",
+    "modPerm"     : true,
+    "ambiente":[
+      {
+        "posicao":"local",
+        "api":"http://mucontratos.alan.dev/v1/",
+        "db":"psclse",
+        "img":"http://mucontratos.alan.dev/App/Upload/",
+        "report":"http://mucontratos.alan.dev/App/Tmp/",
+        "urlSistema":"http://localhost:3000/"
+      },
+      {
+        "posicao":"producao",
+        "api":"https://ws.ecc.pibdecoite.com.br/v1/",
+        "db":"",
+        "img":"https://ws.ecc.pibdecoite.com.br/App/Upload/",
+        "report":"https://ws.ecc.pibdecoite.com.br/App/Tmp/",
+        "urlSistema":"https://app.ecc.pibdecoite.com.br/"
+      }
+    ]
+  }
+]

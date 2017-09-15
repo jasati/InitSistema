@@ -1,7 +1,7 @@
 <style media="screen">
   #cor-pai{
     position:relative;
-    background-color:{{vm.funcoes.usuario.color_one}};
+    background-color:{{$ctrl.funcoes.sessao.row.cor1}};
     width:100%;
     height:-webkit-fill-available;
   }
@@ -11,16 +11,16 @@
     bottom:0px;
     width:5%;
     height:5%;
-    background-color:{{vm.funcoes.usuario.color_two}};
+    background-color:{{$ctrl.funcoes.sessao.row.cor2}};
   }
 </style>
-<div class="visao">
+<div class="visao" >
   <md-content>
     <md-card md-theme="dark-grey">
-      <div class="md-actions" layout="row" layout-align="start center">
-        <md-button class="md-raised md-accent" ng-disabled="iniciado" aria-label="start" ng-click="vm.funcoes.movimentar();iniciado=true" >Iniciar</md-button>
-        <md-button class="md-raised md-warn" ng-disabled="!iniciado" aria-label="start" ng-click="vm.funcoes.reiniciar()" >Repetir</md-button>
-        <md-button class="md-raised " aria-label="start" ng-click="vm.close()" >Parar</md-button>
+      <div class="md-actions" layout="row" layout-align="start center" >
+        <!-- <md-button class="md-raised md-accent" aria-label="start" ng-click="$ctrl.funcoes.movimentar();iniciado=true" >Iniciar</md-button> -->
+        <md-button class="md-raised md-warn" aria-label="start" ng-click="$ctrl.funcoes.reiniciar()" >Repetir</md-button>
+        <md-button class="md-raised " aria-label="start" ngsf-toggle-fullscreen ng-click="$ctrl.funcoes.resetar()">Parar</md-button>
        </div>
     </md-card>
     <div id="cor-pai" flex>

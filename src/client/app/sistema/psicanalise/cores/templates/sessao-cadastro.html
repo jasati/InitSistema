@@ -1,0 +1,46 @@
+<div layout="column" flex>
+  <md-toolbar class="md-default md-hue-2">
+    <div class="md-toolbar-tools">
+      <span>{{$ctrl.funcoes.sessao.label+$ctrl.funcoes.title}}</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card>
+    <md-card-content>
+      <div layout="column" flex layout-padding>
+        <form name="form" novalidate autocomplete="off">
+          <md-input-container class="md-block">
+            <label>Nome</label>
+            <input type="text" required  name="nome" ng-model="$ctrl.funcoes.sessao.row.nome" >
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Descrição</label>
+            <input type="text" required  name="nome" ng-model="$ctrl.funcoes.sessao.row.descricao" >
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Código para acesso externo</label>
+            <input type="text"  name="nome" ng-model="$ctrl.funcoes.sessao.row.codigo_acesso" >
+          </md-input-container>
+        </form>
+      </div>
+    </md-card-content>
+    <md-card-footer>
+      <md-divider></md-divider>
+      <md-card-actions layout="row" layout-align="start center">
+        <md-card-icon-actions>
+          <md-button class="md-accent" ng-click="$ctrl.funcoes.sessao.salvar()">Salvar</md-button>
+        </md-card-icon-actions>
+      <md-button ng-if="$ctrl.funcoes.sessao.row.id_casal" class="md-raised md-primary" ng-click="$ctrl.funcoes.sessao.rowsSelected.push($ctrl.funcoes.sessao.row);$ctrl.ok($ctrl.funcoes.sessao.rowsSelected)">
+        Selecionar
+        <md-tooltip  md-autohide="true">
+            Selecionar este sessao
+        </md-tooltip>
+      </md-button>
+    </md-card-actions>
+    </md-card-footer>
+  </md-card>
+
+</div>

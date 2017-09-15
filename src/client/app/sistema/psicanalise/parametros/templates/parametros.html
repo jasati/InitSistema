@@ -1,0 +1,43 @@
+<div layout="column" flex>
+  <md-toolbar class=" md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>{{$ctrl.funcoes.title}}</span>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+  <md-card>
+    <md-card-content>
+      <div layout-gt-xs="row" flex layout-padding>
+        <div layout="column" flex-gt-xs="40">
+          <form name="form" novalidate autocomplete="off">
+            <md-input-container class="md-block">
+              <label>Velocidade Inicial</label>
+              <input type="number" required  name="tempo" ng-model="$ctrl.funcoes.param.row.tempo" >
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Percentual de Incremento</label>
+              <input type="number" required  name="tam" ng-model="$ctrl.funcoes.param.row.perc_tam" >
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Aumentar a velocidade a cada reinicio</label>
+              <input type="number" name="vel" ng-model="$ctrl.funcoes.param.row.red_temp_rep" >
+            </md-input-container>
+          </form>
+        </div>
+        <div layout="column" flex>
+
+        </div>
+
+      </div>
+    </md-card-content>
+    <md-card-footer>
+      <md-divider></md-divider>
+      <md-card-actions layout="row" layout-align="start center">
+        <md-card-icon-actions>
+          <md-button class="md-accent" ng-click="$ctrl.funcoes.param.salvar()">Salvar</md-button>
+        </md-card-icon-actions>
+    </md-card-actions>
+    </md-card-footer>
+  </md-card>
+
+</div>

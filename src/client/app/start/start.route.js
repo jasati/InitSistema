@@ -16,7 +16,7 @@
             {
                 state: 'start',
                 config: {
-                    url: '/?register?email',
+                    url: '/?register?email?externo',
                     component:'start',
                 }
             }

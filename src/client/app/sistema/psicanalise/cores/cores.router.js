@@ -16,18 +16,25 @@
             {
                 state: 'layout.cores',
                 config: {
-                    url: '/cores',
+                    url: '/sessao',
                     component:'cores',
                     settings: {
-                        nav    : 3,
-                        icon   : 'invert_colors',
-                        content: 'Cores',
-                        perm   :0
+                        nav    : 1,
+                        icon   : 'import_contacts',
+                        content: 'Sessão',
+                        perm   : 0
                     },
                     resolve : {
                         funcoes: resolveCores
                     }
                 }
+            },
+            {
+              state: 'layout.cores.swishi',
+              config: {
+                  url:'/swishi-de-cores',
+                  component:'sessaoWizard',
+              }
             }
         ];
     }

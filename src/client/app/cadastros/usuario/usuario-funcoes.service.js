@@ -27,6 +27,10 @@
       	var isset = UtilsFunctions.isset;
       	var dataSetProvider = Dataset.usuario();
         var datasetPerfil = Dataset.perfil();
+        func.sistema = config.sistema;
+        func.corLayoute = config.corLayoute;
+        func.appTitulo = config.appTitle;
+        func.appSubTitulo = config.appSubtitle;
         func.dados = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
       	func.soma = UtilsFunctions.soma;
       	func.convDate = UtilsFunctions.convDate;

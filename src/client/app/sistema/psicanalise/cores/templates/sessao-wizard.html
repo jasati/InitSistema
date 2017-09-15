@@ -1,12 +1,12 @@
 <style media="screen">
   #primeira-cor{
-    background-color:{{$ctrl.funcoes.usuario.color_one}};
+    background-color:{{$ctrl.funcoes.sessao.row.cor1}};
     width:100px;
     height:100px;
     border-radius:5%;
   }
   #segunda-cor{
-    background-color:{{$ctrl.funcoes.usuario.color_two}};
+    background-color:{{$ctrl.funcoes.sessao.row.cor2}};
     width:100px;
     height:100px;
     border-radius:5%;
@@ -17,27 +17,76 @@
     width:50px;
     border-radius:50%;
   }
+  .steps,.step{
+    height:100%;
+  }
 </style>
 
-<div layout="row" flex class="visao">
-  <md-content layout="column" flex layout-align="start center">
-  <wizard on-finish="finishedWizard()" style="width:100%" indicators-position="top">
+<div layout="column" flex class="visao">
+  <md-content layout="column" class="md-default" flex layout-align="start center">
+  <wizard on-finish="finishedWizard()" flex style="width:100%" indicators-position="top">
+    <wz-step wz-title="" flex>
+      <div layout="column" flex layout-align="start stretch" layout-padding class="visao">
+        <div layout="row" layout-align="center center" layout-padding>
+          <p>O Swishi de Cores é uma Técnica de PNL –Programação Neurolingüística adaptada para novas tecnologias pelo Psicanalista Ednézio Santiago, Master em PNL.</p>
+          <br>
+        </div>
+        <div layout="row" layout-align="center center" layout-padding>
+          <md-button class="md-raised" wz-next aria-label="Proximo" md-no-ink="true" >
+            Proximo
+            <md-icon>arrow_forward</md-icon>
+          </md-button>
+        </div>
+
+      </div>
+      <div style="position:relative;bottom:10px" align="center" layout-padding>
+        <md-divider></md-divider>
+        <i>
+          Referência: Finck. Perry. Dislexia é uma fobia. Revista Anchor Point. Vol. 18 n. 8, 2005. Disponível em
+          <a href="http://golfinho.com.br/artigo/dislexia-e-uma-fobia.htm">golfinho.com.br/artigo/dislexia-e-uma-fobia</a>
+        </i>
+
+      </div>
+    </wz-step>
+    <wz-step wz-title="" flex>
+      <div layout="column" flex layout-align="start stretch" layout-padding class="visao">
+        <div layout-padding>
+          <p>
+            Lembre de um fato ou momento da sua vida que lhe incomoda bastanteou que lhe dá uma sensação ruim.Lembre dos detalhes, do que viu, do que ouviu e do que sentiu!
+          </p>
+          <p>
+            Imagine você vendo, ouvindo e sentindo todas as sensações que este fato ou momento da sua vida geram em você.
+          </p>
+          <br>
+        </div>
+        <div layout="row" layout-align="center center" layout-padding>
+          <md-button class="md-raised" wz-previous aria-label="Proximo">
+            <md-icon>arrow_back</md-icon>
+            Anterior
+          </md-button>
+          <md-button class="md-raised" wz-next aria-label="Proximo" md-no-ink="true" >
+            Proximo
+            <md-icon>arrow_forward</md-icon>
+          </md-button>
+        </div>
+      </div>
+    </wz-step>
       <wz-step wz-title="" >
         <div layout="column" flex layout-align="center stretch" layout-padding>
           <div layout="row" layout-align="center center">
-              <h3>Escolha a primeira cor</h3>
+              <h4>Escolha uma cor que melhor representa este fato ou momento da sua vida</h4>
           </div>
           <div layout="row" layout-align="center center">
             <a href ng-click="$ctrl.funcoes.color.changeHue(1,cor)" class="shape" layout-margin ng-repeat="cor in $ctrl.funcoes.color.hues" style="background-color:hsl({{cor}},100%,50%)!important" ></a>
           </div>
           <div layout="row" layout-align="center center" layout-margin>
-            <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" >
+            <div ng-show="$ctrl.funcoes.sessao.row.cor1" id="primeira-cor" >
 
             </div>
           </div>
 
           <div layout="row" layout-align="center center">
-            <md-button class="md-raised" wz-next ng-disabled="!$ctrl.funcoes.usuario.color_one" aria-label="Proximo" md-no-ink="true" >
+            <md-button class="md-raised" wz-next ng-disabled="!$ctrl.funcoes.sessao.row.cor1" aria-label="Proximo" md-no-ink="true" >
               Proximo
               <md-icon>arrow_forward</md-icon>
             </md-button>
@@ -47,16 +96,16 @@
       <wz-step wz-title="">
         <md-content layout="column" flex layout-align="center stretch" layout-padding>
           <div layout="row" layout-align="center center">
-              <h3>Definir o contraste da cor</h3>
+              <h4>Escolha a intensidade da cor que melhor representa este fato ou momento de sua vida.</h4>
           </div>
           <div layout="row" layout-align="center center">
             <md-slider-container flex="80">
-              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(1)" ng-model="$ctrl.funcoes.color.sat1" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(1)" ng-model="$ctrl.funcoes.sessao.row.sat1" min="0" max="100" step="10" aria-label="bass" class="md-accent"></md-slider>
             </md-slider-container>
           </div>
 
           <div layout="row" layout-align="center center" layout-margin>
-            <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" >
+            <div ng-show="$ctrl.funcoes.sessao.row.cor1" id="primeira-cor" >
 
             </div>
           </div>
@@ -75,16 +124,16 @@
       <wz-step wz-title="">
         <md-content layout="column" flex layout-align="center stretch" layout-padding>
           <div layout="row" layout-align="center center">
-              <h3>Definir o Brilho da cor</h3>
+              <h4>Escolha o brilho da cor que melhor representa este fato ou momento da sua vida.</h4>
           </div>
           <div layout="row" layout-align="center center">
             <md-slider-container flex="80">
-              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(1)" ng-model="$ctrl.funcoes.color.light1" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(1)" ng-model="$ctrl.funcoes.sessao.row.light1" min="0" max="100" step="10" aria-label="Brilho" class="md-accent"></md-slider>
             </md-slider-container>
           </div>
 
           <div layout="row" layout-align="center center" layout-margin>
-            <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" >
+            <div ng-show="$ctrl.funcoes.sessao.row.cor1" id="primeira-cor" >
 
             </div>
           </div>
@@ -100,16 +149,44 @@
           </div>
         </md-content>
       </wz-step>
+
+      <wz-step wz-title="" flex>
+        <div layout="column" flex layout-align="start stretch" layout-padding class="visao">
+          <div layout-padding>
+            <p>
+              O fato ou momento da sua vida escolhido geram sensações em você.
+            </p>
+            <p>
+              Agora,lembrede outro fato ou momento da sua vida geram sensações opostas as que você lembrou.
+            </p>
+            <p>
+              Imagine você vendo, ouvindo e sentindo todas as sensações que este fato ou momento da sua vida geram em você.
+            </p>
+            <br>
+          </div>
+          <div layout="row" layout-align="center center" layout-padding>
+            <md-button class="md-raised" wz-previous aria-label="Proximo">
+              <md-icon>arrow_back</md-icon>
+              Anterior
+            </md-button>
+            <md-button class="md-raised" wz-next aria-label="Proximo" md-no-ink="true" >
+              Proximo
+              <md-icon>arrow_forward</md-icon>
+            </md-button>
+          </div>
+        </div>
+      </wz-step>
+
       <wz-step wz-title="" >
         <div layout="column" flex layout-align="center stretch" layout-padding>
           <div layout="row" layout-align="center center">
-              <h3>Escolha a segunda cor</h3>
+              <h4>Escolha uma cor que melhor representa este fato ou momento da sua vida que se opõe ao primeiro.</h4>
           </div>
           <div layout="row" layout-align="center center">
             <a href ng-click="$ctrl.funcoes.color.changeHue(2,cor)" class="shape" layout-margin ng-repeat="cor in $ctrl.funcoes.color.hues" style="background-color:hsl({{cor}},100%,50%)!important" ></a>
           </div>
           <div layout="row" layout-align="center center" layout-margin>
-            <div ng-show="$ctrl.funcoes.usuario.color_two" id="segunda-cor">
+            <div ng-show="$ctrl.funcoes.sessao.row.cor2" id="segunda-cor">
 
             </div>
           </div>
@@ -118,7 +195,7 @@
               <md-icon>arrow_back</md-icon>
               Anterior
             </md-button>
-            <md-button class="md-raised" wz-next ng-disabled="!$ctrl.funcoes.usuario.color_two" aria-label="Proximo" >
+            <md-button class="md-raised" wz-next ng-disabled="!$ctrl.funcoes.sessao.row.cor2" aria-label="Proximo" >
               Proximo
               <md-icon>arrow_forward</md-icon>
             </md-button>
@@ -128,16 +205,16 @@
       <wz-step wz-title="">
         <md-content layout="column" flex layout-align="center stretch" layout-padding>
           <div layout="row" layout-align="center center">
-              <h3>Definir o contraste da cor</h3>
+              <h4>Escolha a intensidade da cor que melhor representa este fato ou momento de sua vida que se opõe ao primeiro.</h4>
           </div>
           <div layout="row" layout-align="center center">
             <md-slider-container flex="80">
-              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(2)" ng-model="$ctrl.funcoes.color.sat2" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(2)" ng-model="$ctrl.funcoes.sessao.row.sat2" min="0" max="100" step="10" aria-label="Contraste" class="md-accent"></md-slider>
             </md-slider-container>
           </div>
 
           <div layout="row" layout-align="center center" layout-margin>
-            <div ng-show="$ctrl.funcoes.usuario.color_two" id="segunda-cor" >
+            <div ng-show="$ctrl.funcoes.sessao.row.cor2" id="segunda-cor" >
 
             </div>
           </div>
@@ -156,16 +233,16 @@
       <wz-step wz-title="">
         <md-content layout="column" flex layout-align="center stretch" layout-padding>
           <div layout="row" layout-align="center center">
-              <h3>Definir o Brilho da cor</h3>
+              <h4>Escolha o brilho da cor que melhor representa este fato ou momento da sua vidaque se opõe ao primeiro.</h4>
           </div>
           <div layout="row" layout-align="center center">
             <md-slider-container flex="80">
-              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(2)" ng-model="$ctrl.funcoes.color.light2" min="0" max="100" step="10" aria-label="bass" class="md-primary"></md-slider>
+              <md-slider md-discrete ng-change="$ctrl.funcoes.color.setCor(2)" ng-model="$ctrl.funcoes.sessao.row.light2" min="0" max="100" step="10" aria-label="Brilho" class="md-accent"></md-slider>
             </md-slider-container>
           </div>
 
           <div layout="row" layout-align="center center" layout-margin>
-            <div ng-show="$ctrl.funcoes.usuario.color_two" id="segunda-cor" >
+            <div ng-show="$ctrl.funcoes.sessao.row.cor2" id="segunda-cor" >
 
             </div>
           </div>
@@ -174,7 +251,7 @@
               <md-icon>arrow_back</md-icon>
               Anterior
             </md-button>
-            <md-button class="md-raised md-accent" wz-next aria-label="Proximo">
+            <md-button class="md-raised" wz-next ng-click="$ctrl.funcoes.sessao.salvar()" aria-label="Proximo">
               Proximo
               <md-icon>arrow_forward</md-icon>
             </md-button>
@@ -183,53 +260,24 @@
       </wz-step>
       <wz-step wz-title="">
         <md-content layout="column" flex layout-align="center stretch" layout-padding>
-          <div layout="row" layout-align="center center">
-              <h3>Salvar dados</h3>
+          <div layout-padding>
+            <h4>
+              Relaxe... Respire profundamente...
+            </h4>
+            <p>
+              Agora, preste a atenção a tela do seu equipamento. E quando você quiser iniciar o processo, acione o comando ACEITO A TRANSFORMAÇÃO.
+            </p>
+            <br>
           </div>
-          <div layout="row">
-            <div layout="column" flex="40" layout-padding>
-              <form name="form" novalidate autocomplete="off">
-                <md-input-container class="md-block">
-                  <label>Nome</label>
-                  <input type="text" required  name="nome" ng-model="$ctrl.funcoes.usuario.nome" >
-                </md-input-container>
-                <md-input-container class="md-block">
-                  <label>Descrição</label>
-                  <input type="text" required  name="nome" ng-model="$ctrl.funcoes.usuario.descricao" >
-                </md-input-container>
-                <md-input-container class="md-block">
-                  <label>Data</label>
-                  <md-datepicker ng-model="$ctrl.funcoes.usuario.data"  md-placeholder="Data"></md-datepicker>
-                </md-input-container>
-                <md-input-container class="md-block">
-                  <label>Senha para acesso externo</label>
-                  <input type="text"  name="nome" ng-model="$ctrl.funcoes.usuario.senha" >
-                </md-input-container>
-
-                <md-button class="md-raised md-accent" aria-label="start" ng-click="$ctrl.funcoes.salvar()" >Salvar</md-button>
-                <md-button class="md-raised md-primary" aria-label="start" ng-click="$ctrl.funcoes.showPainel()" >Show Cores</md-button>
-              </form>
+          <div ngsf-fullscreen>
+            <div layout="row" layout-align="center center"  show-if-fullscreen="false">
+              <md-button class="md-raised md-accent" ngsf-toggle-fullscreen aria-label="start" ng-click="$ctrl.funcoes.movimentar()" >ACEITO A TRANSFORMAÇÃO!</md-button>
             </div>
-            <div layout="column" flex layout-align="center center" layout-margin>
-              <div ng-show="$ctrl.funcoes.usuario.color_one" id="primeira-cor" >
+            <swishi funcoes="$ctrl.funcoes" show-if-fullscreen>
 
-              </div>
-              <div ng-show="$ctrl.funcoes.usuario.color_two" id="segunda-cor" >
-
-              </div>
-            </div>
+            </swishi>
           </div>
 
-          <div layout="row" layout-align="end center">
-            <md-button class="md-raised" wz-previous aria-label="anterior">
-              <md-icon>arrow_forward</md-icon>
-              Anterior
-            </md-button>
-            <md-button class="md-raised md-accent" wz-next aria-label="Proximo">
-              Concluir
-              <md-icon>check</md-icon>
-            </md-button>
-          </div>
         </md-content>
       </wz-step>
   </wizard>

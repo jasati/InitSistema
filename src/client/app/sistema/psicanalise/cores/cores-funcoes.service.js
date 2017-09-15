@@ -6,61 +6,93 @@
         .service('CoresFuncService', CoresFuncService);
 
     CoresFuncService.$inject = [
-      'UtilsFunctions','UtilsDataFunctionService',
-      '$state','$mdDialog','$filter','$document','$mdPanel'
+      'UtilsFunctions','UtilsDataFunctionService','PsicanaliseDataset','FiltroService',
+      '$state','$mdDialog','$filter','$document','$mdPanel','$mdSidenav'
     ];
 
     /* @ngInject */
     function CoresFuncService(
-      UtilsFunctions,UtilsDataFunctionService,
-      $state,$mdDialog,$filter,$document,$mdPanel
+      UtilsFunctions,UtilsDataFunctionService,PsicanaliseDataset,FiltroService,
+      $state,$mdDialog,$filter,$document,$mdPanel,$mdSidenav
     ) {
         this.funcoes = funcoes;
 
         function funcoes() {
           var vm = this;
           var isset = UtilsFunctions.isset;
-          vm.tam = 5;
-          vm.showReinstart = false;
-          vm.tempo = 100;
+          var dataSetSessao = PsicanaliseDataset.sessao();
+          var dataSetConfig = PsicanaliseDataset.configShowCor();
+          vm.sessao = new UtilsDataFunctionService.dataFuncoes(dataSetSessao);
+          vm.configShowCor = new UtilsDataFunctionService.dataFuncoes(dataSetConfig);
           vm.divider = 'botton';
-          vm.title = 'Lista de encontros';
-          vm.usuario = {
-            nome:'Jose',
-            color_one:'',
-            color_two:'',
-          };
-          vm.colorOptions = {
-            hue: true,
-            saturation: true,
-            lightness: true, // Note: In the square mode this is HSV and in round mode this is HSL
-            alpha: true,
-            round: false,
-            format:'hsl',
-            horizontal:false,
-            inline:true,
-          };
+          vm.title = 'Sessão';
+
+          function activate() {
+            vm.configShowCor.read('',true).then(function functionName() {
+              vm.startFiltro();
+              vm.resetar();
+            });
+          }
+
+          vm.filtrar = function () {
+            var query = '';
+            if (isset(vm.sessao.filtros.mainField)) {
+              query += " and nome LIKE '%"+vm.sessao.filtros.mainField+"%'";
+            }
+            if (isset(vm.sessao.filtroExterno)) {
+              query += vm.sessao.filtroExterno;
+            }
+            vm.sessao.read(query,true);//limitar os registros
+          }
+
+          vm.cadastro = function (action,row,parent) {
+            switch (action) {
+              case 'create':
+                row = {
+                  hue1:0,
+                  sat1:100,
+                  light1:50,
+                  hue2:30,
+                  sat2:100,
+                  light2:50,
+                }
+                vm.sessao.novo(row);
+                break;
+              case 'update':
+                vm.sessao.alterar(row);
+                break;
+            }
+            var config = {
+              templateUrl: 'app/sistema/psicanalise/cores/templates/sessao-cadastro.html',
+              ariaLabelledBy: 'sessao',
+              ariaDescribedBy: 'sessao-modal',
+              size:'',
+              data:vm,
+              backdrop:'static',
+              fullscreen:false,
+              modal:{},
+            };
+            return vm.sessao.showModal(config,parent).then(function (data) {
+              return data
+            });
+          }
+
           vm.color = {
             hues:[0,30,60,90,120,150,180,210,240,270],
-            hue1:0,
-            sat1:100,
-            light1:50,
-            hue2:0,
-            sat2:100,
-            light2:50,
+
             changeHue:function (nCor,hue) {
               if (nCor == 1) {
-                this.hue1 = hue;
+                vm.sessao.row.hue1 = hue;
               } else {
-                this.hue2 = hue;
+                vm.sessao.row.hue2 = hue;
               }
               this.setCor(nCor);
             },
             setCor:function (nCor) {
               if (nCor==1) {
-                vm.usuario.color_one = 'hsl('+this.hue1+','+this.sat1+'%,'+this.light1+'%)';
+                vm.sessao.row.cor1 = 'hsl('+vm.sessao.row.hue1+','+vm.sessao.row.sat1+'%,'+vm.sessao.row.light1+'%)';
               } else {
-                vm.usuario.color_two = 'hsl('+this.hue2+','+this.sat2+'%,'+this.light2+'%)';
+                vm.sessao.row.cor2 = 'hsl('+vm.sessao.row.hue2+','+vm.sessao.row.sat2+'%,'+vm.sessao.row.light2+'%)';
               }
             }
           };
@@ -68,15 +100,21 @@
             vm.movimentando = true;
             vm.movimento();
           }
+          vm.convDate = function (data) {
+            var dt = new Date(data);
+            return dt;
+          }
 
           vm.movimento = function () {
             if (vm.movimentando) {
               var valor = setInterval(crecer,vm.tempo);
               function crecer() {
-                vm.tam += 5;
+                vm.tam += vm.configShowCor.rows[0].perc_tam;
                 if (vm.tam <= 100) {
-                  var width = document.getElementById('cor-filho').style.width=vm.tam+"%";
-                  var height = document.getElementById('cor-filho').style.height=vm.tam+"%";
+                  var width = document.getElementById('cor-filho');
+                  var height = document.getElementById('cor-filho');
+                  width.style.width=vm.tam+"%";
+                  height.style.height=vm.tam+"%";
                 }
                 if (vm.tam >= 100) {
                   vm.movimentando = false;
@@ -87,8 +125,8 @@
           }
           vm.reiniciar = function () {
             if (!vm.movimentando) {
-              vm.tempo -=20;
-              vm.tam = 5;
+              vm.tempo -=vm.configShowCor.rows[0].red_temp_rep;
+              vm.tam = vm.configShowCor.rows[0].perc_tam;
               var width = document.getElementById('cor-filho').style.width=vm.tam+"%";
               var height = document.getElementById('cor-filho').style.height=vm.tam+"%";
               setTimeout(vm.movimentar,1000);
@@ -99,7 +137,7 @@
             var painel = $mdPanel;
             var prm = {
               painel:painel,
-              templateUrl: 'app/sistema/psicanalise/cores/templates/cores-show.html',
+              templateUrl:'app/sistema/psicanalise/cores/templates/cores-show.html',
               hasBackdrop: true,
               position: 'center',
               trapFocus: true,
@@ -115,10 +153,43 @@
             });
           }
           vm.resetar = function () {
-            vm.tam = 5;
-            vm.showReinstart = false;
-            vm.tempo = 100;
+            vm.tempo = vm.configShowCor.rows[0].tempo;
+            vm.tam = vm.configShowCor.rows[0].perc_tam;
+            vm.velocidade = vm.configShowCor.rows[0].red_temp_rep;
+            vm.showSwishi = false;
           }
+          vm.toogleView = function () {
+            $mdSidenav('right').open();
+          }
+          vm.toogleClose = function () {
+            $mdSidenav('right').close();
+            $state.go('layout.cores');
+          }
+
+          vm.deletar = function (ev,data) {
+            vm.sessao.confirmDel(ev,data.descricao).then(function (result) {
+              if (result) {
+                vm.sessao.deletar([data]).then(function (deletado) {
+                  if (deletado) {
+                    vm.filtrar();
+                  }
+                });
+              }
+            });
+          }
+
+          vm.startFiltro = function () {
+            // função para instanciar o modulo de filtros
+            // so deve ser chamado uma vez apos criado
+            var funcFiltros = new FiltroService.funcoes();
+            funcFiltros.filtros.fields = vm.sessao.camposFiltro;//setar os campos de consulta
+            funcFiltros.filtros.fildsQuery = vm.sessao.filtroDefault;//setar o filtro default
+            funcFiltros.filtros.functionRead = vm.filtrar;//setar a função de gatilho para consulta
+            vm.sessao.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
+            vm.sessao.filtros.functionRead();//chama a consulta
+          }
+
+          activate();
 
         }
     }

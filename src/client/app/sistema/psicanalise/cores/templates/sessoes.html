@@ -1,0 +1,103 @@
+
+<div layout="row" flex class="visao">
+
+  <md-card layout="column" flex>
+      <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+          <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.sessao.mediaxs()}" ng-click="$ctrl.funcoes.cadastro('create',{})">
+            <md-icon>add</md-icon>
+            <md-tooltip md-autohide="true">Nova sessão</md-tooltip>
+          </md-button>
+          <span ng-class="{'md-subhead':$ctrl.funcoes.sessao.mediaxs()}" ng-show="!$ctrl.funcoes.sessao.filtros.showField">
+            Lista de Sessões
+            <md-button class="md-icon-button" ng-click="$ctrl.funcoes.sessao.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
+          </span>
+
+          <div flex></div>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.sessao.filtros.onClick()" aria-label="Filtro">
+            <md-icon ng-hide="$ctrl.funcoes.sessao.filtros.digitando">search</md-icon>
+            <md-progress-circular ng-show="$ctrl.funcoes.sessao.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+          </button>
+          <form class="animacao" flex="{{$ctrl.funcoes.sessao.filtros.flex}}" layout="row">
+              <md-tooltip>Esse filtro lista todas as sessões que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+              <input id="filtro" ng-model="$ctrl.funcoes.sessao.filtros.mainField"  ng-change="$ctrl.funcoes.sessao.filtros.onChange()" placeholder="Localizar Sessão">
+          </form>
+          <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.sessao.filtros.showField" ng-click="$ctrl.funcoes.sessao.filtros.onClick()" aria-label="close">
+            <md-tooltip>Remover filtro</md-tooltip>
+            <md-icon>close</md-icon>
+          </button>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.sessao.filtros.setConfigFiltro()" aria-label="Filtro">
+            <md-tooltip>filtro Avançado</md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </button>
+        </div>
+      </md-toolbar>
+      <filtro
+        filtros="$ctrl.funcoes.sessao.filtros">
+      </filtro>
+      <md-divider></md-divider>
+
+      <div ng-if="$ctrl.funcoes.sessao.rows.length === 0" layout-padding layout-margin layout-align=" center center" layout="row" class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.sessao.reading,'alert-info':$ctrl.funcoes.sessao.reading}" role="alert">
+        <div ng-if="$ctrl.funcoes.sessao.reading" >
+          <md-progress-circular ng-disabled="!$ctrl.funcoes.sessao.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+          <p>Buscando Registros...</p>
+        </div>
+        <div ng-if="!$ctrl.funcoes.sessao.reading">
+          <p><b>Descupe!</b> Os registros não foram encontrados, talvez você ainda não tenha cadastrado.</p>
+        </div>
+      </div>
+
+      <md-table-container ng-if="$ctrl.funcoes.sessao.rows.length > 0">
+        <table md-table>
+          <thead md-head md-order="myOrder">
+            <tr md-row>
+              <th style="width: 1%" md-column></th>
+              <!-- <th style="width: 1%" md-column></th> -->
+              <th style="width: 20%" md-column md-order-by="data_sessao"><span><b>Data</b></span></th>
+              <th style="width: 23%" md-column md-order-by="nome"><span><b>Nome</b></span></th>
+              <th style="width: 45%" md-column md-order-by="descricao"><span><b>Descrição</b></span></th>
+              <th style="width: 5%" md-column md-order-by="cor1"><span><b>Cor 1</b></span></th>
+              <th style="width: 5%" md-column md-order-by="cor2"><span><b>Cor 2</b></span></th>
+              <th style="width: 1%" md-column></th>
+            </tr>
+          </thead>
+          <tbody md-body>
+            <tr md-row  md-select="s" md-select-id="id_sessao" ng-repeat="s in $ctrl.funcoes.sessao.rows | orderBy: myOrder">
+              <td md-cell layout="row">
+                <md-button class="md-icon-button" ng-click="$ctrl.funcoes.cadastro('update',s)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon> <md-tooltip md-autohide="true">Alterar Cadastro</md-tooltip></md-button>
+                <md-button class="md-icon-button" ui-sref="layout.cores.swishi" ng-click="$ctrl.funcoes.toogleView();$ctrl.funcoes.sessao.alterar(s)" aria-label="edit"><md-icon aria-label="editar">color_lens</md-icon><md-tooltip md-autohide="true">Configurar swishi de cores</md-tooltip></md-button>
+                <div ngsf-fullscreen>
+                    <md-button class="md-icon-button" show-if-fullscreen="false" ngsf-toggle-fullscreen ng-if="s.cor1" ng-click="$ctrl.funcoes.sessao.alterar(s);$ctrl.funcoes.showSwishi=true;$ctrl.funcoes.movimentar()" aria-label="edit"><md-icon aria-label="editar">play_circle_filled</md-icon><md-tooltip md-autohide="true">Iniciar swishi de cores</md-tooltip></md-button>
+                    <swishi funcoes="$ctrl.funcoes" ng-if="$ctrl.funcoes.showSwishi" show-if-fullscreen ></swishi>
+                </div>
+
+              </td>
+              <!-- <td md-cell></td> -->
+              <td md-cell>{{$ctrl.funcoes.convDate(s.data_sessao) | date : "dd/MM/yyyy HH:mm"}}</td>
+              <td md-cell>{{s.nome}}</td>
+              <td md-cell>{{s.descricao}}</td>
+              <td md-cell><div style="position:relative;border-radius:15%;height:30px;width:30px;background-color:{{s.cor1}};"></div></td>
+              <td md-cell><div style="position:relative;border-radius:15%;height:30px;width:30px;background-color:{{s.cor2}};"></div></td>
+              <td md-cell><md-button class="md-icon-button"  ng-click="$ctrl.funcoes.deletar($event,s)" aria-label="excluir"><md-icon aria-label="deletar">delete</md-icon><md-tooltip md-autohide="true">Excluir Cadastro</md-tooltip></md-button></td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-card-actions >
+        <md-table-pagination md-limit="$ctrl.funcoes.sessao.pagination.limit" md-limit-options="$ctrl.funcoes.sessao.pagination.limitOptions" md-page="$ctrl.funcoes.sessao.pagination.pagina" md-total="{{$ctrl.funcoes.sessao.pagination.total}}"  md-on-paginate="$ctrl.funcoes.filtrar" md-page-select md-label="{{$ctrl.funcoes.sessao.pagination.label}}"></md-table-pagination>
+      </md-card-actions>
+  </md-card>
+  <md-sidenav md-component-id="right" style="min-width:100%; height:100%" class="md-sidenav-right">
+    <md-toolbar class="md-table-toolbar md-accent" >
+      <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" ng-click="$ctrl.funcoes.toogleClose()" aria-label="voltar">
+              <md-icon>arrow_back</md-icon>
+        </md-button>
+        <span>Sessões</span>
+      </div>
+    </md-toolbar>
+    <div ui-view class="visao">
+
+    </div>
+  </md-sidenav>
+</div>

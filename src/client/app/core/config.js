@@ -11,45 +11,27 @@
         toastr.options.timeOut = 4000;
         toastr.options.positionClass = 'toast-bottom-right';
     }
-    var prmAmbiente = 0;//0:local 1:teste 2:producao
-    var ambiente = {
-        0:{//local
-            api:"http://mucontratos.alan.dev/v1/",
-            db:"ecc",
-            img:"http://mucontratos.alan.dev/App/Upload/",
-            report:"http://mucontratos.alan.dev/App/Tmp/",
-            urlSistema:"http://localhost:3000/",
-        },
-        1:{//teste
-            api:"",
-            db:"",
-            img:"",
-            report:"",
-            urlSistema:"",
-        },
-        2:{//producao
-            api:"https://ws.ecc.pibdecoite.com.br/v1/",
-            db:"pibcoite_ecc",
-            img:"https://ws.ecc.pibdecoite.com.br/App/Upload/",
-            report:"https://ws.ecc.pibdecoite.com.br/App/Tmp/",
-            urlSistema:"https://app.ecc.pibdecoite.com.br/",
-        }
-    };
-    var config = {
-        versao        :'0.0.0',
-        appErrorPrefix: '[Ops! Dados Não Processados] ',
-        appTitle      : 'Sistema Boot',
-        appSubtitle   : 'Sistema de boot para um novo sistema',
-        urlWebService :ambiente[prmAmbiente].api,
-        urlImagem     :ambiente[prmAmbiente].img,
-        dbase         :ambiente[prmAmbiente].db,
-        report        :ambiente[prmAmbiente].report,
-        urlSistema    :ambiente[prmAmbiente].urlSistema,
 
+    /*
+    esses parametros serão preenchidos no start do sistema, de acordor
+    com o aquivo sistemas.json na pasta sistema
+    */
+    var config = {
+        sistema       : "",
+        corLayoute    : "",   
+        versao        : "",
+        appErrorPrefix: '[Ops! Dados Não Processados] ',
+        appTitle      : '',
+        appSubtitle   : '',
+        urlWebService : '',
+        urlImagem     : '',
+        dbase         : '',
+        report        : '',
+        urlSistema    : '',
 
         // true ou false para habilitar o modulo de permissao, caso esteja false
         // o sistema ira libera os modulos sem verificar
-        modPerm : true,
+        modPerm : '',
     };
 
     core.value('config', config);
@@ -86,6 +68,8 @@
         $mdDateLocaleProvider.formatDate = function(date) {
             return moment(date).format('DD/MM/YYYY');
         };
+
+
     }
 
 })();
