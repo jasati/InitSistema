@@ -14,7 +14,8 @@
           vm.pathImg = config.urlImagem;
 	        vm.usuario = Provider.getSessaoUsuario();
           vm.verPermissao = UtilsFunctions.getPermissao;
-	        vm.title = "WebApp";
+          vm.altImg =config.appTitle; 
+	        vm.title = config.appTitle;
 
 	        vm.openSideNave = function () {
 	            $mdSidenav('left').toggle();

@@ -32,23 +32,19 @@
       }
     }
     function getSistema() {
-      $http({method: 'GET',url: 'app/sistema/sistemas.json'}).then(function (result) {
-        //informe o nome do sistema que será compilado
-        /*
-          psicanalise
-        */
-        var nomeSistem = 'psicanalise'
-        var ambiente = 0; //0 = local 1 = producao
-        var filtro = $filter('filter')(result.data,{sistema:nomeSistem},true);
-        if (filtro.length > 0) {
-          var sistema = filtro[0];
-          //setar as configurações do sistema encontrado
+      //Pegando as configurações no config do frontend
+      var ambiente = config.sistema.ambiente;
+      var api = 'startSistema/'+config.index;
+
+      $http({method: 'POST',url: config.urlWebService+api}).then(function (result) {
+        if (!result.data.status) {//se ouver status em data é para retornar o erro
+          var sistema = result.data;
+          //setar as configurações do sistema encontrado no backend
           config.versao        = sistema.versao;
           config.appTitle      = sistema.appTitle;
           config.appSubtitle   = sistema.appSubtitle;
           config.corLayoute    = sistema.corLayoute;
           config.modPerm       = sistema.modPerm;
-          config.urlWebService = sistema.ambiente[ambiente].api;
           config.urlImagem     = sistema.ambiente[ambiente].img;
           config.dbase         = sistema.ambiente[ambiente].db;
           config.report        = sistema.ambiente[ambiente].report;
@@ -56,9 +52,8 @@
           //iniciar a rota do sistema
           rotaInicial();
         } else {
-          logger.danger(nomeSistem+' não foi encontrado no arquivo sistemas.json.');
+          logger.error(result.data.msg);
         }
-
       });
     }
   }

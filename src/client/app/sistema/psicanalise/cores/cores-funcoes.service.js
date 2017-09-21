@@ -6,13 +6,13 @@
         .service('CoresFuncService', CoresFuncService);
 
     CoresFuncService.$inject = [
-      'UtilsFunctions','UtilsDataFunctionService','PsicanaliseDataset','FiltroService',
+      'UtilsFunctions','UtilsDataFunctionService','PsicanaliseDataset','FiltroService','config',
       '$state','$mdDialog','$filter','$document','$mdPanel','$mdSidenav'
     ];
 
     /* @ngInject */
     function CoresFuncService(
-      UtilsFunctions,UtilsDataFunctionService,PsicanaliseDataset,FiltroService,
+      UtilsFunctions,UtilsDataFunctionService,PsicanaliseDataset,FiltroService,config,
       $state,$mdDialog,$filter,$document,$mdPanel,$mdSidenav
     ) {
         this.funcoes = funcoes;
@@ -26,7 +26,7 @@
           vm.configShowCor = new UtilsDataFunctionService.dataFuncoes(dataSetConfig);
           vm.divider = 'botton';
           vm.title = 'Sessão';
-
+          vm.linkAcesso = config.urlSistema+'?externo=psclse';
           function activate() {
             vm.configShowCor.read('',true).then(function functionName() {
               vm.startFiltro();

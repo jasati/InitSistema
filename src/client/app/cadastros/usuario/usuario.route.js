@@ -22,7 +22,7 @@
                         nav    : 2,
                         icon   : 'assignment_ind',
                         content: 'Controle de Acesso',
-                        perm   :1
+                        perm   :-1
                     },
                     resolve : {
                         funcoes: resolveUsuario

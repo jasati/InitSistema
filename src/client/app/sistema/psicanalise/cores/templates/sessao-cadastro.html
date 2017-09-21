@@ -24,6 +24,12 @@
             <label>Código para acesso externo</label>
             <input type="text"  name="nome" ng-model="$ctrl.funcoes.sessao.row.codigo_acesso" >
           </md-input-container>
+          <md-input-container class="md-icon-float md-block" ng-show="$ctrl.funcoes.sessao.row.id_sessao">
+            <label>Link para acesso externo</label>
+            <input type="text"  name="nome" ng-model="$ctrl.funcoes.linkAcesso" disabled>
+            <a style="display:inline-block;" ng-href="{{$ctrl.funcoes.linkAcesso}}" target="_blank"><md-icon>launch</md-icon></a>
+          </md-input-container>
+
         </form>
       </div>
     </md-card-content>

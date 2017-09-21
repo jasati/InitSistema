@@ -1,6 +1,7 @@
 [
   {
     "codigo"      : 0,
+    "idAmbiente"  : 1,
     "sistema"     : "psicanalise",
     "corLayoute"  : "default",
     "versao"      : "0.0.1",
@@ -18,17 +19,18 @@
       },
       {
         "posicao":"producao",
-        "api":"",
-        "db":"",
-        "img":"",
-        "report":"",
-        "urlSistema":""
+        "api":"https://ws.swishi.jasati.com.br/v1/",
+        "db":"jasatico_swishi",
+        "img":"https://ws.swishi.jasati.com.br/App/Upload/",
+        "report":"https://ws.swishi.jasati.com.br/App/Tmp/",
+        "urlSistema":"https://app.swishi.jasati.com.br"
       }
     ]
   },
 
   {
     "codigo"      : 1,
+    "idAmbiente"  : 0,
     "sistema"     : "ecc",
     "corLayoute"  : "default",
     "versao"      : "0.0.1",
