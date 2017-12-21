@@ -1,0 +1,186 @@
+<md-content>
+	<md-card layout="column">
+		<!-- TITULO -->
+		<md-card-action layout="row" >
+			<div layout="row" flex="70" layout-align="start center">
+				<span layout-padding class="md-title"> {{$ctrl.movimento.data.label}} {{$ctrl.movimento.data.row.desc_tipo_mov}}</span>
+
+				<span layout-padding class="text-danger"><b>Nº {{$ctrl.movimento.data.row.n_nf}}</b></span>
+				<span layout-padding class="text-info"><b>{{$ctrl.movimento.data.row.desc_status}}</b></span>
+				<span ng-hide="$ctrl.movimento.dataItens.showDadosPessoa" layout="row" layout-padding class="md-caption">
+					<i class="text-muted">Informando item</i>
+					<span ng-if="$ctrl.movimento.data.row.tipo_mov == 'E'">
+						<i class="text-muted">emitente :</i> {{$ctrl.movimento.data.row.p_emi_nome_comp}}
+					</span>
+					<span ng-if="$ctrl.movimento.data.row.tipo_mov != 'E'">
+						<i class="text-muted">destinatário :</i> {{$ctrl.movimento.data.row.p_dest_nome_comp}}
+					</span>
+					<md-button class="md-icon-button" ng-click="$ctrl.movimento.dataItens.showDadosPessoa=true" aria-label="alterar">
+						<md-icon>subdirectory_arrow_left</md-icon>
+						<md-tooltip>Alterar dados do emitente e destinatário</md-tooltip>
+					</md-button>
+				</span>
+
+			</div>
+			<div layout="row" flex="30" layout-align="end center">
+				<md-button class="md-raised md-accent" ng-show="$ctrl.movimento.dataItens.data.rows.length>0 && $ctrl.movimento.data.row.status == 'A'" ng-click="$ctrl.movimento.finalizarMov($event)">
+					Finalizar
+					<md-tooltip md-autohide="true">Conluir a movimentação</md-tooltip>
+				</md-button>
+
+				<button class="md-icon-button md-button" type="button" ng-click="$ctrl.movimento.dataItens.print1($ctrl.movimento.data.row,$ctrl.movimento.dataItens.data.rows)" aria-label="print" ng-show="$ctrl.movimento.data.row.status == 'F' && $ctrl.movimento.data.row.tipo_mov != 'E'">
+					<md-tooltip>Imprimir</md-tooltip>
+					<md-icon>print</md-icon>
+				</button>
+
+<!-- 				<md-button class="md-raised md-warn" ng-show="$ctrl.movimento.data.row.status == 'F'" ng-click="null">
+					Cancelar
+					<md-tooltip md-autohide="true">Cancelar a movimentação</md-tooltip>
+				</md-button> -->
+			</div>
+		</md-card-action>
+
+		<md-divider></md-divider>
+		<!-- EMITENTE -->
+		<div ng-readonly="$ctrl.movimento.data.row.status == 'F'">
+			<div ng-hide="$ctrl.movimento.dataItens.data.rows && !$ctrl.movimento.dataItens.showDadosPessoa">
+				<md-card-actions layout="row" layout-align="start center">
+					<span layout-padding flex="10" class="text-muted">Emitente :</span>
+					<md-autocomplete
+						id="p_emi_nome_comp"
+						flex="35"
+						required
+						name="p_emi_nome_comp"
+						class="md-accent"
+						md-require-match="true"
+						md-autofocus
+					  md-no-cache="false"
+					  md-search-text="$ctrl.searchEmitente"
+					  md-selected-item="$ctrl.movimento.data.row.p_emi_nome_comp"
+					  md-items="row in $ctrl.movimento.pessoa_emi.filtroAutoComplete($ctrl.searchEmitente)"
+					  md-selected-item-change="$ctrl.movimento.changeEmitenteE($ctrl.movimento.data.row,row)"
+					  md-item-text="row.nome_comp"
+					  md-min-length="0"
+					  placeholder="Emissor da Nota Fiscal">
+					<md-item-template>
+				      <div layout="row">
+				        <div flex="50" class="li-table-auto" layout-padding>
+				          <span><b>{{row.nome_comp}}</b></span>
+				        </div>
+				        <md-divider></md-divider>
+				        <div flex="25" class="li-table-auto" layout-padding>
+				          <span>{{row.cpf_cnpj}}</span>
+				        </div>
+				        <md-divider></md-divider>
+				        <div flex="25" class="li-table-auto" layout-padding>
+				          <span>{{row.nome_red}}</span>
+				        </div>
+				      </div>
+					</md-item-template>
+					<md-not-found>
+					  O Emitente "{{$ctrl.searchEmitente}}" não foi encontrado.
+					</md-not-found>
+						<div ng-messages="form.p_emi_nome_comp.$error">
+							<div ng-message="required">Informe o emissor da nota fiscal.</div>
+						</div>
+					</md-autocomplete>
+
+					<md-input-container class="md-accent md-block" flex="10">
+						<label class="md-body-1">{{$ctrl.movimento.data.row.tipo_mov=='E'?'Numero NF':'Numero'}}</label>
+						<input type="text" required  name="n_nf" ng-model="$ctrl.movimento.data.row.n_nf" {{$ctrl.movimento.data.row.tipo_mov=='S'?'disabled':''}}>
+						<div ng-messages="form.n_nf.$error">
+							<div ng-message="required">Informe o numento da nota fiscal.</div>
+						</div>
+					</md-input-container>
+
+					<md-input-container class="md-accent" flex="15">
+						<label class="md-body-1">Data Emissão</label>
+						<input type="date"  name="data_emissao" ng-model="$ctrl.movimento.data.row.data_emissao" >
+					</md-input-container>
+
+					<md-input-container class="md-accent" flex="15">
+						<label class="md-body-1">Data Saída</label>
+						<input type="date" required name="data_saida" ng-model="$ctrl.movimento.data.row.data_saida" >
+						<div ng-messages="form.data_saida.$error">
+							<div ng-message="required">Informe a data de saída da mercadoria</div>
+						</div>
+					</md-input-container>
+				</md-card-actions>
+
+				<!-- DESTINATARIO -->
+
+				<md-card-actions layout="row" layout-align="start center">
+					<span layout-padding flex="10" class="text-muted">Destinatário :</span>
+					<md-autocomplete
+						id="p_dest_nome_comp"
+						flex="35"
+						required
+						name="p_dest_nome_comp"
+						class="md-accent"
+						md-autofocus="true"
+						md-require-match="true"
+					  md-no-cache="true"
+					  md-search-text="$ctrl.searchDest"
+					  md-selected-item="$ctrl.movimento.data.row.p_dest_nome_comp"
+					  md-items="row in $ctrl.movimento.pessoa_dest.filtroAutoComplete($ctrl.searchDest)"
+					  md-selected-item-change="$ctrl.movimento.changeDestinatarioE($ctrl.movimento.data.row,row)"
+					  md-item-text="row.nome_comp"
+					  md-min-length="0"
+					  placeholder="Destinatário da Nota Fiscal">
+					<md-item-template>
+				      <div layout="row">
+				        <div flex="50" class="li-table-auto" layout-padding>
+				          <span><b>{{row.nome_comp}}</b></span>
+				        </div>
+				        <md-divider></md-divider>
+				        <div flex="25" class="li-table-auto" layout-padding>
+				          <span>{{row.limite_credito}}</span>
+				        </div>
+				        <md-divider></md-divider>
+				        <div flex="25" class="li-table-auto" layout-padding>
+				          <span>{{row.tabela_preco}}</span>
+				        </div>
+				      </div>
+					</md-item-template>
+					<md-not-found>
+					  O Destinatário "{{$ctrl.searchDest}}" não foi encontrado.
+					</md-not-found>
+						<div ng-messages="form.p_dest_nome_comp.$error">
+							<div ng-message="required">Informe o destinatário da nota fiscal.</div>
+						</div>
+					</md-autocomplete>
+
+					<div ng-hide="$ctrl.movimento.data.row.tipo_mov == 'E'">
+						<md-input-container flex {{$ctrl.movimento.data.row.tabela_preco?'disabled':''}}>
+							<label class="md-body-1">Classe Tabela</label>
+							<md-select ng-model="$ctrl.movimento.data.row.id_tabela_preco" id="id_tabela_preco" md-on-open="$ctrl.movimento.filtrarClassTabela()">
+						  		<md-option value="">NÃO DEFINIDA</md-option>
+						  		<md-option ng-value="tab.id_tabela_preco" ng-repeat="tab in $ctrl.movimento.classTabela.tabela.rows | filter:{id_tabela_preco:$ctrl.movimento.data.row.id_tabela_preco}" >{{tab.descricao}}</md-option>
+							</md-select>
+						</md-input-container>
+
+						<md-input-container flex id="id_item_preco">
+							<label class="md-body-1">Tabela de preços</label>
+							<md-select ng-model="$ctrl.movimento.data.row.id_item_preco">
+						  	<md-option value="0">A Vista</md-option>
+						  	<md-option ng-value="tab.id_item_preco" ng-repeat="tab in $ctrl.movimento.classTabela.TabItens.tabela_itens.rows | filter:{id_tabela_preco:$ctrl.movimento.data.row.id_tabela_preco}" ng-blur="$ctrl.movimento.dataItens.alterarTabela(tab.percentual)">{{tab.descricao}}</md-option>
+						</md-select>
+						</md-input-container>
+					</div>
+				</md-card-actions>
+			</div>
+		</md-card>
+
+		<itens-saida ng-if="$ctrl.movimento.data.row.tipo_mov != 'E'" funcoes="$ctrl.movimento"></itens-saida>
+
+		<itens-entrada ng-if="$ctrl.movimento.data.row.tipo_mov == 'E'" funcoes="$ctrl.movimento"></itens-entrada>
+		
+		<md-card>
+			<md-input-container class="md-block" class="md-accent">
+				<label class="md-body-1">Observações</label>
+				<textarea ng-model="$ctrl.movimento.data.row.obs" rows="2"></textarea>
+			</md-input-container>
+		</md-card>
+	</div>
+</md-content>
+<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>

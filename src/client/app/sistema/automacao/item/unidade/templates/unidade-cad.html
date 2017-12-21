@@ -1,0 +1,45 @@
+<div layout="column">
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+<!--         <md-button class="md-icon-button"  ui-sref="layout.pgitem.unidade">
+        <md-icon>arrow_back</md-icon>
+      </md-button> -->
+      <span>Cadastro de unidades</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <form name="form" novalidate autocomplete="off">
+      <div layout-padding layout="column">
+        <div layout="row">
+
+          <md-input-container flex="70" class="md-accent">
+            <label class="md-body-1">Descrição</label>
+            <input type="text" name="descricao" ng-model="$ctrl.funcoes.unidade.row.descricao" >
+          </md-input-container>
+
+          <md-input-container flex="30" class="md-accent">
+            <label class="md-body-1">Sigla da unidade</label>
+            <input type="text" required  name="descricao" placeholder="Ex: UN, KG, L etc..." ng-model="$ctrl.funcoes.unidade.row.sigla" >
+            <div ng-messages="form.sigla.$error">
+              <div ng-message="required">Informe a sigla da unidade de medida.</div>
+            </div>
+          </md-input-container>
+          
+        </div>
+
+      </div>
+    </form>
+  </md-card-content>
+  <md-card-footer>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.unidade.salvar();">Salvar</md-button>
+
+  </md-card-actions>
+  </md-card-footer>
+
+</div>          

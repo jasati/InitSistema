@@ -1,0 +1,14 @@
+
+<div layout="column" flex>
+	<j-toolbar funcoes="$ctrl.funcoes.toolbarFunc"></j-toolbar>
+	<filtro	filtros="$ctrl.funcoes.categoria.filtros"></filtro>
+	<div layout-gt-xs="row" flex>
+		<div layout="column" flex="grow">
+			<j-pagination funcoes="$ctrl.funcoes.pagination"></j-pagination>
+			<j-table funcoes="$ctrl.funcoes.table"></j-table>
+		</div>
+<!-- 		<div class="animacao" ui-view flex-gt-xs="{{$ctrl.funcoes.state()=='categoriaCad'?80:0}}">
+			
+		</div> -->
+	</div>
+</div>

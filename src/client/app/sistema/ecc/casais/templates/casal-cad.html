@@ -1,0 +1,227 @@
+<div layout="column" flex>
+  <md-toolbar class="md-default md-hue-2">
+    <div class="md-toolbar-tools">
+      <md-button ng-show="$ctrl.funcoes.casal.row.id_casal" class="md-accent md-fab md-mini" ng-click="$ctrl.funcoes.casal.novo({})">
+        <md-icon>add</md-icon>
+        <md-tooltip md-autohide="true">Novo casal</md-tooltip>
+      </md-button>
+      <span>{{$ctrl.funcoes.casal.label+$ctrl.funcoes.title}}</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card>
+    <md-card-content>
+      <form name="form" novalidate autocomplete="off">
+        <div layout-padding>
+
+          <!-- <div layout-gt-xs="row" >
+
+            <div flex-gt-xs="30">
+
+                <label>Foto Casal</label>
+                <md-progress-linear class="md-warn" md-mode="determinate" ng-show="$ctrl.funcoes.casal.uploader.progress" ng-value="$ctrl.funcoes.casal.uploader.progress"></md-progress-linear>
+                <div class="md-media-lg card-media">
+                  <img src="{{$ctrl.funcoes.casal.pathImg}}{{$ctrl.funcoes.casal.row.foto?$ctrl.funcoes.casal.row.foto:'noImg.jpg'}}" class="img-responsive img-rounded" height="120">
+                </div>
+                <input type="file" class="btn btn-default btn-sm form-control" nv-file-select uploader="$ctrl.funcoes.casal.uploader"/>
+
+            </div>
+              <div flex-gt-xs="70">
+                <md-button class="md-raised" ng-click="$ctrl.funcoes.conjuge.cadastro('create',{tipo_conjuge:'M'},'.modal')">content</md-button>
+              <md-input-container class="md-block" >
+                <label>Nome do Marido</label>
+                <input type="text" required  name="marido" ng-model="$ctrl.funcoes.casal.row.marido" >
+                <div ng-messages="form.marido.$error" ng-show="form.marido.$invalid">
+                  <p ng-message="required">Informe o nome do marido</p>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block" >
+                <label>Nome da esposa</label>
+                <input type="text" required  name="esposa" ng-model="$ctrl.funcoes.casal.row.esposa" >
+                <div ng-messages="form.esposa.$error" ng-show="form.esposa.$invalid">
+                  <p ng-message="required">Informe o nome da esposa</p>
+                </div>
+              </md-input-container>
+            </div>
+          </div> -->
+
+          <uib-accordion close-others="true">
+            <div uib-accordion-group class="panel-default" heading="Dados do conjuge">
+              <div layout-gt-xs="row" flex>
+
+                <div class="panel panel-default" layout="column" flex>
+                  <div class="panel-heading">Dados do Marido</div>
+                  <div class="panel-body">
+                    <conjuge funcoes="$ctrl.funcoes.marido">
+
+                    </conjuge>
+                  </div>
+                </div>
+
+                <div class="panel panel-default" layout="column" flex>
+                  <div class="panel-heading">Dados da Esposa</div>
+                  <div class="panel-body">
+                    <conjuge funcoes="$ctrl.funcoes.esposa">
+
+                    </conjuge>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div uib-accordion-group class="panel-default" heading="Dados do casal">
+              <div layout="row">
+                <div layout="column" flex="70">
+
+                  <div layout="row" flex>
+                    <md-input-container flex="40">
+                      <label class="md-body-1">Endereço</label>
+                      <input type="text" name="endereco" ng-model="$ctrl.funcoes.casal.row.endereco" >
+                    </md-input-container>
+                    <md-input-container flex="20">
+                      <label class="md-body-1">Número</label>
+                      <input type="number" name="numero" ng-model="$ctrl.funcoes.casal.row.numero" >
+                    </md-input-container>
+                    <md-input-container flex="40">
+                      <label class="md-body-1">Complemento</label>
+                      <input type="text" name="complemento" ng-model="$ctrl.funcoes.casal.row.complemento" >
+                    </md-input-container>
+                  </div>
+
+                  <div layout="row" flex>
+                    <md-input-container flex="40">
+                      <label class="md-body-1">Bairro</label>
+                      <input type="text" name="bairro" ng-model="$ctrl.funcoes.casal.row.bairro" >
+                    </md-input-container>
+                    <md-input-container flex="40">
+                      <label class="md-body-1">Cidade</label>
+                      <input type="text" required  name="cidade" ng-model="$ctrl.funcoes.casal.row.cidade" >
+                      <div ng-messages="form.cidade.$error" ng-show="form.cidade.$invalid">
+                        <p ng-message="required">Informe o nome da cidade</p>
+                      </div>
+                    </md-input-container>
+                    <md-input-container flex="20">
+                      <label class="md-body-1">Telefone</label>
+                      <input type="tel"  name="telefone1" ng-model="$ctrl.funcoes.casal.row.telefone1" >
+                    </md-input-container>
+                  </div>
+
+                  <div layout="row">
+                    <md-input-container flex="20">
+                      <label class="md-body-1">Cep</label>
+                      <input type="text" name="cep" ng-model="$ctrl.funcoes.casal.row.cep" >
+                    </md-input-container>
+                    <md-input-container flex="10">
+                      <label class="md-body-1">UF</label>
+                      <input type="text" name="cep" ng-model="$ctrl.funcoes.casal.row.uf" >
+                    </md-input-container>
+                    <md-input-container flex="40">
+                      <label class="md-body-1">Email</label>
+                      <input type="email" name="email" ng-model="$ctrl.funcoes.casal.row.email" >
+                    </md-input-container>
+                    <md-input-container flex="30">
+                      <label class="md-body-1">Data de Casamento</label>
+                      <input type="date" name="data_casamento" ng-model="$ctrl.funcoes.casal.row.data_casamento">
+                    </md-input-container>
+
+                  </div>
+
+                  <div layout="row">
+                    <div flex="30">
+                      <md-checkbox ng-model="$ctrl.funcoes.casal.row.possui_conducao"  ng-true-value="1" ng-false-value="0" class="md-accent">
+                        <label class="md-caption">Possui Condução</label>
+                      </md-checkbox>
+                    </div>
+                    <div flex="30">
+                      <md-checkbox ng-model="$ctrl.funcoes.casal.row.tem_filhos" ng-true-value="1" ng-false-value="0" class="md-accent">
+                        <label class="md-caption">Tem Filhos</label>
+                      </md-checkbox>
+                    </div>
+                    <md-input-container flex="40">
+                      <label class="md-body-1">Quantos Filhos</label>
+                      <input type="number" name="qt_filhos" ng-model="$ctrl.funcoes.casal.row.qt_filhos" >
+                    </md-input-container>                    
+                  </div>
+
+
+                </div>
+                <div layout="column" flex="30">
+                  <label>Foto Casal</label>
+                  <md-progress-linear class="md-warn" md-mode="determinate" ng-show="$ctrl.funcoes.casal.uploader.progress" ng-value="$ctrl.funcoes.casal.uploader.progress"></md-progress-linear>
+                  <div class="md-media-lg card-media">
+                    <img src="{{$ctrl.funcoes.casal.pathImg}}{{$ctrl.funcoes.casal.row.foto?$ctrl.funcoes.casal.row.foto:'noImg.jpg'}}" class="img-responsive img-rounded" height="120">
+                  </div>
+                  <input type="file" class="btn btn-default btn-sm form-control" nv-file-select uploader="$ctrl.funcoes.casal.uploader"/>
+                </div>
+              </div>
+
+            </div>
+
+            <div uib-accordion-group class="panel-default" heading="Dados do responsável pelos filhos">
+
+              <div layout="row" flex>
+                <md-input-container flex="50">
+                  <label class="md-body-1">Nome</label>
+                  <input type="text" name="resp_filhos" ng-model="$ctrl.funcoes.casal.row.resp_filhos" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label class="md-body-1">Endereço</label>
+                  <input type="text" name="end_resp_filhos" ng-model="$ctrl.funcoes.casal.row.end_resp_filhos" >
+                </md-input-container>
+              </div>
+
+              <div layout="row">
+                <md-input-container flex="40">
+                  <label class="md-body-1">Bairro</label>
+                  <input type="text" name="bairro_resp_filhos" ng-model="$ctrl.funcoes.casal.row.bairro_resp_filhos" >
+                </md-input-container>
+                <md-input-container flex="40">
+                  <label class="md-body-1">Cidade</label>
+                  <input type="text" name="cidade_resp_filhos" ng-model="$ctrl.funcoes.casal.row.cidade_resp_filhos" >
+                </md-input-container>
+                <md-input-container flex="20">
+                  <label class="md-body-1">Telefone</label>
+                  <input type="text" name="tel_resp_filhos" ng-model="$ctrl.funcoes.casal.row.tel_resp_filhos" >
+                </md-input-container>                                
+              </div>
+            </div>
+            <div uib-accordion-group class="panel-default" heading="Dados de quem convidou">
+              <div layout="row" flex>
+                <md-input-container flex="70">
+                  <label class="md-body-1">Nome</label>
+                  <input type="text" name="casal_convite" ng-model="$ctrl.funcoes.casal.row.casal_convite" >
+                </md-input-container>
+                <md-input-container flex="30">
+                  <label class="md-body-1">Telefone</label>
+                  <input type="text" name="end_resp_tel_casal_convitefilhos" ng-model="$ctrl.funcoes.casal.row.tel_casal_convite" >
+                </md-input-container>
+              </div>
+            </div>            
+          </uib-accordion>
+
+        </div>
+
+      </form>
+    </md-card-content>
+    <md-card-footer>
+      <md-divider></md-divider>
+      <md-card-actions layout="row" layout-align="start center">
+        <md-card-icon-actions>
+          <md-button class="md-accent" ng-click="$ctrl.funcoes.salvarCasal()">Salvar</md-button>
+        </md-card-icon-actions>
+        <md-button ng-if="$ctrl.funcoes.casal.row.id_casal" class="md-raised md-primary" ng-click="$ctrl.funcoes.casal.rowsSelected.push($ctrl.funcoes.casal.row);$ctrl.ok($ctrl.funcoes.casal.rowsSelected)">
+        Selecionar
+          <md-tooltip  md-autohide="true">
+            Selecionar este casal
+          </md-tooltip>
+        </md-button>
+      </md-card-actions>
+    </md-card-footer>
+  </md-card>
+
+</div>

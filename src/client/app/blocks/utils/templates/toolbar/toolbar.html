@@ -1,0 +1,65 @@
+<div ng-switch on="$ctrl.funcoes.toolbarModelo">
+  <div ng-switch-when="1">
+      <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+          <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.mediaxs()}" ng-click="$ctrl.funcoes.btAddNovo()">
+            <md-icon>add</md-icon>
+            <md-tooltip md-autohide="true">{{$ctrl.funcoes.btAddTootip}}</md-tooltip>
+          </md-button>
+          <span class="md-title" ng-class="{'md-subhead':$ctrl.funcoes.mediaxs()}" ng-show="!$ctrl.funcoes.filtros.showField">{{$ctrl.funcoes.title}}</span>
+          <div flex></div>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.filtros.onClick()" aria-label="Filtro">
+            <md-icon ng-hide="$ctrl.funcoes.filtros.digitando">search</md-icon>
+            <md-progress-circular ng-show="$ctrl.funcoes.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+          </button>
+          <form class="animacao" autocomplete="off" novalidate flex="{{$ctrl.funcoes.filtros.flex}}" layout="row">
+              <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+              <input id="filtro" ng-model="$ctrl.funcoes.filtros.mainField"  ng-change="$ctrl.funcoes.filtros.onChange()" placeholder="{{$ctrl.funcoes.filtros.placeholder}}">
+          </form>
+          <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.filtros.showField" ng-click="$ctrl.funcoes.filtros.onClick()" aria-label="close">
+            <md-tooltip>Remover filtro</md-tooltip>
+            <md-icon>close</md-icon>
+          </button>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.filtros.setConfigFiltro()" aria-label="Filtro">
+            <md-tooltip>filtro Avançado</md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </button>
+          <button class="md-icon-button md-button" type="button" ng-click="$ctrl.funcoes.report()" aria-label="print">
+            <md-tooltip>Imprimir</md-tooltip>
+            <md-icon>print</md-icon>
+          </button>
+        </div>
+      </md-toolbar>
+  </div>
+  <div ng-switch-when="2">
+    <md-toolbar class="md-table-toolbar md-default" >
+      <div class="md-toolbar-tools">
+
+        <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.btSearchClick" aria-label="Filtro">
+          <md-icon ng-hide="$ctrl.funcoes.isDigitando">search</md-icon>
+          <md-progress-circular ng-show="$ctrl.funcoes.isDigitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+        </button>
+
+        <form flex layout="row">
+            <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+            <input id="filtro" ng-model="$ctrl.funcoes.mainFieldFilter"  ng-change="$ctrl.funcoes.mainFieldFilterChange" placeholder="$ctrl.funcoes.mainFieldPlacehouder" tabindex="0" >
+        </form>
+        <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.mainFieldFilter" ng-click="$ctrl.funcoes.filtroOnclick()" aria-label="close">
+          <md-tooltip>Remover filtro</md-tooltip>
+          <md-icon>close</md-icon>
+        </button>
+
+        <div flex></div>
+
+        <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.setConfigFiltro()" aria-label="Filtro">
+          <md-tooltip>filtro Avançado</md-tooltip>
+          <md-icon>filter_list</md-icon>
+        </button>
+        <button class="md-icon-button md-button" type="button" ng-click="$ctrl.funcoes.report()" aria-label="print">
+          <md-tooltip>Imprimir Listagem</md-tooltip>
+          <md-icon>print</md-icon>
+        </button>
+      </div>
+    </md-toolbar>
+  </div>  
+</div>

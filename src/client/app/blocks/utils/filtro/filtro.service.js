@@ -5,15 +5,17 @@
         .module('blocks.utils')
         .service('FiltroService', FiltroService);
 
-    //FiltroService.$inject = [];
+    FiltroService.$inject = ['UtilsFunctions'];
 
     /* @ngInject */
-    function FiltroService() {
+    function FiltroService(UtilsFunctions) {
         this.funcoes = funcoes ;
 
         function funcoes () {
           var vm = this;
+          var isset = UtilsFunctions.isset;
           vm.filtros = {
+              placeholder:'',
               showField:false,//mostrar o campo principal mainField
               flex:'0',
               mainField:'',//campo de pesquisa principal
@@ -22,6 +24,8 @@
               fields : [],//campos que podem ser pesquisados
               fildsQuery:[],//campos que foram adicionados para pesquisar
               functionRead:{},//função que chama a pesquisa na api
+              functionDinamic:{},//funçao que faz a pesquisa em autocomplete
+              fieldDinamic:'',//campo que liga ao text de pesquisa do autocomplete
               filtro:{},
               onClick:function(){//gatilho que seta a var showField e faz o procedimento para exibir o campo
                   vm.filtros.showField = !vm.filtros.showField;
@@ -44,10 +48,32 @@
                 }
               },
 
+              showExpress:function (argument) {
+                if (isset(vm.filtros.filtro.campo)) {
+                  if (isset(vm.filtros.filtro.express)) {
+                    if (vm.filtros.filtro.express == 'LOGICO') {
+                      return false;
+                    } else {
+                      return true;
+                    }
+                  } else {
+                    return true
+                  }
+                } else {
+                  return false
+                }
+              },
+
               onCheangeFields:function (field) {//quando alterar o campo do filtro
                 vm.filtros.filtro.alias=field.alias;
                 vm.filtros.filtro.type=field.type;
                 vm.filtros.filtro.typeValues=field.values;
+                if (field.logico) {//ira conter no campo as expressoes : is, in ou not 
+                  vm.filtros.filtro.express="LOGICO";
+                } else if (vm.filtros.filtro.express) {
+                  vm.filtros.filtro.express = '';
+                }
+                vm.filtros.filtro.value = null;
               },
 
               cleanFilter:function () {//gatilho que limpa o campo de pesquisa e faz a consulta
@@ -67,6 +93,10 @@
                 vm.filtros.filtro = {};
                 vm.filtros.functionRead();
               },
+
+              onChangeDinamic:function (row) {
+                vm.filtros.filtro.value = row[vm.filtros.filtro.typeValues];
+              }
           };
         }
     }

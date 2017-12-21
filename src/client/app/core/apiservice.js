@@ -5,10 +5,10 @@
         .module('app.core')
         .factory('ApiService', ApiService);
 
-    ApiService.$inject = ['$filter','$http', '$q', 'logger', 'config','UtilsFunctions'];
+    ApiService.$inject = ['$filter','$http', '$q', 'config','UtilsFunctions','logger'];
     /* @ngInject */
 
-    function ApiService($filter, $http, $q, logger, config,UtilsFunctions) {
+    function ApiService($filter, $http, $q, config,UtilsFunctions,logger) {
       var isset = UtilsFunctions.isset;
         var service = {
             read                : read,
@@ -17,14 +17,17 @@
             deletar             : deletar,
             aplayUpdates        : aplayUpdates,
             enviarEmail         : enviarEmail,
+            gerarPdf            : gerarPdf,
+            callFunction        : callFunction,
+            callProcedure       : callProcedure,
         };
 
         return service;
 
         function read(prm) {
-          UtilsFunctions.validarDataset(prm.dataSet);
+          UtilsFunctions.validarDataset(prm.dataset);
             var api = 'consulta';
-            return API(prm.dataSet,api,prm.msgErro,prm.msgSucess)
+            return API(prm.dataset,api)
                 .then(function (data) {
                     return data;
                  });
@@ -41,7 +44,7 @@
             } else {
                 prm.dataset.estrutura = UtilsFunctions.removeCamposInvalidos(prm.dataset.estrutura,prm.camposInvalidos);
             }
-            return API(prm.dataset,api,prm.msgErro,prm.msgSucess)
+            return API(prm.dataset,api)
                 .then(function (result){
                     return result;
                 });
@@ -56,7 +59,7 @@
             } else {
                 prm.dataset.estrutura = UtilsFunctions.removeCamposInvalidos(prm.dataset.estrutura,prm.camposInvalidos);
             }
-            return API(prm.dataset,api,prm.msgErro,prm.msgSucess)
+            return API(prm.dataset,api)
                 .then(function (result){
                     return result;
                 });
@@ -64,10 +67,26 @@
 
         function deletar (prm) {
             var api = 'delete';
-            return API(prm.dataset,api,prm.msgErro,prm.msgSucess)
+            return API(prm.dataset,api)
                 .then(function (result){
                     return result;
                 });
+        }
+
+        function callFunction(prm) {
+          var api = 'functionSql';
+          return API(prm.dataset,api)
+              .then(function (result) {
+                return result;
+              });
+        }
+
+        function callProcedure(prm) {
+          var api = 'procedureSql';
+          return API(prm.dataset,api)
+              .then(function (result) {
+                return result;
+              });
         }
 
         function enviarEmail(email) {
@@ -76,6 +95,13 @@
                 .then(function (result) {
                     return result;
                 });
+        }
+        function gerarPdf(data) {
+          var api = 'report';
+          return API(data,api)
+          .then(function (result){
+              return result;
+          });
         }
 
         function aplayUpdates(prm) {
@@ -123,7 +149,7 @@
           });
         }
 
-        function API(prmWebService, servico, msgErro, msgSucess) {
+        function API(prmWebService, servico) {
             prmWebService.db = config.dbase;
             var req = {
                     url    : config.urlWebService+servico,
@@ -141,19 +167,11 @@
                 .catch(fail);
 
             function success(response) {
-                if (response.data.status) {
-                    if (response.data.status == "ok") {
-                        if ( msgSucess !== null) {
-                            logger.success(msgSucess);
-                        }
-                    } else {
-                        logger.error(msgErro+' Erro: '+response.data.msg);
-                    }
-                }
                 return response.data;
             }
 
             function fail(error) {
+              var msgErro = 'Solicitação não concluida, tente outra vez!'
                 if (error.status == -1) {
                     logger.error(msgErro+' Erro : Falha na conexão com o servidor, verifique sua conexão.');
                 } else {

@@ -2,20 +2,33 @@
 		class="md-sidenav-left main-sidenav"
 		md-is-locked-open="$mdMedia('gt-sm')"
         md-component-id="left"
-        ng-click="$ctrl.funcoes.closeSideNave()"
+        ng-click="$ctrl.funcoes.closeSideNave('left')"
         md-disable-backdrop
-
     >
-    	<md-content layout="column" flex style="background-color: rgb(97,97,97);">
-    		<div style="height: 60px">
-	    		<header class="md-primary">
-	    			<a href="/" class="navbar-brand"><img alt="{{$ctrl.funcoes.altImg}}" src="images/logo-blue.png" height="30"></a>
+		<md-toolbar layout="row" md-colors="{background:'grey'}">
+			<div class="md-toolbar-tools">
+				<img alt="{{$ctrl.funcoes.altImg}}" src="images/jasati_logo.png" height="40">
+				<span layout-margin ng-class="{'md-subhead':$ctrl.funcoes.mediaxs()}">{{$ctrl.funcoes.title}}</span>
+			</div>
+		</md-toolbar>
+    	<md-content layout="column" flex md-colors="{background:'Accent'}" >
+<!--     		<div style="height: 60px">97,97,97
+	    		<header class="md-primary">rgb(25,118,210);blue
+	    			<a href="/" class="navbar-brand"><img alt="{{$ctrl.funcoes.altImg}}" src="images/jasati_logo.png" height="60"></a>
 	    		</header>
 
-    		</div>
+    		</div> -->
     		<div >
 				<md-list>
-					<md-list-item class="md-2-line" theme="forest" ng-repeat="r in $ctrl.funcoes.navRoutes" ng-click="$ctrl.funcoes.setTitle(r.settings.content)" ng-if="$ctrl.funcoes.verPermissao(r.settings.perm)||r.settings.perm==0" ui-sref="{{r.name}}" ui-sref-active="active" >
+					<md-list-item class="md-2-line" ng-click="$ctrl.funcoes.showUser()" id="user-name">
+						<img ng-src="{{$ctrl.funcoes.pathImg}}{{$ctrl.funcoes.usuario.foto?$ctrl.funcoes.usuario.foto:'noImg.jpg'}}" class="md-avatar" alt="{{$ctrl.funcoes.usuario.nome}}" />
+						<div class="md-list-item-text" layout="column">
+							<span class="md-caption">Bem vindo de volta</span>
+							<p>{{$ctrl.funcoes.usuario.nome}}</p>
+						</div>
+					</md-list-item>
+					<md-divider></md-divider>
+					<md-list-item class="md-2-line" ng-repeat="r in $ctrl.funcoes.navRoutes" ng-if="$ctrl.funcoes.verPermissao(r.settings.perm)||r.settings.perm==0" ui-sref="{{r.name}}" ui-sref-active="active" >
 						<md-icon style="color: rgba(255,255,255,0.87)">{{r.settings.icon}}</md-icon>
 						<div  class="md-list-item-text" layout="column">
 							<p style="color: rgba(255,255,255,0.87)">{{r.settings.content}}</p>

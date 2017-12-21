@@ -1,0 +1,39 @@
+<md-content flex>
+  <md-card>
+    <md-nav-bar
+      md-no-ink-bar="disableInkBar"
+      md-selected-nav-item="currentNavItem"
+      nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-sref="layout.pgitem.cadastros" name="cadastros">
+        <md-icon>queue</md-icon>
+        <span hide-xs>Cadastros</span>
+      </md-nav-item>
+      <md-nav-item md-nav-sref="layout.pgitem.estoque" name="estoque">
+        <md-icon>widgets</md-icon>
+        <span hide-xs>Estoque</span>
+      </md-nav-item>
+      <md-nav-item md-nav-sref="layout.pgitem.tabela" name="tabela">
+        <md-icon>assignment</md-icon>
+        <span hide-xs>Tabela de Preços</span>
+      </md-nav-item>
+      <md-nav-item md-nav-sref="layout.pgitem.categoria" name="categoria">
+        <md-icon>style</md-icon>
+        <span hide-xs>Gerenciar Categorias</span>
+      </md-nav-item>
+      <md-nav-item md-nav-sref="layout.pgitem.unidade" name="unidade">
+        <md-icon>group_work</md-icon>
+        <span hide-xs>Gerenciar Unidades</span>
+      </md-nav-item>
+      <!-- these require actual routing with ui-router or ng-route, so they
+      won't work in the demo
+      <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+      <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+      You can also add options for the <code>ui-sref-opts</code> attribute.
+      <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+        Page Six
+      </md-nav-item>
+      -->
+    </md-nav-bar>
+    <div ui-view></div>
+  </md-card>
+<md-content>

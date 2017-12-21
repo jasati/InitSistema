@@ -75,7 +75,7 @@
     			dataSetProvider.provider.setValor(dts,'consulta',query);
     			dataSetProvider.provider.setValor(dts,'limit',func.dados.getLimite());
     			var post = {
-    				dataSet:dts,
+    				dataset:dts,
     				msgErro:'Falha ao Realizar o Login',
     				msgSucess:'',
     			};
@@ -130,7 +130,7 @@
           var query = " and email = '"+email+"' and senha = '"+func.alterarSenha.oldSenha+"'";
           dataSetProvider.provider.setValor(dts,'consulta',query);
           var post = {
-            dataSet:dts,
+            dataset:dts,
             msgErro:'Falha ao validar a senha.',
             msgSucess:'',
           };

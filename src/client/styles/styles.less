@@ -1,3 +1,4 @@
+
 html,body{
 	background-color: #f2f2f2;
 	font-size: 1.6rem;
@@ -11,8 +12,7 @@ html {
 .main-sidenav {
  min-width: 200px !important;
  width: 50vw !important;
- max-width: 200px !important;
- background-color: rgb(97,97,97);
+ max-width: 300px !important;
  height:100%;
 }
 
@@ -84,10 +84,16 @@ md-toolbar.md-table-toolbar form > input:focus {
   outline: none;
 }
 .striped:nth-child(even){
-	background-color: #f5f5ef;
+	background-color: #e6e6db;
+}
+.dt-row:nth-child(even){
+  background-color: #eee;
+}
+.row-table-click>tr:hover>td{
+  cursor: pointer;
 }
 .row-hover>tr:hover{
-	background-color: #f2f2f2;
+	/*background-color: #f2f2f2;*/
 	cursor: pointer;
 }
 .row-hover>tr:hover>td{
@@ -111,8 +117,50 @@ md-toolbar.md-table-toolbar form > input:focus {
 }
 .modal-backdrop {
 	z-index: 79 !important;
-
 }
+.footer {
+ position: relative;
+ bottom: 20px;
+}
+
 .modal {
 	z-index: 80 !important;
+}
+/*essa marcação foi zerada porque nao estava deixando as colunas da tabela ser redimencionada*/
+table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2), table.md-table:not(.md-row-select) th.md-column:nth-child(n+2):nth-last-child(n+2){
+  padding: 0;
+}
+/*Alterar o background original do li selecionado do component autocomplete*/
+.md-autocomplete-suggestions-container.md-default-theme li.selected, .md-autocomplete-suggestions-container li.selected, .md-autocomplete-suggestions-container.md-default-theme li:hover, .md-autocomplete-suggestions-container li:hover{
+  background: rgb(68, 138, 255);
+}
+
+.li-table-auto{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.autocomplete-custom-template li{
+  border-bottom: 1px solid #ccc;
+  line-height: 2;
+};
+/*diminuindo os espaços*/
+md-card .md-actions, md-card md-card-actions {
+   margin: 0;
+}
+
+md-input-container {
+  margin-bottom: 0px;
+}
+md-input-container.md-default-theme .md-input, md-input-container .md-input {
+    color: rgba(20,20,20,0.80);
+    border-color: rgba(39, 36, 36, 0.50);
+}
+
+.md-button.md-default-theme.md-accent[disabled], .md-button.md-accent[disabled], .md-button.md-default-theme.md-fab[disabled], .md-button.md-fab[disabled], .md-button.md-default-theme.md-raised[disabled], .md-button.md-raised[disabled], .md-button.md-default-theme.md-warn[disabled], .md-button.md-warn[disabled], .md-button.md-default-theme[disabled], .md-button[disabled] {
+    color: rgba(175, 175, 175, 0.34);
+}
+
+.atura-table{
+  max-height: 400px;
+  overflow-x: scroll;
 }

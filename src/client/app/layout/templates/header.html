@@ -1,20 +1,15 @@
 
-<md-toolbar md-whiteframe="5" md-scroll-shrink md-shrink-speed-factor="0.5">
+<md-toolbar md-whiteframe="1" md-scroll-shrink md-colors="{background:'grey'}">
 	<div class="md-toolbar-tools">
 		<md-button class="menu md-icon-button" hide-gt-sm ng-click="$ctrl.funcoes.openSideNave()">
 			<md-icon>menu</md-icon>
 		</md-button>
-		<div>
-			<span>{{$ctrl.funcoes.title}}</span>
-		</div>
+			<md-trucate>
+				<span ng-repeat="path in $ctrl.funcoes.paths | filter:{name:'!'}">
+					<md-button ng-disabled="($ctrl.funcoes.paths.length-1)==$index" md-no-ink ui-sref="{{path.state.name}}" >{{path.state.self.title}}</md-button>
+					<md-icon ng-hide="($ctrl.funcoes.paths.length-1)==$index">chevron_right</md-icon>
+				</span>
+			</md-trucate>
 		<span flex></span>
-        <!-- <md-button class="md-icon-button" aria-label="Notificação">
-          <md-icon>notifications</md-icon>
-        </md-button> -->
-		<md-list>
-        	<md-list-item class="avatar-user">
-  				<a href ng-click="$ctrl.funcoes.showUser()"><img ng-src="{{$ctrl.funcoes.pathImg}}{{$ctrl.funcoes.usuario.image?$ctrl.funcoes.usuario.image:'noImg.jpg'}}" class="md-avatar" alt="{{$ctrl.funcoes.usuario.nome}}" /></a>
-			</md-list-item>
-		</md-list>
 	</div>
 </md-toolbar>

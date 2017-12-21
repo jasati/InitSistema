@@ -1,0 +1,30 @@
+<div layout="column" >
+  <md-toolbar class="md-table-toolbar" md-theme="dark-grey">
+    <div class="md-toolbar-tools">
+      <span>{{$ctrl.funcoes.tipoMov.data.row.descricao}}</span>
+      <md-icon>keyboard_arrow_right</md-icon>
+      <span>{{$ctrl.funcoes.data.label}}</span>
+
+      <span flex></span>
+
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <div ng-switch="$ctrl.funcoes.tipoMov.data.row.tipo">
+      <div ng-switch-when="S">
+        <div ng-include="'app/sistema/automacao/movestoque/templates/mov-itens-saida.html'"></div>
+      </div>
+      <div ng-switch-when="E">
+        <div ng-include="'app/sistema/automacao/movestoque/templates/mov-itens-entrada.html'"></div>
+      </div>
+      <div ng-switch-default>
+        <div ng-include="'app/sistema/automacao/movestoque/templates/mov-itens-saida.html'"></div>
+      </div>
+    </div>
+
+  </md-card-content>
+
+</div>

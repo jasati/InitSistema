@@ -1,0 +1,93 @@
+<div>
+    <div>
+      <form name="form" novalidate autocomplete="off">
+        <div layout-padding layout="column">
+
+          <md-input-container class="md-block" >
+            <label class="md-body-1">Nome Completo</label>
+            <input type="text" required  name="nome_comp" ng-model="$ctrl.funcoes.conjuge.row.nome_comp" >
+            <div ng-messages="form.nome_comp.$error" ng-show="form.nome_comp.$invalid">
+              <p ng-message="required">{{$ctrl.funcoes.conjuge.row.tipo_conjuge=='M'?'Informe o nome do marido':'Informe o nome da esposa'}}</p>
+            </div>
+          </md-input-container>
+
+          <div layout="row">
+            <md-input-container flex="50">
+              <label class="md-body-1">Nascimento</label>
+              <input type="date" required name="nascimento" ng-model="$ctrl.funcoes.conjuge.row.nascimento" >
+              <div ng-messages="form.nascimento.$error" ng-show="form.nascimento.$invalid">
+                <p ng-message="required">Informe a data de nascimento</p>
+              </div>
+            </md-input-container>
+            <md-input-container flex="50">
+              <label class="md-body-1">Como deseja ser chamado no ecc</label>
+              <input type="text" required  name="nome_red" ng-model="$ctrl.funcoes.conjuge.row.nome_red" >
+              <div ng-messages="form.nome_red.$error" ng-show="form.nome_red.$invalid">
+                <p ng-message="required">{{$ctrl.funcoes.conjuge.row.tipo_conjuge=='M'?'Informe o nome reduzido do marido':'Informe o nome reduzido da esposa'}}</p>
+              </div>
+            </md-input-container>
+          </div>
+
+          <div layout="row">
+            <div layout="column" flex="50">
+              <md-input-container class="md-block">
+                <label class="md-body-1">Profissão</label>
+                <input type="text" required  name="profissao" ng-model="$ctrl.funcoes.conjuge.row.profissao" >
+                <div ng-messages="form.profissao.$error" ng-show="form.profissao.$invalid">
+                  <p ng-message="required">Informe a profissão</p>
+                </div>
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label class="md-body-1">Igreja que pertence</label>
+                <input type="text" required  name="igreja" ng-model="$ctrl.funcoes.conjuge.row.igreja" >
+                <div ng-messages="form.igreja.$error" ng-show="form.igreja.$invalid">
+                  <p ng-message="required">Informe o nome da igreja que pertence</p>
+                </div>
+              </md-input-container>
+            </div>
+            <div layout="column" flex="50">
+              <div layout="row">
+                <md-radio-group ng-model="$ctrl.funcoes.conjuge.row.religiao">
+                  <label class="md-body-1">Religião</label>
+                  <md-radio-button value="0" class="md-caption">Nenhuma</md-radio-button>
+                  <md-radio-button value="1" class="md-caption">Evangélico</md-radio-button>
+                  <md-radio-button value="2" class="md-caption">Católico</md-radio-button>
+                  <md-radio-button value="3" class="md-caption">Espirita</md-radio-button>
+                  <md-radio-button value="4" class="md-caption">Outro</md-radio-button>
+                </md-radio-group>
+                <md-radio-group ng-model="$ctrl.funcoes.conjuge.row.escolaridade">
+                  <label class="md-body-1">Escolaridade</label>
+                  <md-radio-button value="0" class="md-caption">Nenhuma</md-radio-button>
+                  <md-radio-button value="1" class="md-caption">Fundamental</md-radio-button>
+                  <md-radio-button value="2" class="md-caption">Médio</md-radio-button>
+                  <md-radio-button value="3" class="md-caption">Superior</md-radio-button>
+                </md-radio-group>
+              </div>
+            </div>
+          </div>
+
+          <div layout="row">
+              <md-input-container flex="30">
+                <label class="md-body-1">Celular</label>
+                <input type="text"  name="celular" ng-model="$ctrl.funcoes.conjuge.row.celular" >
+              </md-input-container>
+              <md-input-container flex="70">
+                <label class="md-body-1">Onde Trabalha</label>
+                <input type="text"  name="local_trabalho" ng-model="$ctrl.funcoes.conjuge.row.local_trabalho" >
+              </md-input-container>
+          </div>
+
+          <md-input-container class="md-block">
+            <label class="md-body-1">Dieta Alimentar (não pode comer)</label>
+            <input type="text"  name="dieta_alim" ng-model="$ctrl.funcoes.conjuge.row.dieta_alim" >
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label class="md-body-1">Medicamentos e alergias</label>
+            <input type="text"  name="alergias" ng-model="$ctrl.funcoes.conjuge.row.alergias" >
+          </md-input-container>
+        </div>
+
+      </form>
+    </div>
+
+</div>

@@ -1,0 +1,12 @@
+<md-content flex>
+	<md-card>
+		<j-toolbar funcoes="$ctrl.inventario.data.funcToolbar"></j-toolbar>
+		<filtro	filtros="$ctrl.inventario.data.filtros"></filtro>
+		<div layout-gt-xs="row" flex>
+			<div layout="column" flex="grow">
+				<j-pagination funcoes="$ctrl.inventario.data.funcPag"></j-pagination>
+				<j-table funcoes="$ctrl.inventario.data.funcTable"></j-table>
+			</div>
+		</div>
+	</md-card>
+</md-content>

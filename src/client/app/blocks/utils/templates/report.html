@@ -1,0 +1,14 @@
+<div layout="column" flex>
+  <md-toolbar class="md-default md-hue-2">
+    <div class="md-toolbar-tools">
+      <span>{{$ctrl.funcoes.title}}</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.funcoes.deletePdf();$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <div id='pdf' layout="column" flex="100">
+    <object  height="842px" data="{{$ctrl.funcoes.pdf}}"></object>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div layout="column">
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+<!--         <md-button class="md-icon-button"  ui-sref="layout.pgitem.categoria">
+        <md-icon>arrow_back</md-icon>
+      </md-button> -->
+      <span>Cadastro de categorias</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <form name="form" novalidate autocomplete="off">
+      <div layout-padding layout="column">
+
+          <md-radio-group required name="tipo" ng-model="$ctrl.funcoes.categoria.row.tipo" class="md-block">
+            <label>Classificação da categoría</label>
+            <div layout="row">
+              <md-radio-button value="P" class="md-caption">Produto</md-radio-button>
+              <md-radio-button value="S" class="md-caption">Serviço</md-radio-button>
+            </div>
+          </md-radio-group>
+
+
+          <md-input-container class="md-block" >
+            <label class="md-body-1">Descrição</label>
+            <input type="text" required  name="descricao" ng-model="$ctrl.funcoes.categoria.row.descricao" >
+            <div ng-messages="form.descricao.$error">
+              <div ng-message="required">Informe a descrição da categoría.</div>
+            </div>
+          </md-input-container>
+
+<!--           <md-input-container class="md-block" >
+            <label class="md-body-1">Categoría Pai</label>
+            <md-select ng-model="$ctrl.funcoes.categoria.row.id_cat_pai">
+              <md-option ng-value="categoria.id_categoria" ng-repeat="categoria in $ctrl.funcoes.categoria.rows | filter:{id_categoria:'!'+$ctrl.funcoes.categoria.row.id_categoria}">{{categoria.parent}}</md-option>
+            </md-select>
+          </md-input-container> -->
+
+          <md-autocomplete
+              md-no-cache="false"
+              md-search-text="$ctrl.searchText"
+              md-selected-item="$ctrl.funcoes.categoria.row.cat_pai"
+              md-items="row in $ctrl.funcoes.filtroAutoComplete($ctrl.searchText,$ctrl.funcoes.categoria.row.id_categoria)"
+              md-selected-item-change="$ctrl.funcoes.changeAutoComplete($ctrl.funcoes.categoria.row,row)"
+              md-item-text="row.descricao"
+              md-min-length="0"
+              md-clear-button="true"
+              md-floating-label="Família da categoría"
+              placeholder="Família da categoría">
+            <md-item-template>
+              <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{row.parent}}</span>
+            </md-item-template>
+            <md-not-found>
+              A categoría "{{$ctrl.searchText}}" não foi encontrado.
+            </md-not-found>
+          </md-autocomplete>          
+      </div>
+    </form>
+  </md-card-content>
+  <md-card-footer>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.categoria.salvar();">Salvar</md-button>
+
+  </md-card-actions>
+  </md-card-footer>
+
+</div>          

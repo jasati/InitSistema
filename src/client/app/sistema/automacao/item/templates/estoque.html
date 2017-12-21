@@ -1,0 +1,96 @@
+
+<!-- <div layout="column" flex> -->
+
+      <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.item.filtros.onClick()" aria-label="Filtro">
+            <md-icon ng-hide="$ctrl.funcoes.item.filtros.digitando">search</md-icon>
+            <md-progress-circular ng-show="$ctrl.funcoes.item.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+          </button>
+          <form flex="20" layout="row" autocomplete="off">
+              <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+              <input id="filtro" ng-model="$ctrl.funcoes.item.filtros.mainField"  ng-change="$ctrl.funcoes.item.filtros.onChange()" placeholder="Consultar Estoque" tabindex="0" >
+
+          </form>
+          <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.item.filtros.mainField" ng-click="$ctrl.funcoes.item.filtros.onClick()" aria-label="close">
+            <md-tooltip>Remover filtro</md-tooltip>
+            <md-icon>close</md-icon>
+          </button>
+          <md-input-container flex="20" >
+            <label class="md-body-1">Tabela de preços</label>
+            <md-select ng-model="$ctrl.funcoes.tabela" md-on-open="$ctrl.funcoes.filtrarTabela()" ng-change="$ctrl.funcoes.filtrar()">
+              <md-option value="0">A Vista</md-option>
+              <md-option ng-value="tab.id_item_preco" ng-repeat="tab in $ctrl.funcoes.tabPrecoItem.rows" >{{tab.descricao}}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-switch flex ng-model="$ctrl.funcoes.filtroEstoque.abaixo_saldo_min" aria-label="Minimo" ng-change="$ctrl.funcoes.filtrar()">
+            <span class="md-caption">Abaixo do Minimo</span>
+          </md-switch>
+          <md-switch flex ng-model="$ctrl.funcoes.filtroEstoque.abaixo_saldo_max" aria-label="Maximo" ng-change="$ctrl.funcoes.filtrar()">
+            <span class="md-caption">Abaixo do Máximo</span>
+            <md-tooltip>Sugestão de compras</md-tooltip>
+          </md-switch>          
+
+          <div flex></div>
+
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.item.filtros.setConfigFiltro()" aria-label="Filtro">
+            <md-tooltip>filtro Avançado</md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </button>
+          <button class="md-icon-button md-button" type="button" ng-click="$ctrl.funcoes.printEstoque($ctrl.funcoes.item.rows)" aria-label="print">
+            <md-tooltip>Imprimir Listagem</md-tooltip>
+            <md-icon>print</md-icon>
+          </button>
+        </div>
+      </md-toolbar>
+      <filtro
+        filtros="$ctrl.funcoes.item.filtros">
+      </filtro>
+      <md-divider></md-divider>
+
+      <div ng-if="$ctrl.funcoes.item.rows.length === 0" layout-padding layout-margin layout-align=" center center" layout="row" class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.item.reading,'alert-info':$ctrl.funcoes.item.reading}" role="alert">
+        <div ng-if="$ctrl.funcoes.item.reading" >
+          <md-progress-circular ng-disabled="!$ctrl.funcoes.item.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+          <p>Buscando Registros...</p>
+        </div>
+        <div ng-if="!$ctrl.funcoes.item.reading" align="center">
+          <p><b>Descupe!</b> Os registros não foram encontrados, talvez você ainda não tenha cadastrado ou atualize para recarregar.</p>
+          <md-button class="md-icon-button" ng-click="$ctrl.funcoes.item.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
+        </div>
+      </div>
+
+      <md-table-container ng-if="$ctrl.funcoes.item.rows.length > 0" class="atura-table">
+        <table md-table class="table table-condensed table-striped">
+          <thead md-head md-order="$ctrl.funcoes.item.orderBy" md-on-reorder="$ctrl.funcoes.item.filtros.functionRead">
+            <tr>
+              <th style="width: 10% !important" md-column md-order-by="i.codigo">Código</th>
+              <th style="width: 38% !important" md-column md-order-by="i.descricao"><span>Descrição do Item</span></th>
+              <th style="width: 10% !important" md-column md-order-by="i.marca">Marca</th>
+              <th style="width: 10% !important" md-column md-numeric md-order-by="i.saldo">Estoque</th>
+              <th style="width: 2% !important" md-column md-numeric md-order-by="i.saldo_min">Mínimo</th>
+              <th style="width: 2% !important" md-column md-numeric md-order-by="i.saldo_max">Máximo</th>
+              <th style="width: 10% !important" md-column md-numeric md-order-by="i.custo">Custo</th>
+              <th style="width: 10% !important" md-column md-numeric md-order-by="i.valor">Preço</th>
+              <th style="width: 5% !important" md-column md-numeric md-order-by="i.perc_preco">%Lucro</th>
+            </tr>
+          </thead>
+          <tbody md-body>
+            <tr class="striped" md-select="i" md-select-id="id_item" ng-repeat="i in $ctrl.funcoes.item.rows | orderBy: $ctrl.funcoes.item.orderBy">
+              <td md-cell>{{i.codigo}}</td>
+              <td md-cell>{{i.descricao}}</td>
+              <td md-cell>{{i.marca}}</td>
+              <td md-cell><span ng-class="{'text-danger':i.saldo<=i.saldo_min}">{{i.saldo | currency:''}}</span></td>
+              <td md-cell>{{i.saldo_min | currency:''}}</td>
+              <td md-cell>{{i.saldo_max | currency:''}}</td>
+              <td md-cell>{{i.custo | currency}}</td>
+              <td md-cell><span ng-class="{'text-danger':i.valor<=i.custo}"<b>{{i.valor | currency}}</b></td>
+                <td md-cell>{{((i.valor-i.custo)/i.custo*100).toFixed(2)}}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-card-actions >
+        <md-table-pagination md-limit="$ctrl.funcoes.item.pagination.limit" md-limit-options="$ctrl.funcoes.item.pagination.limitOptions" md-page="$ctrl.funcoes.item.pagination.pagina" md-total="{{$ctrl.funcoes.item.pagination.total}}"  md-on-paginate="$ctrl.funcoes.filtrar" md-page-select md-label="{{$ctrl.funcoes.item.pagination.label}}"></md-table-pagination>
+      </md-card-actions>
+<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+<!-- </div> -->

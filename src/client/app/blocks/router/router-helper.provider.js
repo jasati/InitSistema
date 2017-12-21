@@ -36,7 +36,7 @@
                 configureStates: configureStates,
                 getStates: getStates,
                 setStates: setStates,
-                stateCounts: stateCounts
+                stateCounts: stateCounts,
             };
 
             init();
@@ -75,7 +75,7 @@
                             (error.data || '') + '. <br/>' + (error.statusText || '') +
                             ': ' + (error.status || '');
                         logger.warning(msg, [toState]);
-                        $location.path('/');
+                        $location.path('/app');
                     }
                 );
             }

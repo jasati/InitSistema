@@ -17,9 +17,22 @@
                 state: 'layout',
                 config: {
                     url: '/app',
+                    title:'Inicio',
                     component:'layoute',
+                    resolve : {
+                        layoute: resolveLayout
+                    }
                 }
             }
         ];
     }
+
+    resolveLayout.$inject = ['LayoutService'];
+
+    function resolveLayout(LayoutService) {
+        var funcoes = new LayoutService.funcoes();
+        funcoes.getNavRoutes();
+        return funcoes;
+    }    
 })();
+

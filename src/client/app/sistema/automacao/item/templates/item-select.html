@@ -1,0 +1,61 @@
+<md-toolbar class="md-table-toolbar md-accent">
+  <div class="md-toolbar-tools">
+    <span>Adicionando Item</span>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+        <md-icon>close</md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<form name="formitens" novalidate autocomplete="off" >  
+  <md-autocomplete
+    required
+    id="autocompleteItem"
+    md-autofocus
+    md-no-cache="true"
+    md-search-text="$ctrl.searchItem"
+    md-selected-item="$ctrl.funcoes.item.row"
+    md-items="row in $ctrl.funcoes.filtroAutoComplete($ctrl.searchItem,$ctrl.funcoes.tabela)"
+    md-selected-item-change="row?$ctrl.ok(row):null"
+    md-item-text="row.descricao"
+    md-min-length="0"
+    md-menu-class="autocomplete-custom-template"
+    md-dropdown-items="10"
+    md-delay="500"
+    md-top-index="$ctrl.index"
+    placeholder="Selecione o item e tecle enter para confirmar ou esq para cancelar.">
+  <md-item-template >
+    <div layout="column">
+      <div layout="row">
+        <div flex="10" class="li-table-auto">
+          <span class="text-warning">{{$ctrl.index}}</span>
+          <span class="text-warning">{{row.codigo}}</span>
+        </div>
+        <div flex="55" class="li-table-auto">
+          <span ><b>{{row.descricao}}</b></span>
+        </div>
+        <div flex="15" class="li-table-auto">
+          <span >{{row.marca}}</span>
+        </div>
+        <div flex="15" class="li-table-auto">
+          <span class="text-danger"><b>{{row.valor | currency}}</b></span>
+        </div>
+        <div flex="5" class="li-table-auto">
+          <span>{{row.sigla}}</span>
+        </div>
+      </div>
+      <small flex class="li-table-auto text-capitalize text-muted" style="font-size: 70%">{{row.detalhes}}</small>
+    </div>
+  </md-item-template>
+  <md-not-found>
+    O Item "{{$ctrl.searchItem}}" não foi encontrado.
+  </md-not-found>
+    <div ng-messages="formitens.descricao.$error">
+      <div ng-message="required">Informe o Item.</div>
+    </div>
+  </md-autocomplete>
+</form>
+<div ng-init="$ctrl.funcoes.startFoco()">
+</div>
+
+

@@ -1,0 +1,28 @@
+<md-card-actions layout="row" layout-align="start center">
+  <md-autocomplete
+    flex="40"
+    required
+    name="p_emi_nome_comp"
+    md-class="md-accent"
+    md-require-match="true"
+    md-no-cache="false"
+    md-search-text="$ctrl.searchText"
+    md-selected-item="$ctrl.movimento.data.row.p_emi_nome_comp"
+    md-items="row in $ctrl.movimento.pessoas.filtroAutoComplete($ctrl.searchText)"
+    md-selected-item-change="$ctrl.movimento.changeEmitenteE($ctrl.movimento.data.row,row)"
+    md-item-text="row.nome_comp"
+    md-min-length="1"
+    
+    md-floating-label="Item">
+  <md-item-template>
+      <span>{{row.nome_comp}}</span>
+  </md-item-template>
+  <md-not-found>
+    O Item "{{$ctrl.searchText}}" não foi encontrado.
+  </md-not-found>
+    <div ng-messages="form.p_emi_nome_comp.$error">
+      <div ng-message="required">Informe o item.</div>
+    </div>
+  </md-autocomplete>      
+
+</md-card-actions>

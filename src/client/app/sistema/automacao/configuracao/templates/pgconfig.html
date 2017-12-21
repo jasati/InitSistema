@@ -1,0 +1,32 @@
+<md-content flex>
+  <md-card>
+    <md-nav-bar
+      md-no-ink-bar="disableInkBar"
+      md-selected-nav-item="currentNavItem"
+      nav-bar-aria-label="navigation links">
+
+      <md-nav-item md-nav-sref="layoute" name="gerais">
+        <md-icon>tune</md-icon>
+        <span hide-xs>Gerais</span>
+      </md-nav-item>
+      <md-nav-item md-nav-sref="layoute" name="filial">
+        <md-icon>store</md-icon>
+        <span hide-xs> Dados Filial </span>
+      </md-nav-item>
+      <md-nav-item md-nav-sref="layoute" name="tipoMov">
+        <md-icon>chrome_reader_mode</md-icon>
+        <span hide-xs>Tipo de Movimentações</span>
+      </md-nav-item>
+      <md-nav-item md-nav-sref="layoute" name="tabelas">
+        <md-icon>assignment</md-icon>
+        <span hide-xs>Tabelas de Preço</span>
+      </md-nav-item>
+      <md-nav-item md-nav-sref="layoute" name="pagamento">
+        <md-icon>monetization_on</md-icon>
+        <span hide-xs>Formas de pagamento</span>
+      </md-nav-item>      
+
+    </md-nav-bar>
+    <div ui-view></div>
+  </md-card>
+<md-content>

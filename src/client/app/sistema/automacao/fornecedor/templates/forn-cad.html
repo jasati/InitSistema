@@ -1,0 +1,45 @@
+<div layout="column">
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>Cadastro de Fornecedores</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <form name="form" novalidate autocomplete="off">
+      <div layout-padding layout="column">
+        <pessoa funcoes="$ctrl.funcoes.pessoaFunc">
+        </pessoa>
+        <div layout="row">
+          <md-radio-group name="status" required ng-model="$ctrl.funcoes.forn.row.status" class="md-block">
+            <label class="md-body-2">Status do fornecedor</label>
+            <div layout="row">
+              <md-radio-button value="1" class="md-caption">Ativo</md-radio-button>
+              <md-radio-button value="0" class="md-caption">Inativo</md-radio-button>
+            </div>
+          </md-radio-group>
+
+          <md-input-container flex='50' >
+            <label class="md-body-1">Nome do Representante</label>
+            <input type="text" name="representante" ng-model="$ctrl.funcoes.forn.row.representante" >
+          </md-input-container>
+          <md-input-container flex >
+            <label class="md-body-1">Celular do Representante</label>
+            <input type="text" name="cel1" ng-model="$ctrl.funcoes.forn.row.cel1" >
+          </md-input-container>
+        </div>
+      </div>
+    </form>
+  </md-card-content>
+  <md-card-footer>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.salvar();">Salvar</md-button>
+
+  </md-card-actions>
+  </md-card-footer>
+
+</div>        

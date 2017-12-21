@@ -1,0 +1,82 @@
+
+<div layout="column" flex>
+
+      <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+          <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.item.mediaxs()}" ng-click="$ctrl.funcoes.novo()">
+            <md-icon>add</md-icon>
+            <md-tooltip md-autohide="true">Novo Item</md-tooltip>
+          </md-button>
+          <span ng-class="{'md-subhead':$ctrl.funcoes.item.mediaxs()}" ng-show="!$ctrl.funcoes.item.filtros.showField">item</span>
+          <div flex></div>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.item.filtros.onClick()" aria-label="Filtro">
+            <md-icon ng-hide="$ctrl.funcoes.item.filtros.digitando">search</md-icon>
+            <md-progress-circular ng-show="$ctrl.funcoes.item.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+          </button>
+          <form class="animacao" flex="{{$ctrl.funcoes.item.filtros.flex}}" layout="row">
+              <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+              <input id="filtro" ng-model="$ctrl.funcoes.item.filtros.mainField"  ng-change="$ctrl.funcoes.item.filtros.onChange()" placeholder="Localizar item">
+          </form>
+          <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.item.filtros.showField" ng-click="$ctrl.funcoes.item.filtros.onClick()" aria-label="close">
+            <md-tooltip>Remover filtro</md-tooltip>
+            <md-icon>close</md-icon>
+          </button>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.item.filtros.setConfigFiltro()" aria-label="Filtro">
+            <md-tooltip>filtro Avançado</md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </button>
+          <button class="md-icon-button md-button" type="button" ng-click="$ctrl.funcoes.report()" aria-label="print">
+            <md-tooltip>Imprimir Listagem</md-tooltip>
+            <md-icon>print</md-icon>
+          </button>
+        </div>
+      </md-toolbar>
+      <filtro
+        filtros="$ctrl.funcoes.item.filtros">
+      </filtro>
+      <md-divider></md-divider>
+
+      <div ng-if="$ctrl.funcoes.item.rows.length === 0" layout-padding layout-margin layout-align=" center center" layout="row" class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.item.reading,'alert-info':$ctrl.funcoes.item.reading}" role="alert">
+        <div ng-if="$ctrl.funcoes.item.reading" >
+          <md-progress-circular ng-disabled="!$ctrl.funcoes.item.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+          <p>Buscando Registros...</p>
+        </div>
+        <div ng-if="!$ctrl.funcoes.item.reading" align="center">
+          <p><b>Descupe!</b> Os registros não foram encontrados, talvez você ainda não tenha cadastrado ou atualize para recarregar.</p>
+          <md-button class="md-icon-button" ng-click="$ctrl.funcoes.item.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
+        </div>
+      </div>
+
+      <md-table-container ng-if="$ctrl.funcoes.item.rows.length > 0" class="atura-table">
+        <table md-table>
+          <thead md-head md-order="$ctrl.funcoes.item.orderBy" md-on-reorder="$ctrl.funcoes.item.filtros.functionRead">
+            <tr >
+              <th style="width: 1%" md-column><!-- <md-button class="md-icon-button"  aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button> --></th>
+              <th style="width: 15% !important" md-column md-order-by="i.codigo"><span><b>Código</b></span></th>
+              <th style="width: 37% !important" md-column md-order-by="i.descricao"><span><b>Item</b></span></th>
+              <th style="width: 15% !important" md-column md-order-by="i.marca"><span><b>Marca</b></span></th>
+              <th style="width: 10% !important" md-column md-order-by="i.ref"><span><b>Referência</b></span></th>
+              <th style="width: 10% !important" md-column md-order-by="iu.sigla"><span><b>Unidade</b></span></th>
+              <th style="width: 10% !important" md-column md-order-by="i.status"><span><b>Status</b></span></th>
+              <th style="width: 1% !important" md-column ><span></span></th>
+            </tr>
+          </thead>
+          <tbody md-body>
+            <tr  class="striped" md-select="i" md-select-id="id_item" ng-repeat="i in $ctrl.funcoes.item.rows | orderBy:$ctrl.funcoes.item.orderBy">
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.alterar(i)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon></md-button></td>
+              <td md-cell>{{i.codigo}}</td>
+              <td md-cell>{{i.descricao}}</td>
+              <td md-cell>{{i.marca}}</td>
+              <td md-cell>{{i.ref}}</td>
+              <td md-cell><b>{{i.sigla}}</b></td>
+              <td md-cell><span ng-class="{'text-success':i.status==1,'text-danger':i.status==0}"><b> {{i.status?'Ativo':'Inativo'}}</b></span></td>
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.deletar($event,i)" aria-label="excluir"><md-icon aria-label="deletar">delete</md-icon></md-button></td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-card-actions >
+        <md-table-pagination md-limit="$ctrl.funcoes.item.pagination.limit" md-limit-options="$ctrl.funcoes.item.pagination.limitOptions" md-page="$ctrl.funcoes.item.pagination.pagina" md-total="{{$ctrl.funcoes.item.pagination.total}}"  md-on-paginate="$ctrl.funcoes.filtrar" md-page-select md-label="{{$ctrl.funcoes.item.pagination.label}}"></md-table-pagination>
+      </md-card-actions>
+
+</div>

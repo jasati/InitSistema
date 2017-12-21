@@ -58,7 +58,7 @@
 
         function usuario() {
           // campos são os campos da tabela que são visiveis no sistema
-        	var campos = '';
+        	var campos = ' u.id_usuario, u.id_empresa, u.id_galeria, u.nome, u.status, u.email, u.id_perfil, u.data_acess, u.ip_acess, g.imagem as foto';
           // camposFiltro são os campos usados para fazer a pesquisa no sistema
           var camposFiltro = [
               {field:"status",alias:"Status",type:"fixed",values:[{value:1,alias:"Ativo"},{value:0,alias:"Inativo"}]},
@@ -75,11 +75,11 @@
   	        };
 
   	    	var left_join = {
-  	            0:"",
+  	            0:"galeria g on u.id_galeria = g.id_galeria",
   	        };
           var camposData = [];
           var camposForeignKey = ['id_empresa'];
-	        var camposInvalidos = ['action'];
+	        var camposInvalidos = ['action','foto'];
           var emp = empresa();
         	var dataset = {
             setForeignKey   : true,//esse campo determina se a cada novo registro será recibido o campo id_empresa
@@ -103,7 +103,7 @@
             camposData      : camposData,
             camposForeignKey: camposForeignKey,
             valueForeignKey : [emp.id_empresa],//será preenchido quando dentro da classe que chamar essa função
-            campoImagem     : '',
+            campoImagem     : 'foto',
 
         	};
         	return dataset;

@@ -18,7 +18,7 @@
           </md-select>
         </md-input-container>
 
-        <md-input-container flex-gt-sm="30" ng-show="$ctrl.filtros.filtro.campo">
+        <md-input-container flex-gt-sm="30" ng-show="$ctrl.filtros.showExpress()">
           <label>Operador</label>
           <md-select name="express" ng-model="$ctrl.filtros.filtro.express" >
             <md-option value="=">Igual</md-option>
@@ -53,6 +53,25 @@
                   </md-option>
                 </md-select>
               </md-input-container>
+            </div>
+
+            <div ng-switch-when="dinamic">
+              <md-autocomplete
+                  md-no-cache="true"
+                  md-selected-item-change="$ctrl.filtros.onChangeDinamic(row)"
+                  md-search-text="$ctrl.filtros.fieldDinamic"
+                  md-items="row in $ctrl.filtros.functionDinamic($ctrl.filtros.fieldDinamic)"
+                  md-item-text="row[$ctrl.filtros.filtro.typeValues]"
+                  md-min-length="0"
+                  md-clear-button="true"
+                  md-floating-label="Filtrar pela categoría pai">
+                <md-item-template>
+                  <span md-highlight-text="$ctrl.filtros.fieldDinamic" md-highlight-flags="^i">{{row[$ctrl.filtros.filtro.typeValues]}}</span>
+                </md-item-template>
+                <md-not-found>
+                  O registro "{{$ctrl.filtros.fieldDinamic}}" não foi encontrado.
+                </md-not-found>
+              </md-autocomplete>          
             </div>
           </div>
         </div>

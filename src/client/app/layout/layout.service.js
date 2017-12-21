@@ -3,29 +3,43 @@
     angular
         .module('app.layout')
         .service('LayoutService', LayoutService);
-    LayoutService.$inject = ['$mdSidenav','routerHelper','$mdPanel','Provider','$state','config','UtilsFunctions'];
+    LayoutService.$inject = ['$mdSidenav','routerHelper','$mdPanel','Provider','$state','config','UtilsFunctions','$filter','$mdMedia'];
     /* @ngInject */
-    function LayoutService($mdSidenav,routerHelper,$mdPanel,Provider,$state,config,UtilsFunctions) {
+    function LayoutService($mdSidenav,routerHelper,$mdPanel,Provider,$state,config,UtilsFunctions,$filter,$mdMedia) {
         this.funcoes = funcoes;
         ////////////////
         function funcoes() {
 	        var vm = this;
 	        var states = routerHelper.getStates();
-          vm.pathImg = config.urlImagem;
+          	vm.pathImg = config.urlImagem;
 	        vm.usuario = Provider.getSessaoUsuario();
-          vm.verPermissao = UtilsFunctions.getPermissao;
-          vm.altImg =config.appTitle; 
+         	vm.verPermissao = UtilsFunctions.getPermissao;
+          	vm.altImg =config.appTitle; 
 	        vm.title = config.appTitle;
+	        vm.vLayoute = config.vLayoute;
+	        vm.config = config;
 
-	        vm.openSideNave = function () {
+	        vm.openSideNave = function (id) {
 	            $mdSidenav('left').toggle();
 	        }
-	        vm.closeSideNave = function () {
+	        vm.closeSideNave = function (id) {
 	        	$mdSidenav('left').close();
 	        }
 
             vm.setTitle = function (title) {
                 vm.title = title;
+            }
+          	vm.mediaxs = function() {
+            	return $mdMedia('xs');
+         	}
+            vm.setPath = function (data) {
+            	var paths=[];
+            	for (var i = 0; i < data.length; i++) {
+            		if (data[i].views != undefined && data[i].state.name != 'layout') {
+            			paths.push(data[i]);
+            		} 
+            	}
+            	vm.paths = paths;
             }
 
 	        vm.getNavRoutes = function () {
@@ -39,7 +53,7 @@
 	        vm.showUser = function () {
 	            var panel = $mdPanel;
 	            var position = panel.newPanelPosition()
-	                .relativeTo('.avatar-user')
+	                .relativeTo('#user-name')
 	                .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW);
 	            panel.open({
 	                attachTo: angular.element(document.body),

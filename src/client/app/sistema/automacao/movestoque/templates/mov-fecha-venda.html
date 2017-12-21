@@ -1,0 +1,26 @@
+<div layout="column">
+  <md-toolbar class="md-table-toolbar">
+    <div class="md-toolbar-tools">
+      <span>Fechar {{$ctrl.funcoes.data.row.desc_tipo_mov}}</span>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+  <md-card-content layout-margin>
+    <div layout="column" layout-align="center center">
+      <span class="md-title">
+        Imprimir
+      </span>
+      <md-button class="md-icon-button" aria-label="Favorite" ng-click="$ctrl.funcoes.dataItens.print1($ctrl.funcoes.data.row,$ctrl.funcoes.dataItens.data.rows)">
+        <md-icon>print</md-icon>
+      </md-button>
+    </div>
+
+    <md-divider></md-divider>
+    <div layout="row" layout-align="end center">
+        <md-button class="md-raised md-accent"  ng-click="$ctrl.ok(true)">
+          Concluir
+        </md-button>
+    </div>
+
+  </md-card-content>
+</div>

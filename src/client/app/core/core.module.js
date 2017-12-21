@@ -7,6 +7,7 @@
           'ngAnimate',
           'ngSanitize',
           'ngMessages',
+          'ngStorage',
           'blocks.exception', 'blocks.logger', 'blocks.router', 'blocks.utils',
           'ui.router',
           'ngplus',
@@ -15,7 +16,8 @@
           'ngMaterial',
           'nvd3',
           'md.data.table',
-          'data-table'
+          'data-table',
+          'xeditable'
         ]);
 })();
 /*

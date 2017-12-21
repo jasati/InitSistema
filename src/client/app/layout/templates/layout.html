@@ -1,10 +1,20 @@
-
-<div layout="row" class="visao" >
-	<main-nav funcoes="$ctrl.funcoes"></main-nav>
-	<div layout="column" flex>
-		<main-header funcoes="$ctrl.funcoes"></main-header>
-	    <md-content flex>
-			<ui-view class="visao" ></ui-view>
-	    </md-content>		
+<div class="visao">
+	<div ng-switch on="$ctrl.layoute.vLayoute" class="visao">
+		<div ng-switch-when="1" class="visao">
+			<div layout="row" class="visao">
+				<main-nav funcoes="$ctrl.layoute"></main-nav>
+				<div layout="column" flex>
+					<main-header funcoes="$ctrl.layoute" show-gt-xs="$ctrl.layoute.paths"></main-header>
+				    <md-content flex>
+						<div ui-view class="visao"></div>
+						<!-- <footer funcoes="$ctrl.layoute"></footer> -->
+				    </md-content>
+				</div>
+			</div>
+		</div>
+		<div ng-switch-when="2" class="visao">
+			<h1>Versao 2 do layoute em desenvolvimento</h1>
+		</div>
 	</div>
 </div>
+

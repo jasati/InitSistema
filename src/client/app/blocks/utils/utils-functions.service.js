@@ -23,9 +23,45 @@
             validarDataset : validarDataset,
             isNumber    : isNumber,
             getPermissao : getPermissao,
+            stylePrintTable : stylePrintTable,
+            montarTabela : montarTabela,
+            escreverArquivo  : escreverArquivo,
+            handleEnter  : handleEnter,
         };
         return service;
         ////////////////
+        
+
+        /*
+        Essa função so funciona no IE, é preciso habilitar as permissoes ActiveX no navegador
+         */
+        function escreverArquivo(txt) {
+          var dados = new ActiveXObject("Scripting.FileSystemObject");
+          //pasta a ser salvo o arquivo
+          var pasta="C:/jasatiTXTjs/";
+          //se o parametro arq que é o nome do arquivo vier vazio ele salvará o arquivo com o nome “Sem Titulo”
+          if(txt==""){txt="Sem Titulo";}
+          //carrega o txt
+          var esc = dados.CreateTextFile(pasta+"saida.txt", true);
+          //escreve o que foi passado no parametro texto que é o texto contido no TextArea
+          esc.WriteLine(txt);
+          //fecha o txt
+          esc.Close();
+        }
+        //Função para abrir o arquivo
+        function abreArquivo(arq){
+          var dados = new ActiveXObject("Scripting.FileSystemObject");
+          //o parametro arq é o endereço do txt
+          //carrega o txt
+          var arquivo = dados.OpenTextFile(arq, 1, true);
+          //varre o arquivo
+          while(!arquivo.AtEndOfStream){
+          //escreve o txt no TextArea
+            document.getElementById("texto").value = arquivo.ReadAll();
+          }
+          //fecha o txt
+          arquivo.Close();
+        }        
         function formatData (data, hora) {
             var d, m, y,hr='', dt;
             if (hora) {
@@ -69,9 +105,16 @@
           return dados;
         }
 
-        function soma(array,rowQt,rowValue) {
+        function soma(array,rowQt,rowValue,filtro) {
             var total = 0;
-            angular.forEach(array, function(row, key){
+            var data = [];
+            if (isset(filtro)) {
+              data = $filter('filter')(array,filtro);
+            } else {
+              data = array;
+            }
+            
+            angular.forEach(data, function(row, key){
                 if (rowQt!=='') {
                     var valor = row[rowQt]*row[rowValue];
                     total = total + valor;
@@ -283,6 +326,99 @@
           } else {
             return false;
           }
+        }
+
+        function stylePrintTable() {
+          var style = 'p{padding:0px;margin:0px}'+
+          '.table {width: 100%;max-width: 100%;margin-bottom: 20px; font-size:90%}'+
+          'th {text-align: left;}'+
+          '.table > thead > tr > th,'+
+          '.table > tbody > tr > th,'+
+          '.table > tfoot > tr > th,'+
+          '.table > thead > tr > td,'+
+          '.table > tbody > tr > td,'+
+          '.table > tfoot > tr > td {'+
+          'padding: 8px;line-height: 1.2;vertical-align: top;border-top: 1px solid #dddddd;}'+
+          '.table > thead > tr > th {'+
+          'vertical-align: bottom;border-bottom: 1px solid #dddddd;}'+
+          '.table > caption + thead > tr:first-child > th,'+
+          '.table > colgroup + thead > tr:first-child > th,'+
+          '.table > thead:first-child > tr:first-child > th,'+
+          '.table > caption + thead > tr:first-child > td,'+
+          '.table > colgroup + thead > tr:first-child > td,'+
+          '.table > thead:first-child > tr:first-child > td {border-top: 0;}'+
+          '.table > tbody + tbody {border-top: 2px solid #dddddd;}'+
+          '.table > tbody + tfoot {border-top: 2px solid #dddddd;}'+
+          '.table-condensed > thead > tr > th,'+
+          '.table-condensed > tbody > tr > th,'+
+          '.table-condensed > tfoot > tr > th,'+
+          '.table-condensed > thead > tr > td,'+
+          '.table-condensed > tbody > tr > td,'+
+          '.table-condensed > tfoot > tr > td {padding: 2px;}'+
+          'table col[class*="col-"] {'+
+          'position: static;float: none;display: table-column;}'+
+          'table td[class*="col-"],'+
+          'table th[class*="col-"] {'+
+          'position: static;float: none;display: table-cell;}'+
+          '.table-responsive {overflow-x: auto;min-height: 0.01%;}'+
+          '.table-striped > tbody > tr:nth-of-type(odd) {background-color: #f9f9f9;}'+
+          '.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {float: left;}'+
+          '.col-xs-12 {width: 100%;}.col-xs-11 {width: 91.66666667%;}.col-xs-10 {width: 83.33333333%;}'+
+          '.col-xs-9 {width: 75%;}.col-xs-8 {width: 66.66666667%;}.col-xs-7 {width: 58.33333333%;}.col-xs-6 {width: 50%;}'+
+          '.col-xs-5 {width: 41.66666667%;}.col-xs-4 {width: 33.33333333%;}.col-xs-3 {width: 25%;}.col-xs-2 {width: 16.66666667%;}'+
+          '.col-xs-1 {width: 8.33333333%;}'+
+          '.text-left {text-align: left;}.text-right {text-align: right;}.text-center {text-align: center;}.text-justify {text-align: justify;}.text-nowrap {white-space: nowrap;}'+
+          '.text-lowercase {  text-transform: lowercase;}.text-uppercase {text-transform: uppercase;}.text-capitalize {text-transform: capitalize;}'+
+          '.striped:nth-child(even){background-color: #e6e6db;}';
+          return style;
+        }
+        /*
+          montarTabela:criar uma tabela html e retornar com os dados
+          @dados: array de objetos com os dados
+          @tipo:dinamico ou estatico, caso seja dinamico, as colunas será criadas
+          atraves dos campo dos dados, caso seja estatico pegara os campos da var @col
+          @col:array com os dados da coluna da tabela
+          @repeat:objeto contendo as propriedades: id que é a descricao do campo id, rows que é a string com o nome da variavel que contem os dados do ng-repeat
+         */
+        function montarTabela(cols,repeat) {
+          var table = '<table md-table class="table table-condensed table-striped">';
+          table+='<thead md-head md-order="myOrder">';
+          table+='<tr md-row>';
+          //montar coluna
+          var th='';
+          //motar colunas dinamicamente, obtendo os dados da primeira posição do array
+          for (var prop in cols) {
+            if (cols.hasOwnProperty(prop)){
+              if (prop!='$$hashKey') {
+                th+='<th md-column md-order-by="'+prop+'">'+prop+'</th>'
+              }
+            }
+          }
+          //adicionar os valores da coluna
+          table+=th;
+          table+='</tr></thead>';
+          table+='<tbody md-body>';
+          table+='<tr md-row md-select="row" md-select-id="'+repeat.id+'" ng-repeat="row in '+repeat.rows+' | orderBy: myOrder">';
+          //montar as linhas
+          var td ='';
+          for (var prop in cols) {
+            if (cols.hasOwnProperty(prop)){
+              if (prop!='$$hashKey') {
+                td+='<td md-cell>{{row.'+prop+'}}</td>';
+              }
+            }
+          }
+          table+=td;
+          table+='</tr></tbody></table>';
+          return table;
+        }
+
+        function handleEnter ($event,el) {
+          var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+          if (keyCode == 13) {
+            document.getElementById(el).focus();
+            document.getElementById(el).select();
+          } 
         }
 
     }

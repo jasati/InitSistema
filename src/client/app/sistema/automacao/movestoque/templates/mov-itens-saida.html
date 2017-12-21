@@ -1,0 +1,100 @@
+
+
+
+
+
+<md-card md-theme="dark-blue" layout-padding  ng-show="$ctrl.funcoes.dataItens.data.row">
+  <md-card-title-text layout="row" flex>
+    <span class="md-title">{{$ctrl.funcoes.dataItens.data.row.descricao}}</span>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="$ctrl.funcoes.dataItens.cancelarItem($ctrl.funcoes.dataItens.data.row)" aria-label="close">
+        <md-icon>delete</md-icon>
+        <md-tooltip md-autohide="true">Remover item</md-tooltip>
+    </md-button>
+  </md-card-title-text>
+
+  <form name="formitens" novalidate autocomplete="off">  
+    <div layout="row" >
+
+      <md-input-container flex class="md-warn">
+        <label class="md-body-1">Qtde.</label>
+        <input type="number" required name="qt" min="0.00" ng-model="$ctrl.funcoes.dataItens.data.row.qt" id="qt" ng-keypress="$ctrl.funcoes.onEnter($event,'perc')" autofocus="true">
+      </md-input-container>
+      <md-input-container flex >
+        <label class="md-body-1">UNI.</label>
+        <input type="text" name="sigla_unidade" ng-model="$ctrl.funcoes.dataItens.data.row.sigla" ng-readonly="true" >
+      </md-input-container>
+      <md-input-container  flex >
+        <label class="md-body-1">Preço</label>
+        <input type="number" required name="valor" min="0.00" ng-model="$ctrl.funcoes.dataItens.data.row.valor"  ng-readonly="true">
+        <div ng-messages="formitens.valor.$error">
+          <div ng-message="required">Informe o preço.</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-warn" flex >
+        <label class="md-body-1">Desconto %</label>
+        <input type="number" name="desc_perc" min="0.00" ng-model="$ctrl.funcoes.dataItens.data.row.desc_perc" id="perc" ng-change="$ctrl.funcoes.dataItens.calcDesc($ctrl.funcoes.dataItens.data.row,'%')" ng-keypress="$ctrl.funcoes.onEnter($event,'desc')">
+      </md-input-container>
+      <md-input-container class="md-warn" flex >
+        <label class="md-body-1">Desconto R$</label>
+        <input type="number" name="desconto" min="0.00" ng-model="$ctrl.funcoes.dataItens.data.row.desconto" id="desc" ng-keypress="$ctrl.funcoes.dataItens.loadItem($event);$ctrl.funcoes.onEnter($event,'qt')"
+        ng-change="$ctrl.funcoes.dataItens.calcDesc($ctrl.funcoes.dataItens.data.row,'R$')">
+      </md-input-container>
+
+      <div layout="column" flex>
+        <label class="md-body-1">Total</label>
+        <span>{{($ctrl.funcoes.dataItens.data.row.qt*$ctrl.funcoes.dataItens.data.row.valor)-$ctrl.funcoes.dataItens.data.row.desconto | currency}}</span>
+      </div>
+    </div>
+    <span class="md-caption">{{$ctrl.funcoes.dataItens.data.row.detalhes}}</span>
+  </form>
+</md-card>
+
+<!-- itens da movimentação -->
+<md-card >
+  <md-card-actions ng-hide="$ctrl.funcoes.dataItens.data.row">
+    <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.item.mediaxs()}" ng-click="$ctrl.funcoes.dataItens.selectItem($event)" md-autofocus>
+      <md-icon>add</md-icon>
+      <md-tooltip md-autohide="true">Adicionar Item</md-tooltip>
+    </md-button>            
+    <span class="md-subhead">{{$ctrl.funcoes.dataItens.data.rows.length>0?"Itens Adicionados":"Adicionar Itens"}}</span>
+  </md-card-actions>
+  <md-table-container ng-show="$ctrl.funcoes.dataItens.data.rows.length > 0" class="atura-table">
+     <table md-table class="table table-condensed">
+      <thead md-head md-order="$ctrl.funcoes.dataItens.data.orderBy">
+        <tr>
+          <th style="width: 3% !important" md-column md-order-by="qt">
+          Qtde.</th>
+          <th style="width: 45% !important" md-column md-order-by="descricao">Descricao</th>
+          <th style="width: 12% !important" md-column md-order-by="marca">Marca</th>
+          <th style="width: 5% !important" md-column md-order-by="sigla">UNI.</th>
+          <th style="width: 10% !important" md-column md-order-by="valor">Valor</th>
+          <th style="width: 10% !important" md-column md-order-by="desconto">Desconto</th>
+          <th style="width: 15% !important" md-column md-order-by="total">Sub Total</th>
+        </tr>
+      </thead>
+      <tbody style="height: 100px !important;overflow: scroll;">
+        <tr class="row-table-click striped" md-select="row" md-select-id="id_item_mov" ng-repeat="row in $ctrl.funcoes.dataItens.data.rows | filter:{'action':'!d'} | orderBy: $ctrl.funcoes.dataItens.data.orderBy track by $index" ng-click="$ctrl.funcoes.dataItens.alterarItemMov(row)">
+          <td md-cell>{{row.qt | currency :'' }}</td>
+          <td md-cell>{{row.descricao}}</td>
+          <td md-cell>{{row.marca}}</td>
+          <td md-cell>{{row.sigla}}</td>
+          <td md-cell class="text-right">{{row.valor | currency:''}}</td>
+          <td md-cell class="text-right">{{row.desconto | currency:''}}</td>
+          <td md-cell class="text-right"><b>{{(row.qt*row.valor)-row.desconto | currency:''}}</b></td>
+        </tr>
+      </tbody>
+      <tfoot md-foot>
+        <tr md-row>
+          <td md-cell></td>
+          <td md-cell></td>
+          <td md-cell></td>
+          <td md-cell></td>
+          <td md-cell></td>
+          <td md-cell>{{$ctrl.funcoes.dataItens.data.rows.length}} Itens</td>
+          <td md-cell class="text-right" ><strong md-title>Total : {{$ctrl.funcoes.soma($ctrl.funcoes.dataItens.data.rows,'qt','valor',{action:'!d'})-$ctrl.funcoes.soma($ctrl.funcoes.dataItens.data.rows,'','desconto',{action:'!d'}) | currency}}</strong></td>
+        </tr>
+      </tfoot>
+    </table> 
+  </md-table-container>
+</md-card>

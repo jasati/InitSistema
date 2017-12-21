@@ -1,0 +1,98 @@
+
+<md-card md-theme="dark-blue" layout-padding  ng-show="$ctrl.funcoes.dataItens.data.row">
+  <md-card-title-text layout="row" flex>
+    <span class="md-title">{{$ctrl.funcoes.dataItens.data.row.descricao}}</span>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="$ctrl.funcoes.dataItens.cancelarItem($ctrl.funcoes.dataItens.data.row)" aria-label="close">
+        <md-icon>delete</md-icon>
+        <md-tooltip md-autohide="true">Remover item</md-tooltip>
+    </md-button>
+  </md-card-title-text>
+
+  <form name="formitens" novalidate autocomplete="off">  
+    <div layout="row" >
+
+        <md-input-container class="md-warn" flex >
+          <label class="md-body-1">Qtde.</label>
+          <input type="number" required name="qt" min="0.00" ng-model="$ctrl.funcoes.dataItens.data.row.qt" id="qt" ng-keypress="$ctrl.funcoes.onEnter($event,'custo')" autofocus="true">
+        </md-input-container>
+
+        <md-input-container class="md-warn" flex >
+          <label class="md-body-1">UNI.</label>
+          <md-select required ng-model="$ctrl.funcoes.dataItens.data.row.id_unidade" id="uni" md-on-open="$ctrl.funcoes.dataItens.itens.filtrarUnidade()" >
+            <md-option ng-value="uni.id_unidade" ng-repeat="uni in $ctrl.funcoes.dataItens.itens.uniDataFunc.rows" ng-blur="$ctrl.funcoes.dataItens.data.row.sigla = uni.sigla">{{uni.sigla}}</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-warn" flex >
+          <label class="md-body-1">Custo</label>
+          <input type="number" required name="valor" id="custo" min="0.00" ng-model="$ctrl.funcoes.dataItens.data.row.custo" ng-change="$ctrl.funcoes.dataItens.calcLucro($ctrl.funcoes.dataItens.data.row,'%')" ng-keypress="$ctrl.funcoes.onEnter($event,'preco')">
+          <div ng-messages="formitens.valor.$error">
+            <div ng-message="required">Informe o custo do item.</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container class="md-warn" flex >
+          <label class="md-body-1">Preço Venda</label>
+          <input type="number" required name="preco" min="0.00" ng-model="$ctrl.funcoes.dataItens.data.row.preco" id="preco" ng-change="$ctrl.funcoes.dataItens.calcLucro($ctrl.funcoes.dataItens.data.row,'$')" ng-keypress="$ctrl.funcoes.onEnter($event,'perc_preco')">
+          <div ng-messages="formitens.preco.$error">
+            <div ng-message="required">Informe o preço para venda.</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container class="md-warn" flex >
+          <label class="md-body-1">%Lucro</label>
+          <input type="number" required name="perc_preco" min="0.00" ng-model="$ctrl.funcoes.dataItens.data.row.perc_preco" id="perc_preco" ng-keypress="$ctrl.funcoes.dataItens.loadItem($event);$ctrl.funcoes.onEnter($event,'qt')" ng-change="$ctrl.funcoes.dataItens.calcLucro($ctrl.funcoes.dataItens.data.row,'%')">
+          <div ng-messages="formitens.perc_preco.$error">
+            <div ng-message="required">Informe o % do lucro para o item.</div>
+          </div>
+        </md-input-container>
+
+      <div layout="column" flex>
+        <label class="md-body-1">Total</label>
+        <span>{{($ctrl.funcoes.dataItens.data.row.qt*$ctrl.funcoes.dataItens.data.row.valor) | currency}}</span>
+      </div>
+    </div>
+    <span class="md-caption">{{$ctrl.funcoes.dataItens.data.row.detalhes}}</span>
+  </form>
+</md-card>
+
+<!-- itens da movimentação -->
+<md-card >
+  <md-card-actions ng-hide="$ctrl.funcoes.dataItens.data.row">
+    <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.item.mediaxs()}" ng-click="$ctrl.funcoes.dataItens.selectItem($event)" md-autofocus>
+      <md-icon>add</md-icon>
+      <md-tooltip md-autohide="true">Adicionar Item</md-tooltip>
+    </md-button>            
+    <span class="md-subhead">{{$ctrl.funcoes.dataItens.data.rows.length>0?"Itens Adicionados":"Adicionar Itens"}}</span>
+  </md-card-actions>
+    <md-table-container ng-show="$ctrl.funcoes.dataItens.data.rows.length > 0" class="atura-table">
+       <table md-table class="table table-condensed table-striped">
+        <thead md-head md-order="$ctrl.funcoes.dataItens.data.orderBy">
+          <tr >
+            <th style="width: 5% !important" md-column >
+            Nº</th>
+            <th style="width: 10% !important" md-column md-order-by="codigo">Código</th>
+            <th style="width: 35% !important" md-column md-order-by="descricao">Descricao</th>
+            <th style="width: 10% !important" md-column md-order-by="qt">Qtde.</th>
+            <th style="width: 10% !important" md-column md-order-by="sigla">UNI.</th>
+            <th style="width: 15% !important" md-column md-order-by="valor">Custo</th>
+            <th style="width: 10% !important" md-column md-order-by="preco">Preco Venda</th>
+            <th style="width: 15% !important" md-column md-order-by="perc_preco">%Lucro</th>
+          </tr>
+        </thead>
+       <tbody md-body>
+          <tr class="row-table-click striped" md-select="row" md-select-id="id_item_mov" ng-repeat="row in $ctrl.funcoes.dataItens.data.rows | orderBy: $ctrl.funcoes.dataItens.data.orderBy track by $index" ng-click="$ctrl.funcoes.dataItens.alterarItemMov(row)">
+            <td md-cell>{{$index+1}}</td>
+            <td md-cell>{{row.codigo}}</td>
+            <td md-cell>{{row.descricao}}</td>
+            <td md-cell>{{row.qt | currency :'' }}</td>
+            <td md-cell>{{row.sigla}}</td>
+            <td md-cell>{{row.valor | currency:''}}</td>
+            <td md-cell>{{row.preco | currency:''}}</td>
+            <td md-cell><b>{{row.perc_preco}}%</b></td>
+          </tr>
+        </tbody>
+      </table> 
+    </md-table-container>	
+</md-card>

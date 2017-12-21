@@ -14,11 +14,12 @@
     <link rel="stylesheet" href="/bower_components/toastr/toastr.css" />
     <link rel="stylesheet" href="/bower_components/material-design-icons/iconfont/material-icons.css" />
     <link rel="stylesheet" href="/bower_components/nvd3/build/nv.d3.css" />
-    <link rel="stylesheet" href="/bower_components/angular-data-table/release/dataTable.css" />
-    <link rel="stylesheet" href="/bower_components/angular-data-table/release/material.css" />
     <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css" />
     <link rel="stylesheet" href="/bower_components/angular-material-data-table/dist/md-data-table.css" />
     <link rel="stylesheet" href="/bower_components/angular-wizard/dist/angular-wizard.css" />
+    <link rel="stylesheet" href="/bower_components/angular-data-table/release/dataTable.css" />
+    <link rel="stylesheet" href="/bower_components/angular-data-table/release/material.css" />
+    <link rel="stylesheet" href="/bower_components/angular-xeditable/dist/css/xeditable.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -41,7 +42,7 @@
 
     <ui-view flex >
 
-        <div ng-hide="hidelogomarca" layout="row" layout-align="center">
+        <div ng-hide="$ctrl.hidelogomarca" layout="row" layout-align="center">
             <div align="center" style="padding-top: 200px">
                 <img src="images/logo-blue.png" class="img-responsive">
             </div>
@@ -69,7 +70,6 @@
     <script src="/bower_components/d3/d3.js"></script>
     <script src="/bower_components/nvd3/build/nv.d3.js"></script>
     <script src="/bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
-    <script src="/bower_components/angular-data-table/release/dataTable.js"></script>
     <script src="/bower_components/angular-aria/angular-aria.js"></script>
     <script src="/bower_components/angular-messages/angular-messages.js"></script>
     <script src="/bower_components/angular-material/angular-material.js"></script>
@@ -77,6 +77,9 @@
     <script src="/bower_components/angular-wizard/dist/angular-wizard.js"></script>
     <script src="/bower_components/screenfull/dist/screenfull.js"></script>
     <script src="/bower_components/angular-screenfull/dist/angular-screenfull.js"></script>
+    <script src="/bower_components/ngstorage/ngStorage.js"></script>
+    <script src="/bower_components/angular-data-table/release/dataTable.js"></script>
+    <script src="/bower_components/angular-xeditable/dist/js/xeditable.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -95,8 +98,9 @@
     <script src="/src/client/app/core/core.module.js"></script>
     <script src="/src/client/app/layout/layout.module.js"></script>
     <script src="/src/client/app/login/login.module.js"></script>
+    <script src="/src/client/app/sistema/automacao/automacao.module.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard.module.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/psclse.module.js"></script>
+    <script src="/src/client/app/sistema/ecc/ecc.module.js"></script>
     <script src="/src/client/app/sistema/sistema.module.js"></script>
     <script src="/src/client/app/start/start.module.js"></script>
     <script src="/src/client/app/widgets/widgets.module.js"></script>
@@ -111,6 +115,9 @@
     <script src="/src/client/app/blocks/utils/extencio.service.js"></script>
     <script src="/src/client/app/blocks/utils/filtro/filtro.component.js"></script>
     <script src="/src/client/app/blocks/utils/filtro/filtro.service.js"></script>
+    <script src="/src/client/app/blocks/utils/templates/pagination/pagination.component.js"></script>
+    <script src="/src/client/app/blocks/utils/templates/table/table.component.js"></script>
+    <script src="/src/client/app/blocks/utils/templates/toolbar/toolbar.component.js"></script>
     <script src="/src/client/app/blocks/utils/ultils-textEditor.directive.js"></script>
     <script src="/src/client/app/blocks/utils/utils-data-function.service.js"></script>
     <script src="/src/client/app/blocks/utils/utils-functions.service.js"></script>
@@ -148,18 +155,63 @@
     <script src="/src/client/app/login/login-funcoes.service.js"></script>
     <script src="/src/client/app/login/login.controller.js"></script>
     <script src="/src/client/app/login/login.route.js"></script>
+    <script src="/src/client/app/sistema/automacao/automacao-dataset.factory.js"></script>
+    <script src="/src/client/app/sistema/automacao/automacao-provider.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/cliente/cliente-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/cliente/cliente.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/cliente/cliente.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/config.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/config.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/configTabPreco-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/configTabPrecoItens-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/fornecedor/forn-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/fornecedor/forn.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/fornecedor/forn.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/inventario/inventario-dataset.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/inventario/inventario-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/inventario/inventario-itens-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/inventario/inventario.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/inventario/inventario.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/categoria/categoria-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/categoria/categoria.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/categoria/categoria.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/item-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/item.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/item.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/itemTab-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/unidade/unidade-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/unidade/unidade.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/unidade/unidade.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/movestoque/mov-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/movestoque/mov-itens-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/movestoque/mov.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/movestoque/mov.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/movestoque/tipoMov-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/pessoa/pessoa-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/pessoa/pessoa.component.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard-func.service.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard.controller.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard.route.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/cores/cores-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/cores/cores.component.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/cores/cores.router.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/parametros/param-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/parametros/param.component.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/parametros/param.router.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/psclse-dataset.factory.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/site/site-component.js"></script>
-    <script src="/src/client/app/sistema/psicanalise/site/site.router.js"></script>
+    <script src="/src/client/app/sistema/ecc/casais/casais-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/ecc/casais/casais.component.js"></script>
+    <script src="/src/client/app/sistema/ecc/casais/casais.router.js"></script>
+    <script src="/src/client/app/sistema/ecc/conjuge/conjuge-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/ecc/conjuge/conjuge.component.js"></script>
+    <script src="/src/client/app/sistema/ecc/ecc-dataset.factory.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontreiro/encontreiro-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontreiro/encontreiro.component.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontreiro/encontreiro.router.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontreiro/encontreiros.report.factory.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontristas/encontrista-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontristas/encontrista.component.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontristas/encontrista.report.factory.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontro/encontro-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontro/encontro.component.js"></script>
+    <script src="/src/client/app/sistema/ecc/encontro/encontro.router.js"></script>
+    <script src="/src/client/app/sistema/ecc/equipes/equipes-casais-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/ecc/equipes/equipes-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/ecc/equipes/equipes.component.js"></script>
+    <script src="/src/client/app/sistema/ecc/equipes/equipes.report.factory.js"></script>
     <script src="/src/client/app/start/start.component.js"></script>
     <script src="/src/client/app/start/start.controller.js"></script>
     <script src="/src/client/app/start/start.route.js"></script>

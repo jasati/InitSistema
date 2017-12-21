@@ -1,0 +1,157 @@
+<md-content flex>
+	<md-card>
+		<md-card-actions>
+			<span layout-padding class="md-title">{{$ctrl.inventario.data.title}} {{$ctrl.inventario.data.label}}</span>
+		</md-card-actions>
+		<form name="formInventario" novalidate autocomplete="off">
+			<div layout="row">
+				<md-input-container class="md-accent" flex="20">
+					<label class="md-body-1">Data Inventário</label>
+					<input type="date"  name="data_cad" ng-model="$ctrl.inventario.data.row.data_cad" >
+				</md-input-container>
+				<md-autocomplete
+				  flex
+				  md-autofocus
+				  ng-disabled="$ctrl.inventario.itensInventario.data.rows.length>0"
+				  md-no-cache="false"
+				  md-search-text="$ctrl.searchText"
+				  md-selected-item="$ctrl.inventario.data.row.categoria"
+				  md-items="row in $ctrl.inventario.categoria.filtroAutoComplete($ctrl.searchText)"
+				  md-selected-item-change="$ctrl.inventario.changeAutoComplete($ctrl.inventario.data.row,row)"
+				  md-item-text="row.parent"
+				  md-min-length="0"
+				  md-delay="500"
+				  md-clear-button="!$ctrl.inventario.itensInventario.data.rows.length>0"
+				  placeholder="Categoria da contagem"
+				  md-floating-label="Categoria da contagem">
+				<md-item-template>
+				  <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{row.parent}}</span>
+				</md-item-template>
+				<md-not-found>
+				  A categoría "{{$ctrl.searchText}}" não foi encontrado.
+				</md-not-found>
+				</md-autocomplete>
+
+				<md-button class="md-fab md-mini" ng-click="$ctrl.inventario.showItensCat($ctrl.inventario.data.row.categoria)" aria-label="adicionar" ng-disabled="$ctrl.inventario.itensInventario.data.rows.length>0">
+					<md-icon>playlist_add_check</md-icon>
+					<md-tooltip>Adicionar lista de itens</md-tooltip>
+				</md-button>
+			</div>
+
+		</form>
+		<md-card-actions>
+			<span layout-padding class="md-caption" flex>Itens do inventário {{$ctrl.inventario.data.row.desc_status}}</span>
+		</md-card-actions>
+		
+		<md-divider></md-divider>
+		<div ng-switch on="$ctrl.inventario.data.row.status">
+			<div ng-switch-when="0">
+				<!-- contagem em andamento -->
+
+				<!-- tabela com os itens para ser confirmado -->
+				<div ng-hide="$ctrl.inventario.itensInventario.data.rows.length>0">
+					<md-table-container ng-if="$ctrl.inventario.estoque.item.rows.length > 0" class="atura-table">
+					<table md-table class="table table-condensed table-striped">
+					  <thead md-head md-order="$ctrl.inventario.estoque.item.orderBy" md-on-reorder="$ctrl.inventario.estoque.item.filtros.functionRead">
+					    <tr>
+					      <th style="width: 15% !important" md-column md-order-by="i.codigo">Código</th>
+					      <th style="width: 50% !important" md-column md-order-by="i.descricao"><span>Descrição do Item</span></th>
+					      <th style="width: 20% !important" md-column md-order-by="i.marca">Marca</th>
+					      <th style="width: 15% !important" md-column md-numeric md-order-by="i.saldo">Estoque</th></th>
+					    </tr>
+					  </thead>
+					  <tbody md-body>
+					    <tr class="striped" md-select="i" md-select-id="id_item" ng-repeat="i in $ctrl.inventario.estoque.item.rows | orderBy: $ctrl.inventario.estoque.item.orderBy">
+					      <td md-cell>{{i.codigo}}</td>
+					      <td md-cell>{{i.descricao}}</td>
+					      <td md-cell>{{i.marca}}</td>
+					      <td md-cell><span ng-class="{'text-danger':i.saldo<=i.saldo_min}">{{i.saldo}}</span></td>
+					    </tr>
+					  </tbody>
+					</table>
+					</md-table-container>
+					<md-card-actions layout="row" layout-padding ng-show="$ctrl.inventario.estoque.item.rows.length > 0">
+						<span layout-padding class="md-title" flex>Listagem com {{$ctrl.inventario.estoque.item.rows.length}} Itens</span>
+						<md-button class="md-raised md-primary md-offset" ng-disabled="formInventario.$invalid" ng-click="$ctrl.inventario.confirmar($ctrl.inventario.estoque.item.rows)">Confirmar Contagem</md-button>
+					</md-card-actions>
+				</div>
+
+				<div ng-show="$ctrl.inventario.itensInventario.data.rows.length>0">
+					<!-- tabela com os itens confirmados do inventario -->
+					<md-card-actions layout="row" layout-align="end center" layout-padding>
+						<md-button class="md-raised md-primary md-offset" ng-click="nameform.$show()" ng-disabled="nameform.$visible">Informar Contagem</md-button>
+						<button class="md-icon-button md-button" type="button" ng-click="$ctrl.inventario.itensInventario.printContInv($ctrl.inventario.data.row,$ctrl.inventario.itensInventario.data.rows)" aria-label="print">
+							<md-tooltip>Imprimir relatório para contagem</md-tooltip>
+							<md-icon>print</md-icon>
+						</button>				
+					</md-card-actions>
+					<md-table-container ng-if="$ctrl.inventario.itensInventario.data.rows.length>0" class="atura-table">
+					<table md-table class="table table-condensed table-striped">
+					  <thead md-head md-order="$ctrl.inventario.itensInventario.data.orderBy" md-on-reorder="$ctrl.inventario.itensInventario.data.filtros.functionRead">
+					    <tr>
+					      <th style="width: 15% !important" md-column md-order-by="ei.codigo">Código</th>
+					      <th style="width: 50% !important" md-column md-order-by="ei.descricao"><span>Descrição do Item</span></th>
+					      <th style="width: 20% !important" md-column md-order-by="ei.marca">Marca</th>
+					      <th style="width: 15% !important" md-column md-numeric md-order-by="ei.qt">Qtde. Contagem</th></th>
+					    </tr>
+					  </thead>
+					  <tbody md-body>
+					    <tr class="striped" md-select="i" md-select-id="id_item" ng-repeat="i in $ctrl.inventario.itensInventario.data.rows | orderBy: $ctrl.inventario.itensInventario.data.orderBy">
+					      <td md-cell>{{i.codigo}}</td>
+					      <td md-cell>{{i.descricao}}</td>
+					      <td md-cell>{{i.marca}}</td>
+					      <td md-cell>
+				            <span editable-number="i.qt" e-name="qt" e-min="0.01" e-form="nameform" e-ng-change="$ctrl.inventario.itensInventario.data.onChange(i)" onbeforesave="$ctrl.inventario.itensInventario.validarContagem($data)">
+				              {{i.qt}}
+				            </span>
+					      </td>
+					    </tr>
+					  </tbody>
+					</table>
+					</md-table-container>
+					<md-card-actions layout="row" layout-align="end center" layout-padding>
+						<form editable-form name="nameform" ng-show="nameform.$visible" onaftersave="$ctrl.inventario.confirmarContagem()">
+							<md-button class="md-warn" ng-click="nameform.$cancel()" >Cancelar</md-button>
+							<md-button type="submit" ng-disabled="nameform.$waiting" class="md-raised md-primary" ng-click="">Confirmar Contagem</md-button>
+						</form>
+					</md-card-actions>
+				</div>
+			</div>
+			<div ng-switch-when="1">
+				<!-- contagem concluida -->
+
+				<md-card-actions layout="row" layout-align="end center" layout-padding>
+					<button class="md-icon-button md-button" type="button" ng-click="$ctrl.inventario.itensInventario.printContResult($ctrl.inventario.data.row,$ctrl.inventario.itensInventario.data.rows)" aria-label="print">
+						<md-tooltip>Imprimir resultado da contagem</md-tooltip>
+						<md-icon>print</md-icon>
+					</button>				
+				</md-card-actions>
+				<md-table-container class="atura-table">
+				<table md-table class="table table-condensed table-striped">
+				  <thead md-head md-order="$ctrl.inventario.itensInventario.data.orderBy" md-on-reorder="$ctrl.inventario.itensInventario.data.filtros.functionRead">
+				    <tr>
+				      <th style="width: 15% !important" md-column md-order-by="ei.codigo">Código</th>
+				      <th style="width: 40% !important" md-column md-order-by="ei.descricao"><span>Descrição do Item</span></th>
+				      <th style="width: 15% !important" md-column md-order-by="ei.marca">Marca</th>
+				      <th style="width: 10% !important" md-column md-numeric md-order-by="ei.qt">Qtde. Contagem</th></th>
+				      <th style="width: 10% !important" md-column md-numeric md-order-by="ei.saldo">Saldo Atual</th></th>
+					  <th style="width: 10% !important" md-column md-numeric>Resultado</th></th>
+				    </tr>
+				  </thead>
+				  <tbody md-body>
+				    <tr class="striped" md-select="i" md-select-id="id_item" ng-repeat="i in $ctrl.inventario.itensInventario.data.rows | orderBy: $ctrl.inventario.itensInventario.data.orderBy">
+				      <td md-cell>{{i.codigo}}</td>
+				      <td md-cell>{{i.descricao}}</td>
+				      <td md-cell>{{i.marca}}</td>
+				      <td md-cell>{{i.qt}}</td>
+				      <td md-cell>{{i.saldo}}</td>
+				      <td md-cell>{{(i.qt-i.saldo)}}</td>
+				    </tr>
+				  </tbody>
+				</table>
+				</md-table-container>
+			</div>
+		</div>
+	</md-card>
+</md-content>
+<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>

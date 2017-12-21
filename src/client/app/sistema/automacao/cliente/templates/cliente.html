@@ -1,0 +1,87 @@
+
+<div layout="column" flex>
+  <md-card>
+      <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+          <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.cliente.mediaxs()}" ng-click="$ctrl.funcoes.cadastro('create',{id_pessoa:null})">
+            <md-icon>add</md-icon>
+            <md-tooltip md-autohide="true">Novo Cliente</md-tooltip>
+          </md-button>
+          <span ng-class="{'md-subhead':$ctrl.funcoes.cliente.mediaxs()}" ng-show="!$ctrl.funcoes.cliente.filtros.showField">Clientes</span>
+          <div flex></div>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.cliente.filtros.onClick()" aria-label="Filtro">
+            <md-icon ng-hide="$ctrl.funcoes.cliente.filtros.digitando">search</md-icon>
+            <md-progress-circular ng-show="$ctrl.funcoes.cliente.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+          </button>
+          <form class="animacao" flex="{{$ctrl.funcoes.cliente.filtros.flex}}" layout="row">
+              <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+              <input id="filtro" ng-model="$ctrl.funcoes.cliente.filtros.mainField"  ng-change="$ctrl.funcoes.cliente.filtros.onChange()" placeholder="Localizar cliente">
+          </form>
+          <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.cliente.filtros.showField" ng-click="$ctrl.funcoes.cliente.filtros.onClick()" aria-label="close">
+            <md-tooltip>Remover filtro</md-tooltip>
+            <md-icon>close</md-icon>
+          </button>
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.cliente.filtros.setConfigFiltro()" aria-label="Filtro">
+            <md-tooltip>filtro Avançado</md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </button>
+          <button class="md-icon-button md-button" type="button" ng-click="$ctrl.funcoes.print1()" aria-label="print">
+            <md-tooltip>Imprimir Listagem</md-tooltip>
+            <md-icon>print</md-icon>
+          </button>
+<!--           <button class="md-icon-button md-button" type="button" ng-click="$ctrl.funcoes.salvarTxt()" aria-label="print">
+            <md-tooltip>Salvar TXT</md-tooltip>
+            <md-icon>account_balance_wallet</md-icon>
+          </button>           -->
+        </div>
+      </md-toolbar>
+      <filtro
+        filtros="$ctrl.funcoes.cliente.filtros">
+      </filtro>
+      <md-divider></md-divider>
+
+      <div ng-if="$ctrl.funcoes.cliente.rows.length === 0" layout-padding layout-margin layout-align=" center center" layout="row" class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.cliente.reading,'alert-info':$ctrl.funcoes.cliente.reading}" role="alert">
+        <div ng-if="$ctrl.funcoes.cliente.reading" >
+          <md-progress-circular ng-disabled="!$ctrl.funcoes.cliente.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+          <p>Buscando Registros...</p>
+        </div>
+        <div ng-if="!$ctrl.funcoes.cliente.reading" align="center">
+          <p><b>Descupe!</b> Os registros não foram encontrados, talvez você ainda não tenha cadastrado ou atualize para recarregar.</p>
+          <md-button class="md-icon-button" ng-click="$ctrl.funcoes.cliente.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
+        </div>
+      </div>
+
+      <md-table-container ng-if="$ctrl.funcoes.cliente.rows.length > 0">
+        <table md-table>
+          <thead md-head md-order="$ctrl.funcoes.cliente.orderBy" md-on-reorder="$ctrl.funcoes.cliente.filtros.functionRead">
+            <tr md-row>
+              <th style="width: 1%" md-column><md-button class="md-icon-button" ng-click="$ctrl.funcoes.cliente.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button></th>
+              <th style="width: 15% !important" md-column md-order-by="id_cliente"><span><b>ID</b></span></th>
+              <th style="width: 37% !important" md-column md-order-by="nome_comp"><span><b>cliente</b></span></th>
+              <th style="width: 15% !important" md-column md-order-by="cpf_cnpj"><span><b>CPF/CNPJ</b></span></th>
+              <th style="width: 10% !important" md-column md-order-by="cidade"><span><b>Cidade</b></span></th>
+              <th style="width: 10% !important" md-column md-order-by="bairro"><span><b>Bairro</b></span></th>
+              <th style="width: 10% !important" md-column>Telefone</th>
+              <th style="width: 1% !important" md-column ><span></span></th>
+            </tr>
+          </thead>
+          <tbody md-body>
+            <tr md-row class="striped" md-select="c" md-select-id="id_cliente" ng-repeat="c in $ctrl.funcoes.cliente.rows | orderBy: $ctrl.funcoes.cliente.orderBy">
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.cadastro('update',c,$event)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon></md-button></td>
+              <td md-cell>{{c.id_cliente}}</td>
+              <td md-cell>{{c.nome_comp}}</td>
+              <td md-cell>{{c.cpf_cnpj}}</td>
+              <td md-cell>{{c.cidade}}</td>
+              <td md-cell>{{c.bairro}}</td>
+              <td md-cell>{{c.tel}}</td>
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.deletar($event,c)" aria-label="excluir"><md-icon aria-label="deletar">delete</md-icon></md-button></td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-card-actions >
+        <md-table-pagination md-limit="$ctrl.funcoes.cliente.pagination.limit" md-limit-options="$ctrl.funcoes.cliente.pagination.limitOptions" md-page="$ctrl.funcoes.cliente.pagination.pagina" md-total="{{$ctrl.funcoes.cliente.pagination.total}}"  md-on-paginate="$ctrl.funcoes.filtrar" md-page-select md-label="{{$ctrl.funcoes.cliente.pagination.label}}"></md-table-pagination>
+      </md-card-actions>
+    </md-card>
+</div>
+<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
