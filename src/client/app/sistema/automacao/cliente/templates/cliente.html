@@ -56,8 +56,9 @@
           <thead md-head md-order="$ctrl.funcoes.cliente.orderBy" md-on-reorder="$ctrl.funcoes.cliente.filtros.functionRead">
             <tr md-row>
               <th style="width: 1%" md-column><md-button class="md-icon-button" ng-click="$ctrl.funcoes.cliente.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button></th>
-              <th style="width: 15% !important" md-column md-order-by="id_cliente"><span><b>ID</b></span></th>
-              <th style="width: 37% !important" md-column md-order-by="nome_comp"><span><b>cliente</b></span></th>
+              <th style="width: 5% !important" md-column md-order-by="id_cliente"><span><b>Código</b></span></th>
+              <th style="width: 17% !important" md-column md-order-by="nome_red">Apelido</th>
+              <th style="width: 30% !important" md-column md-order-by="nome_comp">Nome</th>
               <th style="width: 15% !important" md-column md-order-by="cpf_cnpj"><span><b>CPF/CNPJ</b></span></th>
               <th style="width: 10% !important" md-column md-order-by="cidade"><span><b>Cidade</b></span></th>
               <th style="width: 10% !important" md-column md-order-by="bairro"><span><b>Bairro</b></span></th>
@@ -69,6 +70,7 @@
             <tr md-row class="striped" md-select="c" md-select-id="id_cliente" ng-repeat="c in $ctrl.funcoes.cliente.rows | orderBy: $ctrl.funcoes.cliente.orderBy">
               <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.cadastro('update',c,$event)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon></md-button></td>
               <td md-cell>{{c.id_cliente}}</td>
+              <td md-cell>{{c.nome_red}}</td>
               <td md-cell>{{c.nome_comp}}</td>
               <td md-cell>{{c.cpf_cnpj}}</td>
               <td md-cell>{{c.cidade}}</td>

@@ -10,6 +10,7 @@
         ////////////////
         function funcoes() {
 	        var vm = this;
+	        vm.isset = UtilsFunctions.isset;
 	        var states = routerHelper.getStates();
           	vm.pathImg = config.urlImagem;
 	        vm.usuario = Provider.getSessaoUsuario();
@@ -18,6 +19,7 @@
 	        vm.title = config.appTitle;
 	        vm.vLayoute = config.vLayoute;
 	        vm.config = config;
+	        vm.paths = null;
 
 	        vm.openSideNave = function (id) {
 	            $mdSidenav('left').toggle();

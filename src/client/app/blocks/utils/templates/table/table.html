@@ -21,7 +21,7 @@
     <md-button class="md-icon-button" ng-click="$ctrl.funcoes.dados.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
   </div>
 </div>
-<md-table-container ng-show="$ctrl.funcoes.dados.rows.length > 0" ng-class="{'table-responsive':$ctrl.funcoes.responsive}">
+<md-table-container ng-show="$ctrl.funcoes.dados.rows.length > 0" ng-class="{'table-responsive':$ctrl.funcoes.responsive}" flex>
    <table md-table md-row-select multiple ng-model="$ctrl.funcoes.dados.rowsSelected" class="table table-condensed table-striped">
     <thead md-head md-order="$ctrl.funcoes.dados.orderBy" md-on-reorder="$ctrl.funcoes.dados.filtros.functionRead">
       <tr >

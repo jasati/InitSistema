@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="app" >
 <head>
     <title ng-bind="title">WebApp</title>
     <meta charset="utf-8" />
@@ -30,7 +30,7 @@
     <!-- endbuild -->
     <link rel="stylesheet" href="script/angularjs-color-picker.css">
 </head>
-<body ng-cloak layout="column">
+<body ng-cloak class="fullscreen">
     <section id="content">
         <div ngplus-overlay
              ngplus-overlay-delay-in="50"
@@ -40,7 +40,7 @@
         </div>
     </section>
 
-    <ui-view flex >
+    <ui-view layout="column" flex  class="visao">
 
         <div ng-hide="$ctrl.hidelogomarca" layout="row" layout-align="center">
             <div align="center" style="padding-top: 200px">
@@ -100,7 +100,6 @@
     <script src="/src/client/app/login/login.module.js"></script>
     <script src="/src/client/app/sistema/automacao/automacao.module.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard.module.js"></script>
-    <script src="/src/client/app/sistema/ecc/ecc.module.js"></script>
     <script src="/src/client/app/sistema/sistema.module.js"></script>
     <script src="/src/client/app/start/start.module.js"></script>
     <script src="/src/client/app/widgets/widgets.module.js"></script>
@@ -164,6 +163,16 @@
     <script src="/src/client/app/sistema/automacao/configuracao/config.router.js"></script>
     <script src="/src/client/app/sistema/automacao/configuracao/configTabPreco-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/configuracao/configTabPrecoItens-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/meiopag/meiopag-dataset.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/meiopag/meiopag-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/meiopag/meiopag.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/meiopag/meiopag.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/tabela/tabela-dataset.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/tabela/tabela-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/tabela/tabela-prazos-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/tabela/tabela.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/tabela/tabela.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/tabela/tabPrazos-meioPag-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/fornecedor/forn-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/fornecedor/forn.component.js"></script>
     <script src="/src/client/app/sistema/automacao/fornecedor/forn.router.js"></script>
@@ -179,6 +188,9 @@
     <script src="/src/client/app/sistema/automacao/item/item.component.js"></script>
     <script src="/src/client/app/sistema/automacao/item/item.router.js"></script>
     <script src="/src/client/app/sistema/automacao/item/itemTab-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/tabelaprecos/itemtab-preco-dataset.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/tabelaprecos/itemtab-preco-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/item/tabelaprecos/itemtab-preco.component.js"></script>
     <script src="/src/client/app/sistema/automacao/item/unidade/unidade-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/item/unidade/unidade.component.js"></script>
     <script src="/src/client/app/sistema/automacao/item/unidade/unidade.router.js"></script>
@@ -192,26 +204,6 @@
     <script src="/src/client/app/sistema/dashboard/dashboard-func.service.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard.controller.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard.route.js"></script>
-    <script src="/src/client/app/sistema/ecc/casais/casais-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/ecc/casais/casais.component.js"></script>
-    <script src="/src/client/app/sistema/ecc/casais/casais.router.js"></script>
-    <script src="/src/client/app/sistema/ecc/conjuge/conjuge-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/ecc/conjuge/conjuge.component.js"></script>
-    <script src="/src/client/app/sistema/ecc/ecc-dataset.factory.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontreiro/encontreiro-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontreiro/encontreiro.component.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontreiro/encontreiro.router.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontreiro/encontreiros.report.factory.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontristas/encontrista-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontristas/encontrista.component.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontristas/encontrista.report.factory.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontro/encontro-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontro/encontro.component.js"></script>
-    <script src="/src/client/app/sistema/ecc/encontro/encontro.router.js"></script>
-    <script src="/src/client/app/sistema/ecc/equipes/equipes-casais-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/ecc/equipes/equipes-funcoes.service.js"></script>
-    <script src="/src/client/app/sistema/ecc/equipes/equipes.component.js"></script>
-    <script src="/src/client/app/sistema/ecc/equipes/equipes.report.factory.js"></script>
     <script src="/src/client/app/start/start.component.js"></script>
     <script src="/src/client/app/start/start.controller.js"></script>
     <script src="/src/client/app/start/start.route.js"></script>

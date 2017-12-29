@@ -6,13 +6,13 @@
         .service('ItemFuncService', ItemFuncService);
 
     ItemFuncService.$inject = [
-      'UtilsFunctions','AutomacaoDataset','UtilsDataFunctionService','CategoriaFuncService','FornFuncService',
+      'UtilsFunctions','AutomacaoDataset','UtilsDataFunctionService','CategoriaFuncService','FornFuncService','ItemTabPrecoFuncService',
       '$state','$mdDialog','$filter'
     ];
 
     /* @ngInject */
     function ItemFuncService(
-      UtilsFunctions,AutomacaoDataset,UtilsDataFunctionService,CategoriaFuncService,FornFuncService,
+      UtilsFunctions,AutomacaoDataset,UtilsDataFunctionService,CategoriaFuncService,FornFuncService,ItemTabPrecoFuncService,
       $state,$mdDialog,$filter
     ) {
         this.funcoes = funcoes;
@@ -24,11 +24,10 @@
           var dataSetProvider = AutomacaoDataset.item();
           var dataSetCat   = AutomacaoDataset.categoria();
           var dataSetUni  = AutomacaoDataset.unidade();
-          var dataSetTabPreco = AutomacaoDataset.tabelaItensPreco();
           vm.item = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
           vm.catDataFunc = new CategoriaFuncService.funcoes();
           vm.uniDataFunc = new UtilsDataFunctionService.dataFuncoes(dataSetUni);
-          vm.tabPrecoItem = new UtilsDataFunctionService.dataFuncoes(dataSetTabPreco);
+          vm.itemTabPrecoFunc = new ItemTabPrecoFuncService.funcoes();
           vm.fornecedor = new FornFuncService.funcoes();
           vm.divider = 'botton';
           vm.title = 'Modulo de item';
@@ -85,8 +84,8 @@
 
           vm.changeAutoCompleteForn = function (rowEdit,rowSelect) {
             if (isset(rowSelect)) {
-              if (isset(rowSelect.nome_comp)) {
-                rowEdit.fornecedor = rowSelect.nome_comp;
+              if (isset(rowSelect.nome_red)) {
+                rowEdit.fornecedor = rowSelect.nome_red;
                 rowEdit.id_fornecedor = rowSelect.id_fornecedor;
               }
             } else {
@@ -121,6 +120,7 @@
 
           vm.alterar = function (row) {
             vm.cadastro('update',row);
+            vm.itemTabPrecoFunc.setMasterData(row);
           }
 
           vm.cadastro = function (action,row,ev) {

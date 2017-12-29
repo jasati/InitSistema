@@ -78,14 +78,14 @@
 
           vm.load = function (id) {
             if (isset(id)) {
-              var filtro =' and id_pessoa = '+id;
+              var filtro =' and p.id_pessoa = '+id;
               vm.pessoa.read(filtro,true).then(function (result) {
                 if (result.qtde>0) {
                   vm.pessoa.alterar(result.reg[0]);
                 }
               });
             }
-          }          
+          }
 
           vm.deletar = function (ev,data) {
             vm.pessoa.confirmDel(ev,data.descricao).then(function (result) {

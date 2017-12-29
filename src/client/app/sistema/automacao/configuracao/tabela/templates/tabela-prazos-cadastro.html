@@ -1,0 +1,51 @@
+<div layout="column" flex>
+  <md-card-actions layout="row" flex>
+    <span class="md-title" layout-padding>{{$ctrl.funcoes.data.label}} Prazo da tabela</span>
+    <span flex></span>
+    <md-button class="md-icon-button md-offset" ng-click="$ctrl.cancel()" aria-label="close">
+        <md-icon>close</md-icon>
+        <md-tooltip>Cancelar</md-tooltip>
+    </md-button>
+  </md-card-actions>
+  <md-divider></md-divider>
+  <md-card-content layout-margin>
+    <form name="form" novalidate autocomplete="off" layout-gt-xs="row">
+      <md-input-container class="md-block" flex="60">
+        <label class="md-body-2">Descrição do prazo</label>
+        <input type="text" required  name="descricao" ng-model="$ctrl.funcoes.data.row.descricao" >
+        <div ng-messages="form.descricao.$error">
+          <div ng-message="required">Informe a descrição do prazo.</div>
+        </div>
+      </md-input-container>
+      <md-input-container flex="30">
+        <label class="md-body-1">% Lucro Opcional</label>
+        <input type="number" name="percentual" min="0.00" ng-model="$ctrl.funcoes.data.row.percentual" >
+      </md-input-container>
+      <md-button class="md-icon-button md-accent" ng-click="$ctrl.funcoes.callCreateTableItens($ctrl.funcoes.data.row)" flex ng-disabled="$ctrl.funcoes.criandotabela.status">
+          <md-icon>flash_on</md-icon>
+          <md-tooltip md-autohide="true">Aplicar tabela os itens cadastrados</md-tooltip>
+      </md-button>
+    </form>
+
+    <div class="alert alert-info" ng-show="$ctrl.funcoes.criandotabela.showInfo">
+      <md-progress-linear ng-show="$ctrl.funcoes.criandotabela.status" md-mode="determinate" value="{{$ctrl.funcoes.criandotabela.progress}}"></md-progress-linear>
+      <p><md-icon>info</md-icon> {{$ctrl.funcoes.criandotabela.msg}}</p>
+    </div>
+
+    <md-divider></md-divider>
+
+    <md-card-actions layout="row" layout-align="start center" layout-margin>
+      <md-button class="md-fab md-mini" ng-click="null">
+          <md-icon>insert_link</md-icon>
+          <md-tooltip md-autohide="true">Vincular Meio de pagamento ao prazo da tabela</md-tooltip>
+      </md-button>
+      <span>Meios de Pagamentos Vinculados</span>
+    </md-card-actions>
+    <j-table flex funcoes="$ctrl.tabela.tabPrazosMp.data.funcTable"></j-table>
+
+  </md-card-content>
+  <md-divider></md-divider>
+  <md-card-actions layout="row" layout-align="end center" layout-margin>
+    <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.salvar()">Salvar</md-button>
+  </md-card-actions>
+</div>

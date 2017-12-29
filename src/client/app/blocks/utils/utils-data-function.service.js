@@ -193,6 +193,7 @@
               dataset:dts,
             };
             return dataSetProvider.api.read(post).then(function (resp) {
+              vm.reading = false;
               if (isset(resp.status)) {
                 if (resp.status == 'error') {
                   logger.error('Descupe, ocorreu na consulta dos registros.'+' Erro: '+resp.msg);
@@ -203,7 +204,6 @@
                 vm.rows = resp.reg;
                 vm.pagination.total = resp.qtde;
                 setOptionLimitPagination(resp.qtde);
-                vm.reading = false;
                 return resp;
               }
             });
@@ -220,6 +220,7 @@
               dataset:dts,
             };
             return dataSetProvider.api.read(post).then(function (resp) {
+              vm.reading = false;
               if (isset(resp.status)) {
                 if (resp.status == 'error') {
                   logger.error('Descupe, ocorreu na consulta dos registros.'+' Erro: '+resp.msg);
@@ -227,7 +228,6 @@
                   logger.warning('Atenção! Código Não definido');
                 }
               } else {
-                vm.reading = false;
                 return resp;
               }
             });
@@ -295,16 +295,22 @@
             });
           }
 
-          vm.functionSql = function () {
-            var dts = vm.getDataset();
-            dataSetProvider.provider.setValor(dts,'valor_id',vm.empresa.id_empresa);
-            dataSetProvider.provider.setValor(dts,'json','text');
-            var post = {
-              dataset:dts,
-            };
-            return dataSetProvider.api.callFunction(post).then(function (result) {
-              return result;
-            });
+          vm.functionSql = function (prm) {
+            if (isset(prm)) {
+              var dts = vm.getDataset();
+              vm.reading = true;
+              dataSetProvider.provider.setValor(dts,'valor_id',prm);
+              dataSetProvider.provider.setValor(dts,'json','text');
+              var post = {
+                dataset:dts,
+              };
+              return dataSetProvider.api.callFunction(post).then(function (result) {
+                vm.reading = false;
+                return result;
+              });
+            } else {
+              logger.warning('O parametro para a chamada da função sql, não foi definido.');
+            }
           }
 
           vm.procedureSql = function (dados,limit) {
@@ -330,6 +336,7 @@
               dataset:dts,
             };
             return dataSetProvider.api.callProcedure(post).then(function (resp) {
+              vm.reading = false;
               if (isset(resp.status)) {
                 if (resp.status == 'error') {
                   logger.error('Descupe, ocorreu na consulta dos registros.'+' Erro: '+resp.msg);
@@ -340,7 +347,6 @@
                 vm.rows = resp.reg;
                 vm.pagination.total = resp.qtde;
                 setOptionLimitPagination(resp.qtde);
-                vm.reading = false;
                 return resp;
               }
             });

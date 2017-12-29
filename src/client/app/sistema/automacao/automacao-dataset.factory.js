@@ -48,8 +48,8 @@
         var camposDinamicos = function(prm) {
           var c = ' i.id_empresa, i.id_item, i.id_galeria, i.id_categoria, i.codigo, i.ref, i.descricao,i.id_unidade, '+
           'i.detalhes, i.marca, i.status, i.saldo, i.data_cad, i.saldo_min, i.saldo_max, i.perc_preco, i.preco, i.custo, i.id_fornecedor, '+
-          'iu.sigla, cf.descricao as categoria, g.imagem, p.nome_comp as fornecedor';
-          var f =', @perc_tabela := (select ip.percentual from itens_preco ip where ip.id_item_preco = '+prm+') as perc_tabela,'+
+          'iu.sigla, cf.descricao as categoria, g.imagem, p.nome_red as fornecedor, p.nome_comp as razao_fornecedor';
+          var f =', @perc_tabela := (select itp.valor from itens_tabela_preco itp where itp.id_tabela_preco = '+prm+') as perc_tabela,'+
             'CASE WHEN @perc_tabela is null THEN i.preco ELSE round((@perc_tabela * i.preco /100)+i.preco,2) END as valor';
           return c+f;
         }
@@ -82,7 +82,7 @@
           };
 
         var camposInvalidos = ['action','imagem','perc_tabela','valor','sigla','categoria','fornecedor',
-        'id_mov_item','id_mov','qt','desconto','desc_perc','acres'];
+        'id_mov_item','id_mov','qt','desconto','desc_perc','acres','razao_fornecedor'];
         var camposData = [];
         var camposForeignKey = ['id_empresa'];
         var emp = empresa();
@@ -331,7 +331,7 @@
       function cliente() {
         // campos são os campos da tabela que são visiveis no sistema
         //se nao for preenchido vira todos os campos
-        var campos = 'c.id_cliente, c.id_pessoa, c.status, c.id_tabela_preco, c.limite_credito, p.id_empresa, p.data_cad, p.nome_comp, p.nome_red, p.data_nasc, p.tipo, p.cpf_cnpj, p.rg, p.uf, p.cidade, p.bairro, p.logradouro, p.numero, p.complemento, p.cep, p.email, p.tel, p.cel1, p.cel2, p.email_acess, p.senha, p.obs, tp.descricao as tabela_preco';
+        var campos = 'c.id_cliente, c.id_pessoa, c.status, c.id_tabela, c.limite_credito, p.id_empresa, p.data_cad, p.nome_comp, p.nome_red, p.data_nasc, p.tipo, p.cpf_cnpj, p.rg, p.uf, p.cidade, p.bairro, p.logradouro, p.numero, p.complemento, p.cep, p.email, p.tel, p.cel1, p.cel2, p.email_acess, p.senha, p.obs, t.descricao as tabela';
         // camposFiltro são os campos usados para fazer a pesquisa no sistema
         var camposFiltro = [
             {field:"p.nome_comp",alias:"Descrição",type:"string"},
@@ -345,10 +345,10 @@
           };
 
         var left_join = {
-              0:"tabela_precos tp ON c.id_tabela_preco = tp.id_tabela_preco",
+              0:"tabela t ON c.id_tabela = t.id_tabela",
           };
 
-        var camposInvalidos = ['action','id_empresa', 'data_cad', 'nome_comp', 'nome_red', 'data_nasc', 'tipo', 'cpf_cnpj', 'rg', 'uf', 'cidade', 'bairro', 'logradouro', 'numero', 'complemento', 'cep', 'email', 'tel','cel1', 'cel2', 'email_acess', 'senha','obs','tabela_preco'];
+        var camposInvalidos = ['action','id_empresa', 'data_cad', 'nome_comp', 'nome_red', 'data_nasc', 'tipo', 'cpf_cnpj', 'rg', 'uf', 'cidade', 'bairro', 'logradouro', 'numero', 'complemento', 'cep', 'email', 'tel','cel1', 'cel2', 'email_acess', 'senha','obs','tabela'];
         var camposData = [];
         var camposForeignKey = ['id_pessoa'];
         var emp = empresa();

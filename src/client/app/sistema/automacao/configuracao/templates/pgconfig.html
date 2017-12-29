@@ -1,10 +1,10 @@
-<md-content flex>
-  <md-card>
+<div class="visao" layout="row">
+  <div layout="column" flex="30">
     <md-nav-bar
-      md-no-ink-bar="disableInkBar"
+      md-no-ink-bar="true"
       md-selected-nav-item="currentNavItem"
       nav-bar-aria-label="navigation links">
-
+      <md-truncate>
       <md-nav-item md-nav-sref="layoute" name="gerais">
         <md-icon>tune</md-icon>
         <span hide-xs>Gerais</span>
@@ -17,16 +17,21 @@
         <md-icon>chrome_reader_mode</md-icon>
         <span hide-xs>Tipo de Movimentações</span>
       </md-nav-item>
-      <md-nav-item md-nav-sref="layoute" name="tabelas">
+      <md-nav-item md-nav-sref="layout.pgconfig.tabela" name="tabelas">
         <md-icon>assignment</md-icon>
         <span hide-xs>Tabelas de Preço</span>
       </md-nav-item>
-      <md-nav-item md-nav-sref="layoute" name="pagamento">
+      <md-nav-item md-nav-sref="layout.pgconfig.meiopag" name="pagamento">
         <md-icon>monetization_on</md-icon>
         <span hide-xs>Formas de pagamento</span>
-      </md-nav-item>      
-
+      </md-nav-item>
+      </md-truncate>
     </md-nav-bar>
+  </div>
+  <md-divider></md-divider>
+  <div layout="column" flex="auto">  
     <div ui-view></div>
-  </md-card>
-<md-content>
+  </div>
+</div>
+
+

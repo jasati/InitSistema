@@ -11,7 +11,7 @@
     <md-divider></md-divider>
     <md-card-content>
       <form name="form" novalidate autocomplete="off">
-        <div layout-padding layout="row">
+        <div layout-padding layout-xs="column" layout-gt-xs="row">
             <div layout="column" flex>
               <p class="md-subhead text-info"><b>Dados Básicos</b></p>
               <md-input-container class="md-block md-accent">
@@ -23,32 +23,36 @@
               </md-input-container>
 
               <div layout="row">
-                <md-input-container flex class="md-accent">
+                <md-input-container flex>
                   <label class="md-body-1">Código</label>
                   <input type="text"  name="codigo" ng-model="$ctrl.funcoes.item.row.codigo" >
                 </md-input-container>
 
-                <md-input-container flex= class="md-accent">
+                <md-input-container flex>
                   <label class="md-body-1">Marca</label>
                   <input type="text"  name="marca" ng-model="$ctrl.funcoes.item.row.marca" >
+                </md-input-container>
+                <md-input-container flex>
+                  <label class="md-body-1">Referência</label>
+                  <input type="text"  name="ref" ng-model="$ctrl.funcoes.item.row.ref" >
                 </md-input-container>
 
               </div>
               <p class="md-subhead text-info"><b>Estoque</b></p>
               <div layout="row">
-                <md-input-container flex class="md-accent">
+                <md-input-container flex>
                   <label class="md-body-1">Saldo Atual</label>
                   <input type="number" readonly="true" name="saldo" min="0.00" ng-model="$ctrl.funcoes.item.row.saldo" >
                   <md-tooltip>Saldo atual em estoque</md-tooltip>
                 </md-input-container>
 
-                <md-input-container flex class="md-accent">
+                <md-input-container flex>
                   <label class="md-body-1">Saldo Mínimo</label>
                   <input type="number" name="saldo_min" min="0.00" ng-model="$ctrl.funcoes.item.row.saldo_min" >
                   <md-tooltip>Coloque a quantidade mínima que o item poderá ficar no estoque. Use um valor para que não falte o item no estoque</md-tooltip>
                 </md-input-container>
 
-                <md-input-container flex class="md-accent">
+                <md-input-container flex>
                   <label class="md-body-1">Saldo Máximo</label>
                   <input type="number" name="saldo_max" min="0.00" ng-model="$ctrl.funcoes.item.row.saldo_max" >
                   <md-tooltip>Coloque a quantidade máxima do item que cabe no estoque. Use um valor para o sistema calcular e sugerir quando for fazer uma novo pedido de compra para o estoque</md-tooltip>                  
@@ -78,75 +82,105 @@
               </md-autocomplete>
 
               <div layout="row">
-                <md-input-container flex class="md-accent">
+                <md-autocomplete
+                    flex
+                    md-no-cache="false"
+                    md-search-text="$ctrl.searchForn"
+                    md-selected-item="$ctrl.funcoes.item.row.fornecedor"
+                    md-items="row in $ctrl.funcoes.fornecedor.filtroAutoComplete($ctrl.searchForn)"
+                    md-selected-item-change="$ctrl.funcoes.changeAutoCompleteForn($ctrl.funcoes.item.row,row)"
+                    md-item-text="row.nome_red"
+                    md-min-length="0"
+                    md-clear-button="true"
+                    md-floating-label="Fornecedor do item">
+                  <md-item-template>
+                    <span md-highlight-text="$ctrl.searchForn" md-highlight-flags="^i">{{row.nome_red}}</span>
+                  </md-item-template>
+                  <md-not-found>
+                    O fornecedor "{{$ctrl.searchForn}}" não foi encontrado.
+                  </md-not-found>
+                </md-autocomplete>
+              </div>
+              <div layout="row">
+                <md-input-container flex="60">
                   <label class="md-body-1">Unidade Medida</label>
                   <md-select ng-model="$ctrl.funcoes.item.row.id_unidade" md-on-open="$ctrl.funcoes.filtrarUnidade()">
                     <md-option ng-value="uni.id_unidade" ng-repeat="uni in $ctrl.funcoes.uniDataFunc.rows">{{uni.sigla}}</md-option>
                   </md-select>
                 </md-input-container>
 
-                <md-input-container flex class="md-accent">
-                  <label class="md-body-1">Referência</label>
-                  <input type="text"  name="ref" ng-model="$ctrl.funcoes.item.row.ref" >
-                </md-input-container>
-              </div>
-
-               <md-radio-group flex name="status" ng-model="$ctrl.funcoes.item.row.status" class="md-block">
-                  <label class="md-body-2">Status do item</label>
-                  <div layout="row">
-                    <md-radio-button value="1" class="md-caption">Ativo</md-radio-button>
-                    <md-radio-button value="0" class="md-caption">Inativo</md-radio-button>
-                  </div>
-                  <md-tooltip>Quando o item esta ativo ele será apresentado para ser vendido, caso contratrio, não será apresentado.</md-tooltip>
-                </md-radio-group>
-            </div>
-
-            <div layout="column" flex>
-              <p class="md-subhead text-info"><b>Dados da venda</b></p>
-              <md-autocomplete
-                  class="md-accent"
-                  md-no-cache="false"
-                  md-search-text="$ctrl.searchForn"
-                  md-selected-item="$ctrl.funcoes.item.row.fornecedor"
-                  md-items="row in $ctrl.funcoes.fornecedor.filtroAutoComplete($ctrl.searchForn)"
-                  md-selected-item-change="$ctrl.funcoes.changeAutoCompleteForn($ctrl.funcoes.item.row,row)"
-                  md-item-text="row.nome_comp"
-                  md-min-length="0"
-                  md-clear-button="true"
-                  md-floating-label="Fornecedor do item">
-                <md-item-template>
-                  <span md-highlight-text="$ctrl.searchForn" md-highlight-flags="^i">{{row.nome_comp}}</span>
-                </md-item-template>
-                <md-not-found>
-                  O fornecedor "{{$ctrl.searchForn}}" não foi encontrado.
-                </md-not-found>
-              </md-autocomplete>
-
-
-              <div layout="row">
-                <md-input-container flex class="md-accent">
+                <md-input-container flex>
                   <label class="md-body-1">Custo</label>
                   <input type="number" name="custo" min="0.00" ng-model="$ctrl.funcoes.item.row.custo" ng-change="$ctrl.funcoes.calcLucro($ctrl.funcoes.item.row,'%')">
                 </md-input-container>
-
-                <md-input-container flex class="md-accent">
-                  <label class="md-body-1">% Lucro</label>
-                  <input type="number" name="perc_preco" min="0.00" ng-model="$ctrl.funcoes.item.row.perc_preco" ng-change="$ctrl.funcoes.calcLucro($ctrl.funcoes.item.row,'%')">
-                </md-input-container>
-
-                <md-input-container flex class="md-accent">
-                  <label class="md-body-1">Preço de venda</label>
-                  <input type="number" name="preco" min="0.00" ng-model="$ctrl.funcoes.item.row.preco" ng-change="$ctrl.funcoes.calcLucro($ctrl.funcoes.item.row,'$')">
-                </md-input-container>
               </div>
             </div>
 
+            <div layout="column" flex>
+              <p class="md-subhead text-info"><b>Tabela de Preços Venda</b></p>
+              <md-list class="md-dense" flex>
+                <md-subheader >Atacado</md-subheader >
+                <md-list-item class="md-3-line" ng-repeat="itemtab in $ctrl.funcoes.itemTabPrecoFunc.data.rows | filter:{tipo:'A'} track by $index">
+                  <div layout="row">
+                    <md-input-container flex>
+                      <label class="md-body-1">Prazo Tabela</label>
+                      <input type="text"  name="tabA{{$index}}" ng-model="itemtab.desc_tab_prazo" >
+                    </md-input-container>
+
+                    <md-input-container flex>
+                      <label class="md-body-1">% Lucro</label>
+                      <input type="number" name="perc_lucroA{{$index}}" min="0.00" ng-model="itemtab.perc_lucro" ng-change="null">
+                    </md-input-container>
+
+                    <md-input-container flex>
+                      <label class="md-body-1">Preço de venda</label>
+                      <input type="number" name="valorA{{$index}}" min="0.00" ng-model="itemtab.valor" ng-change="$ctrl.funcoes.calcLucro($ctrl.funcoes.item.row,'$')">
+                    </md-input-container>
+                  </div>
+                </md-list-item>
+                <md-subheader>Varejo</md-subheader>
+                <md-list-item class="md-3-line"  ng-repeat="itemtab in $ctrl.funcoes.itemTabPrecoFunc.data.rows | filter:{tipo:'V'} track by $index">
+                  <div layout="row">
+                    <md-input-container flex="50">
+                      <label class="md-body-1">Prazo Tabela</label>
+                      <input type="text"  name="tabV{{$index}}" ng-model="itemtab.desc_tab_prazo" >
+                    </md-input-container>
+
+                    <md-input-container flex="20">
+                      <label class="md-body-1">% Lucro</label>
+                      <input type="number" name="perc_lucroV{{$index}}" min="0.00" ng-model="itemtab.perc_lucro" ng-change="null">
+                    </md-input-container>
+
+                    <md-input-container flex="30">
+                      <label class="md-body-1">Preço de venda</label>
+                      <input type="number" name="valorV{{$index}}" min="0.00" ng-model="itemtab.valor" ng-change="null">
+                      <!-- $ctrl.funcoes.calcLucro($ctrl.funcoes.item.row,'$') -->
+                    </md-input-container>
+                  </div>
+
+                </md-list-item>
+
+              </md-list>
+            </div>
+
+        </div>
+        <div layout="row">
+          
+          <md-input-container class="md-block" flex>
+            <label class="md-body-1">Descrição detalhada do item</label>
+            <textarea ng-model="$ctrl.funcoes.item.row.detalhes" rows="2"></textarea>
+          </md-input-container>
+
+          <md-radio-group flex="20" name="status" ng-model="$ctrl.funcoes.item.row.status" class="md-block">
+            <label class="md-body-2">Status do item</label>
+            <div layout="row">
+              <md-radio-button value="1" class="md-caption">Ativo</md-radio-button>
+              <md-radio-button value="0" class="md-caption">Inativo</md-radio-button>
+            </div>
+            <md-tooltip>Quando o item esta ativo ele será apresentado para ser vendido, caso contratrio, não será apresentado.</md-tooltip>
+          </md-radio-group>
         </div>
 
-        <md-input-container class="md-block md-accent">
-          <label class="md-body-1">Descrição detalhada do item</label>
-          <textarea ng-model="$ctrl.funcoes.item.row.detalhes" rows="2"></textarea>
-        </md-input-container>
 
       </form>
     </md-card-content>

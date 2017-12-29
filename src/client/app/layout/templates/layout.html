@@ -3,8 +3,8 @@
 		<div ng-switch-when="1" class="visao">
 			<div layout="row" class="visao">
 				<main-nav funcoes="$ctrl.layoute"></main-nav>
-				<div layout="column" flex>
-					<main-header funcoes="$ctrl.layoute" show-gt-xs="$ctrl.layoute.paths"></main-header>
+				<div layout="column" flex class="visao">
+					<main-header funcoes="$ctrl.layoute" ng-show="$ctrl.layoute.isset($ctrl.layoute.paths)||$ctrl.layoute.mediaxs()"></main-header>
 				    <md-content flex>
 						<div ui-view class="visao"></div>
 						<!-- <footer funcoes="$ctrl.layoute"></footer> -->
