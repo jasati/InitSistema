@@ -1,0 +1,13 @@
+
+<md-content flex >
+	<j-toolbar funcoes="$ctrl.tipoMov.data.funcToolbar"></j-toolbar>
+	<filtro	filtros="$ctrl.tipoMov.data.filtros"></filtro>
+	<div layout-gt-xs="row" flex class="atura-content">
+		<div layout="column" flex="grow" class="animacao">
+			<j-table flex funcoes="$ctrl.tipoMov.data.funcTable"></j-table>
+		</div>
+		<div layout="column" flex="noshrink">
+			<div ui-view></div>
+		</div>
+	</div>
+</md-content>

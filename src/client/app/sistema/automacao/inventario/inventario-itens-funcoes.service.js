@@ -24,7 +24,6 @@
           vm.onEnter = UtilsFunctions.handleEnter;
           var dataSetDetalhe = new InventarioDataSet.dataSetDetalhe();
           vm.data = new UtilsDataFunctionService.dataFuncoes(dataSetDetalhe);
-          var masterData = null;
           vm.data.title = "Itens do inventário de estoque";
 
           vm.activate = function () {
@@ -37,23 +36,15 @@
             vm.data.filtros.functionRead();//chama a consulta
           }
 
-          vm.setMasterData = function (row) {
-            masterData = row;
-          }
-
-          vm.setForengKey = function (id) {
-            dataSetDetalhe.valueForeignKey.push(id);
-          }
           vm.filtrar = function () {
-            if (isset(masterData)) {
-              var query = ' and ei.id_inventario = '+masterData.id_inventario;
-              if (isset(vm.data.filtros.mainField)) {
-                query += " and i.descricao LIKE '"+vm.data.filtros.mainField+"%'";
-              }
-              vm.data.read(query,false);//limitar os registro
-            } else {
-              logger.warning('Atenção! o masterData não foi definido.');
+            var query = '';
+            if (isset(vm.data.rowParent)) {
+              query += ' and ei.id_inventario = '+vm.data.rowParent.id_inventario;
             }
+            if (isset(vm.data.filtros.mainField)) {
+              query += " and i.descricao LIKE '"+vm.data.filtros.mainField+"%'";
+            }
+            vm.data.read(query,false);//limitar os registro            
           }
 
           vm.filtroAutoComplete = function (prm) {

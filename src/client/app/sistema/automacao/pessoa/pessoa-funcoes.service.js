@@ -28,18 +28,23 @@
           vm.filtrar = function () {
             var query = '';
             if (isset(vm.pessoa.filtros.mainField)) {
-              query += " and p.nome_comp LIKE '"+vm.pessoa.filtros.mainField+"%'";
+              query += " and CONCAT(p.nome_comp,p.nome_red) LIKE '%"+vm.pessoa.filtros.mainField+"%'";
             }
             vm.pessoa.read(query,true);//limitar os registro
           }
 
-          vm.filtroAutoComplete = function (prm,id) {
+          vm.filtroAutoComplete = function (prm,id,orderBy) {
             var query = "";
             if (isset(prm)) {
-              query = " and p.nome_comp LIKE '"+prm+"%'";
+              query = " and CONCAT(p.nome_comp,p.nome_red) LIKE '%"+prm+"%'";
             }
             if (isset(id)) {
               query += " and p.id_pessoa = "+id;
+            }
+            if (isset(orderBy)) {
+              dataSetProvider.orderBy = orderBy;
+            } else {
+              dataSetProvider.orderBy = '';
             }
             return vm.pessoa.load(query,true).then(function (result) {
               return result.reg;

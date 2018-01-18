@@ -21,9 +21,11 @@
           vm.verPermissao = UtilsFunctions.getPermissao;
           vm.dataSetProvider = dataSetProvider;
           vm.pathImg = config.urlImagem;
-          vm.rows = [];//lista de objetos
+          vm.rows = [];//lista de registros
           vm.row = null;//obejeto unico
-          vm.rowsSelected = []; //lista de objetos selecionados
+          vm.rowParent = null;//objeto que chamou a instancia
+          vm.rowsSelected = []; //lista de registros selecionados
+          vm.rowIndex = 0;
           vm.empresa = dataSetProvider.empresa;
           vm.camposFiltro = dataSetProvider.camposFiltro;
           vm.filtroDefault = dataSetProvider.filtroDefault;
@@ -60,14 +62,20 @@
             vm.pagination.limitOptions = options;
           }
 
-          vm.table = {
-            rowHeight: 50,
-            headerHeight: 50,
-            footerHeight: false,
-            scrollbarV: false,
-            selectable: false,
-            columns: [],
-          };
+          /*
+          função ideal para aninhar objetos pai e filhos, de acordo com o relacionamento
+           */
+          vm.setNewChilder = function (classChild,rowParent,activate) {
+            if (!rowParent.child) {//se nao existir a instancia child, cria uma nova
+              var parent = rowParent;
+              rowParent.child = new classChild.funcoes();
+              rowParent.child.data.rowParent = parent;
+              if (activate) {
+                rowParent.child.activate();
+              }
+            }
+
+          }
 
           vm.montarFiltro = function(campo,expr,valor) {
             if (expr==='LIKE') {
@@ -113,16 +121,38 @@
             };
             return dataSetProvider.api.aplayUpdates(post).then(function (resp) {
               vm.salvando = false;
-              if (isset(resp[0])||isset(resp[1])||isset(resp[2])) {
-                if (filterAfterPost) {
+              var res = true;
+                if (resp[0]!=0) {
+                  if (resp[0].status == 'ok') {
+                    logger.success('Os dados de '+vm.title+' foram inseridos com sucesso!');
+                  } else {
+                    logger.error('Os dados de '+vm.title+' não foram inseridos, Erro : '+resp[0].msg);
+                    res = false;
+                  }
+                }
+
+                if (resp[1]!=0) {
+                  if (resp[1].status == 'ok') {
+                    logger.success('Os dados de '+vm.title+' foram atualizados com sucesso!');
+                  } else {
+                    logger.error('Os dados de '+vm.title+' não foram atualizados, Erro : '+resp[1].msg);
+                    res = false;
+                  }
+                }
+
+                if (resp[2]!=0) {
+                  if (resp[2].status == 'ok') {
+                    logger.success('Os dados de '+vm.title+' foram excluidos com sucesso!');
+                  } else {
+                    logger.error('Os dados de '+vm.title+' não foram excluidos, Erro : '+resp[2].msg);
+                    res = false;
+                  }
+                }
+
+                if (filterAfterPost&&res) {
                   vm.filtros.functionRead();
                 }
-                logger.success('Dados atualizados com sucesso!');
-                return true;
-              } else {
-                logger.error('Descupe, ocorreu uma falha ao atualizar os dados.');
-                return false;
-              }
+                return res;
             });
           }
 
@@ -154,10 +184,12 @@
                 vm.rows.push(vm.row);//adiciona novo row em rows;
                 vm.actionRow = 'update';
                 vm.label = 'Alterar ';
+                //remove o campo action
+                delete vm.row['action'];
                 logger.success('Salvo com sucesso!');
       					return true;
       				} else {
-                logger.error('Descupe, ocorreu uma falha ao salvar'+' Erro: '+dados.msg);
+                logger.error('Descupe, ocorreu uma falha ao salvar o '+vm.title+'.'+' Erro: '+dados.msg);
       					return false;
       				}
       			});
@@ -256,11 +288,28 @@
             return dataSetProvider.api.update(post).then(function (resp) {
               vm.salvando = false;
               if (resp.status == 'ok') {
+                //remove o campo action
+                delete vm.row['action'];
                 logger.success('Alterado com sucesso!');
                 return true;
               } else {
-                logger.error('Descupe, ocorreu uma falha na alteração.'+' Erro: '+resp.msg);
+                logger.error('Descupe, ocorreu uma falha na alteração do '+vm.title+'.'+' Erro: '+resp.msg);
                 return false;
+              }
+            });
+          }
+
+          vm.deleteAll = function (ev) {
+            for (var i = 0; i < vm.rowsSelected.length; i++) {
+              vm.remover(vm.rowsSelected[i]);
+            }
+            vm.confirmDel(ev,'Todos os registros selecionados').then(function (result) {
+              if (result) {
+                vm.aplyUpdates(/*atualizar apos a alterao*/true).then(function (result) {
+                  if (result) {
+                    vm.rowsSelected = [];
+                  }
+                });
               }
             });
           }
@@ -277,7 +326,7 @@
                 logger.success('Excluido com sucesso!');
                 return true;
               } else {
-                logger.error('Descupe, ocorreu uma falha na exclusão.'+' Erro: '+resp.msg);
+                logger.error('Descupe, ocorreu uma falha na exclusão do '+vm.title+'.'+' Erro: '+resp.msg);
                 return false;
               }
             });
@@ -309,7 +358,7 @@
                 return result;
               });
             } else {
-              logger.warning('O parametro para a chamada da função sql, não foi definido.');
+              logger.warning('O parametro para a chamada da functionSql, não foi definido.');
             }
           }
 
@@ -352,6 +401,9 @@
             });
           }
 
+          vm.setForengKey = function (id,pos) {
+            dataSetProvider.valueForeignKey.splice(pos,1,id);//coloca o id na posição 0 quantidade de itens no array 1
+          }
 
           //adiciona um registro a lista de registros
           vm.adicionar = function (data) {
@@ -376,6 +428,19 @@
               data.action = 'd'
             } else {
               data.action = '-d'
+            }
+          }
+
+          vm.removerIndex = function (index) {
+            var rem = function (i) {
+              vm.rows.splice(i,1);
+            }
+            if (isset(index)) {
+              rem(index)
+            } else if (isset(vm.rowIndex)) {
+                rem(vm.rowIndex);
+            } else {
+              logger.warning('O indice deve ser definido para remover o item pelo index.');
             }
           }
 
@@ -512,6 +577,38 @@
               dados     :vm,
               filtrar   :vm.filtros.functionRead,
             }
+          }
+
+          vm.setIndex = function (index) {
+            vm.rowIndex = index;
+          }
+          vm.nextRow = function () {
+            vm.rowIndex++;
+            if (isset(vm.rows[vm.rowIndex])) {
+              vm.row = vm.rows[vm.rowIndex];
+            } else {
+              vm.pagination.limit += vm.pagination.limit;
+              vm.filtros.functionRead().then(function () {
+                if (isset(vm.rows[vm.rowIndex])) {
+                  vm.row = vm.rows[vm.rowIndex];
+                }
+              });
+            }
+          }
+
+          vm.acionarMainFiltro = function () {
+            var showFilter = function () {
+              if (isset(vm.filtros)) {
+                vm.filtros.onClick();
+              }
+            }
+            setTimeout(showFilter,1000);
+
+          }
+
+          vm.keyDownPress = function ($event) {
+            var keyCode = $event.which || $event.keyCode;
+            alert('precionou '+keyCode);
           }
 
           vm.showPainel = function (prm) {

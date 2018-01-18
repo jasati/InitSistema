@@ -28,7 +28,7 @@
 	          campos          : '',//campos da consulta sql
 	          inner_join      : inner_join,
 	          left_join       : left_join,
-	          camposInvalidos : ['action'],//campos que sera removido na operaçõa de insert ou update
+	          camposInvalidos : ['action','child'],//campos que sera removido na operaçõa de insert ou update
 	          id_index_main   : 'id_empresa',//
 	          valor_id_main   : emp.id_empresa,
 	          moduloQuery     : '',//nome da tabela com alias para consultas ex: clientes c

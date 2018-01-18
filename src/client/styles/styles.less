@@ -74,24 +74,28 @@ layoute {
   transform:scale(.88,.88);
   height: 0;
 }
-md-toolbar.md-table-toolbar form > input {
+#filtro {
   width: 100%;
   margin: 0;
   border: none;
   color: rgba(0, 0, 0, 0.87);
   font-size: 14px;
 }
-md-toolbar.md-table-toolbar form > input:focus {
+#filtro:focus {
   outline: none;
 }
 .striped:nth-child(even){
 	background-color: #e6e6db;
+}
+.selected{
+  background-color:#0277bd !important;
 }
 .dt-row:nth-child(even){
   background-color: #eee;
 }
 .row-table-click>tr:hover>td{
   cursor: pointer;
+  background-color: #0277bd !important;
 }
 .row-hover>tr:hover{
 	/*background-color: #f2f2f2;*/
@@ -161,7 +165,16 @@ md-input-container.md-default-theme .md-input, md-input-container .md-input {
     color: rgba(175, 175, 175, 0.34);
 }
 
+table.md-table tbody.md-body > tr.md-row, table.md-table tfoot.md-foot > tr.md-row {
+    height: 25px;
+}
+
 .atura-table{
-  max-height: 400px;
-  overflow-x: scroll;
+  max-height: 400px !important;
+  overflow-x: auto;
+}
+
+.atura-content{
+  max-height: 500px;
+  overflow-x: auto;
 }

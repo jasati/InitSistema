@@ -6,14 +6,14 @@
         .service('ItemFuncService', ItemFuncService);
 
     ItemFuncService.$inject = [
-      'UtilsFunctions','AutomacaoDataset','UtilsDataFunctionService','CategoriaFuncService','FornFuncService','ItemTabPrecoFuncService',
-      '$state','$mdDialog','$filter'
+      'UtilsFunctions','ItemDataSet','UtilsDataFunctionService','CategoriaFuncService','FornFuncService','ItemTabPrecoFuncService','TabPrazosFuncService',
+      '$state','$mdDialog','$filter','logger','AutomacaoDataset'
     ];
 
     /* @ngInject */
     function ItemFuncService(
-      UtilsFunctions,AutomacaoDataset,UtilsDataFunctionService,CategoriaFuncService,FornFuncService,ItemTabPrecoFuncService,
-      $state,$mdDialog,$filter
+      UtilsFunctions,ItemDataSet,UtilsDataFunctionService,CategoriaFuncService,FornFuncService,ItemTabPrecoFuncService,TabPrazosFuncService,
+      $state,$mdDialog,$filter,logger,AutomacaoDataset
     ) {
         this.funcoes = funcoes;
 
@@ -21,31 +21,33 @@
           var vm = this;
           var isset = UtilsFunctions.isset;
           vm.onEnter = UtilsFunctions.handleEnter;
-          var dataSetProvider = AutomacaoDataset.item();
+          var dataSetProvider = ItemDataSet.item();
           var dataSetCat   = AutomacaoDataset.categoria();
           var dataSetUni  = AutomacaoDataset.unidade();
           vm.item = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
           vm.catDataFunc = new CategoriaFuncService.funcoes();
           vm.uniDataFunc = new UtilsDataFunctionService.dataFuncoes(dataSetUni);
-          vm.itemTabPrecoFunc = new ItemTabPrecoFuncService.funcoes();
           vm.fornecedor = new FornFuncService.funcoes();
+          vm.tabPrazos = new TabPrazosFuncService.funcoes();
           vm.divider = 'botton';
-          vm.title = 'Modulo de item';
-          vm.tabela =0;
+          vm.item.title = 'Itens do estoque';
+          vm.tabela='';
           vm.filtroEstoque = {
             abaixo_saldo_min:false,
             abaixo_saldo_max:false,
           };
 
+
           vm.filtrar = function () {
             var query = '';
+            if (isset(vm.tabela)) {
+              query += ' and tp.id_tp = '+vm.tabela;
+              dataSetProvider.modCamposTab(true);
+            } else {
+              dataSetProvider.modCamposTab(false);
+            }
             if (isset(vm.item.filtros.mainField)) {
               query += " and i.descricao LIKE '"+vm.item.filtros.mainField+"%'";
-            }
-            if (isset(vm.tabela)) {
-              vm.item.dataSetProvider.campos = vm.item.dataSetProvider.camposDinamicos(vm.tabela);
-            } else {
-              vm.item.dataSetProvider.campos = vm.item.dataSetProvider.camposDinamicos(0);
             }
             if (vm.filtroEstoque.abaixo_saldo_min) {
               query += " and i.saldo <= i.saldo_min ";
@@ -54,16 +56,21 @@
               query += " and i.saldo < i.saldo_max ";
             }
 
-            vm.item.read(query,true);//limitar os registro
+            return vm.item.read(query,true).then(function (result) {
+              return result
+            });//limitar os registro
           }
 
           vm.filtroAutoComplete = function (prm,prmtab) {
             var query = " and i.status = 1 ";
-            if (isset(prm)) {
-              var query = " and i.descricao LIKE '"+prm+"%'";
+            if (isset(vm.tabela)) {
+              query += ' and tp.id_tp = '+vm.tabela;
+              dataSetProvider.modCamposTab(true);
+            } else {
+              dataSetProvider.modCamposTab(false);
             }
-            if (isset(prmtab)) {
-              vm.item.dataSetProvider.campos = vm.item.dataSetProvider.camposDinamicos(prmtab);
+            if (isset(prm)) {
+              query += " and i.descricao LIKE '"+prm+"%'";
             }
             return vm.item.load(query,true).then(function (result) {
               return result.reg;
@@ -94,14 +101,6 @@
             }
           }
 
-          vm.calcLucro = function (row,tipo) {
-            if (tipo=="%") {
-              row.preco = Number(((row.custo*row.perc_preco/100)+row.custo).toFixed(2));
-            } else {
-              row.perc_preco = Number(((row.preco-row.custo)/row.custo*100).toFixed(2));//calculo para descobrir o lucro
-            }
-          }
-
 
           vm.filtrarUnidade = function () {
             if (vm.uniDataFunc.rows.length == 0) {
@@ -110,17 +109,20 @@
           }
 
           vm.filtrarTabela = function () {
-            if (vm.tabPrecoItem.rows.length == 0) {
-              vm.tabPrecoItem.read('');
+            if (vm.tabPrazos.data.rows.length == 0) {
+              vm.tabPrazos.data.read('');
             }
           }
           vm.novo = function () {
             vm.cadastro('create',{})
+            vm.item.setNewChilder(ItemTabPrecoFuncService,vm.item.row,false);
           }
 
           vm.alterar = function (row) {
+            if (!isset(row.child)) {//se nao tiver child instanciado, cria a instancia
+              vm.item.setNewChilder(ItemTabPrecoFuncService,row,true);
+            }
             vm.cadastro('update',row);
-            vm.itemTabPrecoFunc.setMasterData(row);
           }
 
           vm.cadastro = function (action,row,ev) {
@@ -138,7 +140,16 @@
           vm.salvar = function () {
             vm.item.salvar().then(function (result) {
               if (result) {
-                $state.go('layout.pgitem.cadastros');
+                //atualiza tabela de preços
+                for (var i = 0; i < vm.item.row.child.data.rows.length; i++) {
+                  if (!isset(vm.item.row.child.data.rows[i].id_item)) {
+                    //se nao tiver o id_item, adiciona
+                    vm.item.row.child.data.rows[i].id_item = vm.item.row.id_item;
+                  }
+                }
+                vm.item.row.child.data.aplyUpdates().then(function (argument) {
+                  $state.go('layout.pgitem.cadastros');
+                });
               }
             });
           }
@@ -175,6 +186,21 @@
               document.getElementById('autocompleteItem').focus();
             }
             setTimeout(focus,500);
+          }
+
+          vm.focarGrade = function () {
+            var focus = function () {
+              document.getElementById('tr'+vm.item.rowIndex).focus();
+            }
+            setTimeout(focus,500);
+          }
+
+          vm.setTabelaPadrao = function () {
+            if (isset(vm.item.dataSetProvider.empresa.config_id_tp_padrao)) {
+              vm.tabela = vm.item.dataSetProvider.empresa.config_id_tp_padrao;
+            } else {
+              logger.error('Os itens não poderam ser exibidos porque a tabela de preço padrão não foi definida em configurações.');
+            }
           }
 
           vm.printEstoque = function (rows) {

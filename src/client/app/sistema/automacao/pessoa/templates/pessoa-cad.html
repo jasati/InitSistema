@@ -1,106 +1,133 @@
 
 
-  <div layout="row">
-    <md-radio-group flex required name="tipo" ng-model="$ctrl.funcoes.pessoa.row.tipo" class="md-block">
-      <label class="md-body-1">Tipo de Pessoa</label>
-      <div layout="row">
-        <md-radio-button value="F" class="md-caption">Física</md-radio-button>
-        <md-radio-button value="J" class="md-caption">Jurídica</md-radio-button>
-      </div>
-    </md-radio-group>
-    <md-input-container flex>
-      <label class="md-body-1">{{$ctrl.funcoes.pessoa.row.tipo=="J"?"CNPJ":"CPF"}}</label>
-      <input type="text" required  name="cpf_cnpj" ng-model="$ctrl.funcoes.pessoa.row.cpf_cnpj" >
-      <div ng-messages="form.cpf_cnpj.$error">
+<div layout-gt-xs="row" layout-xs="column">
+
+  <!-- dados pessoais -->
+  <div layout="column" flex>
+    <div layout="row">
+      <md-radio-group flex="30" required name="tipo" ng-model="$ctrl.funcoes.pessoa.row.tipo" class="md-block">
+        <label class="md-body-1">Tipo de Pessoa</label>
+        <div layout="row">
+          <md-radio-button value="F" class="md-caption">Física</md-radio-button>
+          <md-radio-button value="J" class="md-caption">Jurídica</md-radio-button>
+        </div>
+      </md-radio-group>
+      <md-input-container flex="40">
+        <label class="md-body-1">{{$ctrl.funcoes.pessoa.row.tipo=="J"?"CNPJ":"CPF"}}</label>
+        <input type="text" required  name="cpf_cnpj" ng-model="$ctrl.funcoes.pessoa.row.cpf_cnpj" >
+        <div ng-messages="form.cpf_cnpj.$error">
+          <div ng-message="required">Esse campo é obrigatório</div>
+        </div>
+      </md-input-container>
+      <md-input-container flex="30" >
+        <label class="md-body-1">{{$ctrl.funcoes.pessoa.row.tipo=="J"?"Inscrição":"RG"}}</label>
+        <input type="text"  name="rg" ng-model="$ctrl.funcoes.pessoa.row.rg" >
+      </md-input-container>      
+    </div>
+
+    <md-input-container class="md-block" >
+      <label class="md-body-1">{{$ctrl.funcoes.pessoa.row.tipo=="J"?"Razão Social":"Nome Completo"}}</label>
+      <input type="text" required  name="nome_comp" ng-model="$ctrl.funcoes.pessoa.row.nome_comp" >
+      <div ng-messages="form.nome_comp.$error">
         <div ng-message="required">Esse campo é obrigatório</div>
       </div>
     </md-input-container>
-  </div>
 
-  <md-input-container class="md-block" >
-    <label class="md-body-1">{{$ctrl.funcoes.pessoa.row.tipo=="J"?"Razão Social":"Nome Completo"}}</label>
-    <input type="text" required  name="nome_comp" ng-model="$ctrl.funcoes.pessoa.row.nome_comp" >
-    <div ng-messages="form.nome_comp.$error">
-      <div ng-message="required">Esse campo é obrigatório</div>
+    <div layout="row">
+      <md-input-container flex >
+        <label class="md-body-1">{{$ctrl.funcoes.pessoa.row.tipo=="J"?"Fantasia":"Apelido"}}</label>
+        <input type="text"  name="nome_red" ng-model="$ctrl.funcoes.pessoa.row.nome_red" >
+      </md-input-container>
+
+      <md-input-container flex ng-if="$ctrl.funcoes.pessoa.row.tipo=='F'">
+        <label class="md-body-1">Data Nascimento</label>
+        <input type="date" name="data_nasc" ng-model="$ctrl.funcoes.pessoa.row.data_nasc" md-placeholder="Data nascimento">
+      </md-input-container>
+
     </div>
-  </md-input-container>
 
-  <div layout="row">
-    <md-input-container flex >
-      <label class="md-body-1">{{$ctrl.funcoes.pessoa.row.tipo=="J"?"Fantasia":"Apelido"}}</label>
-      <input type="text"  name="nome_red" ng-model="$ctrl.funcoes.pessoa.row.nome_red" >
-    </md-input-container>
 
-    <md-input-container flex >
-      <label class="md-body-1">{{$ctrl.funcoes.pessoa.row.tipo=="J"?"Inscrição":"RG"}}</label>
-      <input type="text"  name="rg" ng-model="$ctrl.funcoes.pessoa.row.rg" >
-    </md-input-container>
 
-    <md-input-container flex ng-if="$ctrl.funcoes.pessoa.row.tipo=='F'">
-      <label class="md-body-1">Data Nascimento</label>
-      <input type="date" name="data_nasc" ng-model="$ctrl.funcoes.pessoa.row.data_nasc" md-placeholder="Data nascimento">
+  </div>
+
+<!-- Dados de endereço -->
+  <div layout="column" flex>
+
+    <div layout="row">
+      <md-input-container flex="20">
+        <label class="md-body-1">UF</label>
+        <md-select ng-model="$ctrl.funcoes.pessoa.row.uf">
+          <md-option ng-value="uf" ng-repeat="uf in $ctrl.funcoes.pessoa.ufs">{{uf}}</md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container flex="grow" >
+        <label class="md-body-1">Cidade</label>
+        <input type="text"  name="cidade" ng-model="$ctrl.funcoes.pessoa.row.cidade" >
+      </md-input-container>
+
+      <md-input-container flex="30" >
+        <label class="md-body-1">Cep</label>
+        <input type="text"  name="cep" ng-model="$ctrl.funcoes.pessoa.row.cep" >
+      </md-input-container>
+    </div>
+
+    <div layout="row">
+      <md-input-container flex="30" >
+        <label class="md-body-1">Bairro</label>
+        <input type="text"  name="bairro" ng-model="$ctrl.funcoes.pessoa.row.bairro" >
+      </md-input-container>
+      <md-input-container flex="60" >
+        <label class="md-body-1">Rua</label>
+        <input type="text"  name="logradouro" ng-model="$ctrl.funcoes.pessoa.row.logradouro" >
+      </md-input-container>
+      <md-input-container flex="10" >
+        <label class="md-body-1">Numero</label>
+        <input type="text"  name="numero" ng-model="$ctrl.funcoes.pessoa.row.numero" >
+      </md-input-container>
+    </div>
+
+    <md-input-container class="md-block">
+      <label class="md-body-1">Complemento</label>
+      <input type="text" name="complemento" ng-model="$ctrl.funcoes.pessoa.row.complemento">
     </md-input-container>
 
   </div>
-  <div layout="row">
-    <md-input-container flex="20">
-      <label class="md-body-1">UF</label>
-      <md-select ng-model="$ctrl.funcoes.pessoa.row.uf">
-        <md-option ng-value="uf" ng-repeat="uf in $ctrl.funcoes.pessoa.ufs">{{uf}}</md-option>
-      </md-select>
-    </md-input-container>
 
-    <md-input-container flex="grow" >
-      <label class="md-body-1">Cidade</label>
-      <input type="text"  name="cidade" ng-model="$ctrl.funcoes.pessoa.row.cidade" >
-    </md-input-container>
+</div>
 
-    <md-input-container flex="30" >
-      <label class="md-body-1">Cep</label>
-      <input type="text"  name="cep" ng-model="$ctrl.funcoes.pessoa.row.cep" >
-    </md-input-container>
-  </div>
-  <div layout="row">
-    <md-input-container flex="30" >
-      <label class="md-body-1">Bairro</label>
-      <input type="text"  name="bairro" ng-model="$ctrl.funcoes.pessoa.row.bairro" >
-    </md-input-container>
-    <md-input-container flex="60" >
-      <label class="md-body-1">Rua</label>
-      <input type="text"  name="logradouro" ng-model="$ctrl.funcoes.pessoa.row.logradouro" >
-    </md-input-container>
-    <md-input-container flex="10" >
-      <label class="md-body-1">Numero</label>
-      <input type="text"  name="numero" ng-model="$ctrl.funcoes.pessoa.row.numero" >
-    </md-input-container>                    
+<div layout-gt-xs="row" layout-xs="column">
+  <div layout="column" flex>
+    <div layout="row">
+      <md-input-container flex >
+        <label class="md-body-1">Telefone</label>
+        <input type="text"  name="tel" ng-model="$ctrl.funcoes.pessoa.row.tel" >
+      </md-input-container>
+      <md-input-container flex >
+        <label class="md-body-1">Celular 1</label>
+        <input type="text"  name="cel1" ng-model="$ctrl.funcoes.pessoa.row.cel1" >
+      </md-input-container>
+      <md-input-container flex >
+        <label class="md-body-1">Celular 2</label>
+        <input type="text"  name="cel2" ng-model="$ctrl.funcoes.pessoa.row.cel2" >
+      </md-input-container>
+    </div>
   </div>
 
-  <md-input-container class="md-block">
-    <label class="md-body-1">Complemento</label>
-    <textarea ng-model="$ctrl.funcoes.pessoa.row.complemento" rows="2"></textarea>
-  </md-input-container>
-  <div layout="row">
-    <md-input-container flex >
-      <label class="md-body-1">Telefone</label>
-      <input type="text"  name="tel" ng-model="$ctrl.funcoes.pessoa.row.tel" >
-    </md-input-container>
-    <md-input-container flex >
-      <label class="md-body-1">Celular 1</label>
-      <input type="text"  name="cel1" ng-model="$ctrl.funcoes.pessoa.row.cel1" >
-    </md-input-container>
-    <md-input-container flex >
-      <label class="md-body-1">Celular 2</label>
-      <input type="text"  name="cel2" ng-model="$ctrl.funcoes.pessoa.row.cel2" >
-    </md-input-container>                    
+  <div layout="column" flex>
+    <div layout="row">
+      <md-input-container flex >
+        <label class="md-body-1">Email</label>
+        <input type="text"  name="email" ng-model="$ctrl.funcoes.pessoa.row.email" >
+      </md-input-container>
+
+    </div>
   </div>
+</div>
 
-  <md-input-container class="md-block" >
-    <label class="md-body-1">Email</label>
-    <input type="text"  name="email" ng-model="$ctrl.funcoes.pessoa.row.email" >
-  </md-input-container>        
-
-  <md-input-container class="md-block">
-    <label class="md-body-1">Observações</label>
-    <textarea ng-model="$ctrl.funcoes.pessoa.row.obs" rows="5"></textarea>
-  </md-input-container>
-
+<div layout-gt-xs="row" layout-xs="column">
+    <md-input-container flex>
+      <label class="md-body-1">Observações</label>
+      <textarea ng-model="$ctrl.funcoes.pessoa.row.obs" rows="2"></textarea>
+    </md-input-container>
+</div>

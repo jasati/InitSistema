@@ -31,7 +31,10 @@
                   vm.filtros.showField = !vm.filtros.showField;
                   if (vm.filtros.showField) {
                       vm.filtros.flex = '50';
-                      document.getElementById('filtro').focus();
+                      var startFoco = function (argument) {
+                        document.getElementById('filtro').focus();
+                      }
+                      setTimeout(startFoco,500);
                   } else {
                       vm.filtros.flex = '0';
                       vm.filtros.cleanFilter();

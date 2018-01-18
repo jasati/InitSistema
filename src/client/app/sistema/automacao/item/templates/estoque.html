@@ -7,7 +7,7 @@
             <md-icon ng-hide="$ctrl.funcoes.item.filtros.digitando">search</md-icon>
             <md-progress-circular ng-show="$ctrl.funcoes.item.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
           </button>
-          <form flex="20" layout="row" autocomplete="off">
+          <form flex="20" layout="row" novalidate autocomplete="off">
               <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
               <input id="filtro" ng-model="$ctrl.funcoes.item.filtros.mainField"  ng-change="$ctrl.funcoes.item.filtros.onChange()" placeholder="Consultar Estoque" tabindex="0" >
 
@@ -16,11 +16,10 @@
             <md-tooltip>Remover filtro</md-tooltip>
             <md-icon>close</md-icon>
           </button>
-          <md-input-container flex="20" >
+          <md-input-container flex="30" >
             <label class="md-body-1">Tabela de preços</label>
             <md-select ng-model="$ctrl.funcoes.tabela" md-on-open="$ctrl.funcoes.filtrarTabela()" ng-change="$ctrl.funcoes.filtrar()">
-              <md-option value="0">A Vista</md-option>
-              <md-option ng-value="tab.id_item_preco" ng-repeat="tab in $ctrl.funcoes.tabPrecoItem.rows" >{{tab.descricao}}</md-option>
+              <md-option ng-value="tab.id_tp" ng-repeat="tab in $ctrl.funcoes.tabPrazos.data.rows" >{{tab.tabela}} {{tab.descricao}}</md-option>
             </md-select>
           </md-input-container>
           <md-switch flex ng-model="$ctrl.funcoes.filtroEstoque.abaixo_saldo_min" aria-label="Minimo" ng-change="$ctrl.funcoes.filtrar()">

@@ -48,6 +48,7 @@
         };
         var service = {
         	usuario        : usuario,
+          empresas       : empresas,
           perfil         : perfil,
           perfilModulos  : perfilModulos,
           modulosGrp     : modulosGrp,
@@ -107,6 +108,97 @@
 
         	};
         	return dataset;
+        }
+
+        function empresas() {
+          // campos são os campos da tabela que são visiveis no sistema
+          /*
+SELECT 
+e.id_empresa,
+e.nome,
+e.cpf_cnpj,
+e.endereco,
+e.responsavel,
+e.data_cad,
+e.email,
+e.cel,
+e.status,
+e.tel1,
+e.tel2,
+e.slogan,
+e.cidade,
+e.id_galeria,
+e.fantasia,
+e.estado,
+e.cad_confirm,
+e.config_n_nf,
+e.config_data_estoque,
+e.config_id_tp_padrao,
+e.config_id_tipo_mov_ven_cons,
+e.config_id_pessoa_cons,
+
+CONCAT(t.descricao," ",tp.descricao) as tabela,
+g.imagem,
+tme.descricao as tipo_mov,
+CONCAT(p.nome_red," - ",p.nome_comp) as consumidor
+
+FROM empresas e 
+LEFT JOIN tabela_prazos tp ON e.config_id_tp_padrao = tp.id_tp
+LEFT JOIN tabela t ON tp.id_tabela = t.id_tabela
+LEFT JOIN galeria g on e.id_galeria = g.id_galeria
+LEFT JOIN tipo_mov_estoque tme ON e.config_id_tipo_mov_ven_cons = tme.id_tipo_mov
+LEFT JOIN pessoas p ON e.config_id_pessoa_cons = p.id_pessoa
+           */
+          // 
+          var campos = 'e.id_empresa, e.nome, e.cpf_cnpj, e.endereco, e.responsavel, e.data_cad, e.email, e.cel, e.status, e.tel1, e.tel2, e.slogan, e.cidade, e.id_galeria, e.fantasia, e.estado, e.cad_confirm, e.config_n_nf, e.config_data_estoque, e.config_id_tp_padrao,e.config_id_tipo_mov_ven_cons,e.config_id_pessoa_cons,  CONCAT(t.descricao," ",tp.descricao) as tabela, g.imagem,  tme.descricao as tipo_mov, CONCAT(p.nome_red," - ",p.nome_comp) as consumidor';
+          // camposFiltro são os campos usados para fazer a pesquisa no sistema
+          var camposFiltro = [
+          ];
+          // filtroDefault é a pesquisa que ja vem padrao pelo sistema
+          var filtroDefault = [
+          ];
+
+          var inner_join = {
+                0:"",
+            };
+
+          var left_join = {
+                0:"galeria g on e.id_galeria = g.id_galeria",
+                1:"tabela_prazos tp ON e.config_id_tp_padrao = tp.id_tp",
+                2:"tabela t ON tp.id_tabela = t.id_tabela",
+                3:"tipo_mov_estoque tme ON e.config_id_tipo_mov_ven_cons = tme.id_tipo_mov",
+                4:"pessoas p ON e.config_id_pessoa_cons = p.id_pessoa",
+            };
+          var camposData = [];
+          var camposForeignKey = [];
+          var camposInvalidos = ['action','tabela','imagem','tipo_mov','consumidor'];
+          var emp = empresa();
+          var dataset = {
+            setForeignKey   : true,//esse campo determina se a cada novo registro será recibido o campo id_empresa
+            api             : api,
+            empresa         : emp,
+            campos          : campos,
+            inner_join      : inner_join,
+            left_join       : left_join,
+            camposInvalidos : camposInvalidos,
+            id_index_main   : '1',
+            valor_id_main   : '1',
+            moduloQuery     : 'empresas e',//modulo com alias para consultas
+            modulo          : 'empresas',
+            id_tabelaQuery  : 'e.id_empresa',
+            id_tabela       : 'id_empresa',
+            orderBy         : '',
+            groupBy         : '',
+            provider        : Provider,
+            camposFiltro    : camposFiltro,
+            filtroDefault   : filtroDefault,
+            camposData      : camposData,
+            camposForeignKey: camposForeignKey,
+            valueForeignKey : [],//será preenchido quando dentro da classe que chamar essa função
+            campoImagem     : 'imagem',
+
+          };
+          return dataset;
         }
 
         function perfil() {

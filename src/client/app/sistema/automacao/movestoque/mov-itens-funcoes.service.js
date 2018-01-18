@@ -6,13 +6,13 @@
         .service('MovItensFuncService', MovItensFuncService);
 
     MovItensFuncService.$inject = [
-      'UtilsFunctions','AutomacaoDataset','UtilsDataFunctionService','FiltroService','ItemFuncService',
+      'UtilsFunctions','MovDataSet','UtilsDataFunctionService','FiltroService','ItemFuncService','ItemTabPrecoFuncService',
       '$state','$mdDialog','$filter'
     ];
 
     /* @ngInject */
     function MovItensFuncService(
-      UtilsFunctions,AutomacaoDataset,UtilsDataFunctionService,FiltroService,ItemFuncService,
+      UtilsFunctions,MovDataSet,UtilsDataFunctionService,FiltroService,ItemFuncService,ItemTabPrecoFuncService,
       $state,$mdDialog,$filter
     ) {
         this.funcoes = funcoes;
@@ -23,11 +23,11 @@
           vm.isset = UtilsFunctions.isset;
           vm.soma = UtilsFunctions.soma;
           vm.onEnter = UtilsFunctions.handleEnter;
-          var dataSetProvider = AutomacaoDataset.movItensEstoque();
+          var dataSetProvider = MovDataSet.movitens();
           vm.data = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
           vm.data.title = 'Itens da movimentação';
           vm.itens = new ItemFuncService.funcoes();
-          vm.movimento = {};
+          vm.itensTab = new ItemTabPrecoFuncService.funcoes();
           vm.divider = 'botton';
           vm.showDadosPessoa = true;
 
@@ -38,18 +38,24 @@
             funcFiltros.filtros.functionDinamic = vm.filtroAutoComplete;//função que aciona o auto complete do filtro      
             funcFiltros.filtros.functionRead = vm.filtrar;//setar a função de gatilho para consulta
             vm.data.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
+            vm.data.setPagination();
             vm.data.filtros.functionRead();//chama a consulta
           }
 
           vm.filtrar = function () {
             var query = '';
             if (isset(vm.data.filtros.mainField)) {
-              query += " and descricao LIKE '"+vm.data.filtros.mainField+"%'";
+              query += " and i.descricao LIKE '"+vm.data.filtros.mainField+"%'";
             }
-            if (isset(vm.movimento.id_mov)) {
-              query += " and id_mov = "+vm.movimento.id_mov
+            if (isset(vm.data.rowParent)) {
+              query += " and em.id_mov = "+vm.data.rowParent.id_mov
+            } else {
+              //filtros quando os itens estão sendo visualizado sem a movimentação pai
+              // if (isset(vm.data.filtros.tipo_mov) {
+              //   query += " and tmp.tipo = "+vm.data.rowParent.id_mov
+              // }
             }
-            vm.data.read(query,false);//limitar os registro
+            vm.data.read(query,true);//limitar os registro
           }
 
           vm.filtroAutoComplete = function (prm) {
@@ -60,9 +66,11 @@
           }
 
           vm.selectItem = function ($event) {
-            if (vm.movimento.status != 'F') {
+            if (vm.data.rowParent.status != 'F') {
               vm.showDadosPessoa = false;
-              vm.itens.tabela = vm.movimento.id_item_preco;
+              if (isset(vm.data.rowParent.id_tp)) {
+                vm.itens.tabela = vm.data.rowParent.id_tp;
+              }
               vm.itens.selectItem($event).then(function (result) {
                 if (result) {
                   var newItem = UtilsFunctions.copiarObjecto(vm.itens.item.row)
@@ -80,24 +88,27 @@
                     vm.alterarItemMov(oldItem[0]);
                   } else {
                     vm.data.novo(newItem);//preenche o campo row do itens do movimento
+                    if (vm.data.rowParent.tipo_mov == 'E') {
+                      vm.data.setNewChilder(ItemTabPrecoFuncService,vm.data.row,true);
+                      //vm.data.row.valor = vm.data.row.custo;
+                    }
                     vm.data.row.qt = 1;
                     vm.data.row.desconto = 0;
                     setTimeout(vm.startFoco, 500);
                     vm.itens.filtrarUnidade();
                   }
                 }
-              });              
+              });
             }
 
           }
 
-          var addItem = function () {
+          vm.addItem = function () {
             if (isset(vm.data.row)) {
               if (vm.data.actionRow == 'create') {
                 vm.data.adicionar(vm.data.row);
               }
-              vm.itens.item.row = null;
-              vm.data.row = null
+              vm.cancelarItem();
               vm.selectItem();
             }
           }
@@ -105,20 +116,37 @@
           vm.loadItem = function ($event) {
             var keyCode = $event.which || $event.keyCode;
             if (keyCode === 13) {
-              if (vm.movimento.statu!='F') {
-                addItem();
+              if (vm.data.rowParent.status!='F') {
+                vm.addItem();
               }
             }
           }
 
-          vm.alterarItemMov = function (row) {
+          vm.alterarItemMov = function (row,index) {
             vm.data.alterar(row);
+            vm.data.setIndex(index);
+            if (vm.data.rowParent.tipo_mov == 'E') {
+              vm.data.setNewChilder(ItemTabPrecoFuncService,vm.data.row,true);
+            }
             setTimeout(vm.startFoco, 500);
           }
 
-          vm.cancelarItem = function (row) {
-            vm.data.remover(row);
-            vm.data.row = null;
+          vm.showTabela = function (row) {
+            row.custo=row.valor
+            row.child.showTabela('').then(function () {
+              document.getElementById('btnOk').focus();
+            });
+            
+          }
+
+          vm.cancelarItem = function () {
+            vm.itens.item.row = null;
+            vm.data.row = null
+          }
+
+          vm.removerItem = function () {
+            vm.data.removerIndex();
+            vm.cancelarItem();
           }
 
           vm.startFoco = function () {
@@ -129,7 +157,7 @@
 
           vm.clearItemSel = function () {
             vm.itemSel = {
-              id_mov    : vm.movimento.id_mov?vm.movimento.id_mov:null,
+              id_mov    : vm.data.rowParent.id_mov?vm.data.rowParent.id_mov:null,
               id_item   : null,
               qt        : 1.00,
               valor     : 0.00,
@@ -150,7 +178,7 @@
           vm.setItemSel = function (row,tipo) {
             if (isset(row)) {
               vm.itemSel = {
-                id_mov    : vm.movimento.id_mov?vm.movimento.id_mov:null,
+                id_mov    : vm.data.rowParent.id_mov?vm.data.rowParent.id_mov:null,
                 codigo    : row.codigo,
                 id_item   : row.id_item,
                 id_unidade: row.id_unidade,
@@ -223,7 +251,7 @@
             tpl=tpl+"<div class='col-xs-6'>";
             tpl=tpl+"<p><b>CPF/CNPJ </b>: "+master.p_dest_cfp_cnpj+"</p>";            
             tpl=tpl+"<p><b>Contato .</b>: "+master.p_dest_tel1+"</p>";
-            tpl=tpl+"<p><b>Numero . </b>: "+master.n_nf+"</p>";
+            tpl=tpl+"<p><b>Numero . </b>: "+master.numero+"</p>";
             tpl=tpl+"<p><b>Data . . </b>: "+$filter('date')(master.data_emissao,'dd/MM/yyyy HH:mm')+"</p>";
             tpl=tpl+"</div>";
 

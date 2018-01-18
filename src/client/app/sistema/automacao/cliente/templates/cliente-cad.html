@@ -1,18 +1,27 @@
-<div layout="column">
-  <md-toolbar class="md-table-toolbar md-default">
-    <div class="md-toolbar-tools">
-      <span>Cadastro de Cliente</span>
-      <span flex></span>
-      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
-          <md-icon>close</md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
-  <md-card-content>
-    <form name="form" novalidate autocomplete="off">
-      <div layout-padding layout="column">
-        <pessoa funcoes="$ctrl.funcoes.pessoaFunc">
-        </pessoa>
+
+<md-content layout="column">
+  <md-card>
+
+    <md-card-actions layout-gt-xs="row" layout-xs="column" flex layout-align-gt-xs="start center" layout-align-xs="center start">
+        <span class="md-title" flex layout-margin>{{$ctrl.funcoes.cliente.label}} Cliente</span>
+        <span flex></span>
+        <md-button class="md-icon-button" ui-sref="layout.cliente" aria-label="close">
+            <md-icon>close</md-icon>
+        </md-button>
+    </md-card-actions>
+
+    <md-divider></md-divider>
+
+    <md-card-content class="atura-content">
+
+      <form name="form" novalidate autocomplete="off">
+        <div layout-xs="column" layout-gt-xs="row" flex>
+
+          <pessoa funcoes="$ctrl.funcoes.pessoaFunc">
+          </pessoa>
+
+
+        </div>
         <div layout="row">
           <md-radio-group name="status" required ng-model="$ctrl.funcoes.cliente.row.status" class="md-block">
             <label class="md-body-2">Status do cliente</label>
@@ -22,28 +31,30 @@
             </div>
           </md-radio-group>
 
-          <md-input-container class="md-block" >
+          <md-input-container >
             <label class="md-body-1">Tabela de Preço</label>
-            <md-select ng-model="$ctrl.funcoes.cliente.row.id_tabela_preco" md-on-open="$ctrl.funcoes.filtrarTabela()">
+            <md-select ng-model="$ctrl.funcoes.cliente.row.id_tabela" md-on-open="$ctrl.funcoes.filtrarTabela()">
               <md-option value=""></md-option>
-              <md-option ng-value="tab.id_tabela_preco" ng-repeat="tab in $ctrl.funcoes.tabela.rows">{{tab.descricao}}</md-option>
+              <md-option ng-value="tab.id_tabela" ng-repeat="tab in $ctrl.funcoes.tabela.data.rows">{{tab.descricao}}</md-option>
             </md-select>
           </md-input-container>
 
-          <md-input-container flex >
+          <md-input-container >
             <label class="md-body-1">Limite de Crédito</label>
             <input type="number" name="limite_credito" min="0.00" ng-model="$ctrl.funcoes.cliente.row.limite_credito" >
-          </md-input-container>            
+          </md-input-container>
         </div>
-      </div>
-    </form>
-  </md-card-content>
-  <md-card-footer>
-    <md-divider></md-divider>
-    <md-card-actions layout="row" layout-align="end center">
-      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.salvar();">Salvar</md-button>
 
-  </md-card-actions>
-  </md-card-footer>
+      </form>
 
-</div>        
+    </md-card-content>
+
+    <md-card-footer>
+      <md-divider></md-divider>
+      <md-card-actions layout="row" layout-align="end center">
+        <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.salvar();">Salvar</md-button>
+
+        </md-card-actions>
+    </md-card-footer>
+  </md-card>
+</md-content>

@@ -6,13 +6,13 @@
         .service('TabPrazosFuncService', TabPrazosFuncService);
 
     TabPrazosFuncService.$inject = [
-      'UtilsFunctions','TabelaDataSet','UtilsDataFunctionService','FiltroService',
+      'UtilsFunctions','TabelaDataSet','UtilsDataFunctionService','FiltroService','TabPrazosMeioPagFuncService',
       '$state','$mdDialog','$filter','logger','$interval'
     ];
 
     /* @ngInject */
     function TabPrazosFuncService(
-      UtilsFunctions,TabelaDataSet,UtilsDataFunctionService,FiltroService,
+      UtilsFunctions,TabelaDataSet,UtilsDataFunctionService,FiltroService,TabPrazosMeioPagFuncService,
       $state,$mdDialog,$filter,logger,$interval
     )
     {
@@ -25,9 +25,15 @@
           var dataSet = new TabelaDataSet.tabelaPrazos();
           var dataSetCreateTabItens = TabelaDataSet.createTabPrecoItens();
           vm.data = new UtilsDataFunctionService.dataFuncoes(dataSet);
+          vm.tabPrazosMp = new TabPrazosMeioPagFuncService.funcoes()
           vm.createTabItens = new UtilsDataFunctionService.dataFuncoes(dataSetCreateTabItens);
           var masterData = null;
-          vm.data.title = "Prazos da tabela";
+          vm.data.title = "Tabelas";
+
+          vm.start = function (masterClass) {
+            vm.setMasterData(masterClass.data.row);
+            vm.activate();
+          }
 
           vm.activate = function () {
             var funcFiltros = new FiltroService.funcoes();
@@ -45,19 +51,19 @@
             masterData = row;
           }
 
-          vm.setForengKey = function (id) {
-            dataSet.valueForeignKey.push(id);
-          }
           vm.filtrar = function () {
+            var query = '';
             if (isset(masterData)) {
-              var query = ' and tp.id_tabela = '+masterData.id_tabela;
-              if (isset(vm.data.filtros.mainField)) {
-                query += " and tp.descricao LIKE '"+vm.data.filtros.mainField+"%'";
+              if (isset(masterData.id_tabela)) {
+                query += ' and tp.id_tabela = '+masterData.id_tabela;
+              } else {
+                query += ' and tp.id_tabela = 0';
               }
-              vm.data.read(query,false);//limitar os registro
-            } else {
-              logger.warning('Atenção! o masterData não foi definido.');
             }
+            if (isset(vm.data.filtros.mainField)) {
+              query += " and tp.descricao LIKE '"+vm.data.filtros.mainField+"%'";
+            }
+            vm.data.read(query,false);//limitar os registro
           }
 
           vm.filtroAutoComplete = function (prm) {
@@ -68,33 +74,14 @@
           }
 
           vm.novo = function () {
-            vm.cadastro('create',{id_tabela:masterData.id_tabela})
+            vm.data.setForengKey(masterData.id_tabela,0);
+            vm.data.novo({},'layout.pgconfig.tabela.tabelaPrazCad');
+            vm.tabPrazosMp.start(vm);
           }
 
           vm.alterar = function (row) {
-            vm.cadastro('update',row);
-          }
-
-          vm.cadastro = function (action,row,ev) {
-            switch (action) {
-              case 'create':
-                vm.data.novo(row);
-                break;
-              case 'update':
-                vm.data.alterar(row);
-                break;
-              default:
-            }
-
-            var config = {
-              templateUrl: 'app/sistema/automacao/configuracao/tabela/templates/tabela-prazos-cadastro.html',
-              size:'',
-              data:vm,
-              backdrop:'static',
-              fullscreen:false,
-              modal:{},
-            };
-            vm.data.showModal(config);
+            vm.data.alterar(row,'layout.pgconfig.tabela.tabelaPrazCad');
+            vm.tabPrazosMp.start(vm);
           }
 
           vm.callCreateTableItens = function (row) {

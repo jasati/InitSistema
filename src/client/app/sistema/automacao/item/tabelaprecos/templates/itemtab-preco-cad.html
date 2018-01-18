@@ -1,0 +1,157 @@
+<div layout="column">
+  <md-toolbar class="md-table-toolbar">
+    <div class="md-toolbar-tools">
+      <span>Tabela de Preços do Item</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content layout-padding>
+    <md-card-actions layout="row" flex>
+      <md-button class="md-accent md-fab md-mini" ng-hide="$ctrl.funcoes.data.row.action=='c'" ng-click="$ctrl.funcoes.addNovo()">
+        <md-icon>add</md-icon>
+        <md-tooltip md-autohide="true">Adicionar tabela para esse item</md-tooltip>
+      </md-button>      
+      <div flex="60">
+        <span class="text-info md-caption"><b>{{$ctrl.funcoes.data.rowParent.descricao}}</b></span>
+      </div>
+      <div flex="10">
+        <span class="text-muted md-caption">Custo : </span>
+      </div>
+      <div flex="20">
+        <span class="text-danger md-caption"><b>{{$ctrl.funcoes.data.rowParent.custo|currency}}</b></span>
+      </div>
+    </md-card-actions>
+    <div layout-gt-xs="row" layout-xs="column" flex ng-show="$ctrl.funcoes.data.row.action=='c'">
+      <md-autocomplete
+          id="selectTab"
+          flex="50"
+          md-no-cache="false"
+          md-autofocus
+          md-search-text="$ctrl.searchText"
+          md-selected-item="$ctrl.funcoes.tabPrazo.data.row"
+          md-items="row in $ctrl.funcoes.tabPrazo.filtroAutoComplete($ctrl.searchText)"
+          md-selected-item-change="$ctrl.funcoes.changeAutoComplete($ctrl.funcoes.data.row,row)"
+          md-item-text="row.descricao"
+          md-min-length="0"
+          md-delay="500"
+          md-clear-button="true"
+          md-floating-label="Informe a tabela"
+          placeholder="Informe a tabela">
+        <md-item-template>
+          <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{row.tabela}} {{row.descricao}}</span>
+        </md-item-template>
+        <md-not-found>
+          A tabela "{{$ctrl.searchText}}" não foi encontrado.
+        </md-not-found>
+      </md-autocomplete>
+
+      <div layout="row" flex>
+        <md-input-container flex>
+          <label class="md-body-1">% Lucro</label>
+          <input type="number" id="perc_lucroA" min="0.00" ng-model="$ctrl.funcoes.data.row.perc_lucro" ng-change="$ctrl.funcoes.calcLucro($ctrl.funcoes.data.row,'%',$ctrl.funcoes.data.rowParent.custo)">
+        </md-input-container>
+
+        <md-input-container flex>
+          <label class="md-body-1">Preço</label>
+          <input type="number" id="valorA" min="0.00" ng-model="$ctrl.funcoes.data.row.valor" ng-change="$ctrl.funcoes.calcLucro($ctrl.funcoes.data.row,'$',$ctrl.funcoes.data.rowParent.custo)">
+        </md-input-container>
+        <span layout="row" flex layout-align="center center">
+          <md-button class="md-icon-button md-accent" ng-click="$ctrl.funcoes.confimarAddTabela()" aria-label="addtabela">
+            <md-icon>playlist_add_check</md-icon>
+            <md-tooltip>Confirmar inclusão da tabela</md-tooltip>
+          </md-button>
+        </span>
+      </div>
+    </div>
+
+    <form name="form" novalidate autocomplete="off">
+      <div layout-gt-xs="row" layout-xs="column" flex layout-padding>
+        <div layout="column">
+          <md-list class="md-dense" flex>
+            <md-subheader md-no-sticky>Atacado</md-subheader >
+            <md-list-item class="md-3-line" ng-repeat="itemtab in $ctrl.funcoes.data.rows | filter:{tipo:'A'} track by $index">
+
+              <div layout="row">
+                <md-input-container flex="40">
+                  <label class="md-body-1">Tabela</label>
+                  <input type="text"  name="tabA{{$index}}" ng-model="itemtab.desc_tab_prazo" readonly>
+                </md-input-container>
+
+                <md-input-container flex="30">
+                  <label class="md-body-1">% Lucro</label>
+                  <input type="number" name="perc_lucroA{{$index}}" min="0.00" ng-model="itemtab.perc_lucro" ng-change="$ctrl.funcoes.calcLucro(itemtab,'%',$ctrl.funcoes.data.rowParent.custo);$ctrl.funcoes.data.onChange(itemtab)">
+                </md-input-container>
+                <span ng-hide="true">
+                  {{$ctrl.precoErro = itemtab.valor<(($ctrl.funcoes.data.rowParent.custo*itemtab.perc_lucro/100)+$ctrl.funcoes.data.rowParent.custo).toFixed(2)}}
+                </span>
+                <md-input-container flex="30" ng-class="{'md-input-invalid':$ctrl.precoErro}">
+                  <label class="md-body-1">Preço</label>
+                  <input type="number" name="valorA{{$index}}" min="0.00" ng-model="itemtab.valor" ng-change="$ctrl.funcoes.calcLucro(itemtab,'$',$ctrl.funcoes.data.rowParent.custo);$ctrl.funcoes.data.onChange(itemtab)">
+                </md-input-container>
+                <div layout="column" layout-align="start center" ng-show="$ctrl.precoErro">
+                  <small style="font-size: 90%" class="md-body-1 text-muted">Sugerido</small>
+                  <span style="font-size: 90%" class="text-info md-body-1">{{(($ctrl.funcoes.data.rowParent.custo*itemtab.perc_lucro/100)+$ctrl.funcoes.data.rowParent.custo).toFixed(2)}}</span>
+                </div>
+
+              </div>
+            </md-list-item>
+
+          </md-list>
+        </div>
+
+        <div layout="column">
+          <md-list class="md-dense" flex>
+            <md-subheader>Varejo</md-subheader>
+            <md-list-item class="md-3-line"  ng-repeat="itemtab in $ctrl.funcoes.data.rows | filter:{tipo:'V'} track by $index">
+              <div layout="row">
+                <md-input-container flex="40">
+                  <label class="md-body-1">Tabela</label>
+                  <input type="text"  name="tabV{{$index}}" ng-model="itemtab.desc_tab_prazo" readonly>
+                </md-input-container>
+
+                <md-input-container flex="30">
+                  <label class="md-body-1">% Lucro</label>
+                  <input type="number" name="perc_lucroV{{$index}}" min="0.00" ng-model="itemtab.perc_lucro" ng-change="$ctrl.funcoes.calcLucro(itemtab,'%',$ctrl.funcoes.data.rowParent.custo);$ctrl.funcoes.data.onChange(itemtab)">
+                </md-input-container>
+                <span ng-hide="true">
+                  {{$ctrl.precoErro = itemtab.valor<(($ctrl.funcoes.data.rowParent.custo*itemtab.perc_lucro/100)+$ctrl.funcoes.data.rowParent.custo).toFixed(2)}}
+                </span>
+                <md-input-container flex="30" ng-class="{'md-input-invalid':$ctrl.precoErro}">
+                  <label class="md-body-1">Preço</label>
+                  <input type="number" name="valorV{{$index}}" min="0.00" ng-model="itemtab.valor" ng-change="$ctrl.funcoes.calcLucro(itemtab,'$',$ctrl.funcoes.data.rowParent.custo);$ctrl.funcoes.data.onChange(itemtab)">
+                </md-input-container>
+                <div layout="column" layout-align="start center" ng-show="$ctrl.precoErro">
+                  <small style="font-size: 90%" class="md-body-1 text-muted">Sugerido</small>
+                  <span style="font-size: 90%" class="text-info md-body-1">{{(($ctrl.funcoes.data.rowParent.custo*itemtab.perc_lucro/100)+$ctrl.funcoes.data.rowParent.custo).toFixed(2)}}</span>
+                </div>                
+              </div>
+
+            </md-list-item>
+          </md-list>
+        </div>
+
+
+      </div>
+      
+    </form>
+  </md-card-content>
+  <md-card-footer>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="start center">
+      <span layout="column" layout-align="start center">
+        <md-button  class="md-grid-item-content md-primary" ng-show="$ctrl.precoErro" aria-label="atualizar preços" ng-click="$ctrl.funcoes.atualizarLucro()">
+          <md-icon>flash_on</md-icon>
+          <span class="md-grid-text">Atualizar Preços</span>
+          <md-tooltip md-autohide="true">Atualiza os preços conforme o percentual de lucro</md-tooltip>
+        </md-button>
+      </span>
+      <span flex></span>
+      <md-button class="md-raised md-primary md-offset" ng-disabled="form.$invalid||$ctrl.precoErro" ng-click="$ctrl.ok();">Concluir</md-button>
+
+  </md-card-actions>
+  </md-card-footer>
+
+</div>                

@@ -6,13 +6,13 @@
         .service('ItemTabPrecoFuncService', ItemTabPrecoFuncService);
 
     ItemTabPrecoFuncService.$inject = [
-      'UtilsFunctions','InventarioDataSet','UtilsDataFunctionService','FiltroService','ItemTabPrecoDataSet',
+      'UtilsFunctions','UtilsDataFunctionService','FiltroService','ItemTabPrecoDataSet','TabPrazosFuncService',
       '$state','$mdDialog','$filter','logger'
     ];
 
     /* @ngInject */
     function ItemTabPrecoFuncService(
-      UtilsFunctions,InventarioDataSet,UtilsDataFunctionService,FiltroService,ItemTabPrecoDataSet,
+      UtilsFunctions,UtilsDataFunctionService,FiltroService,ItemTabPrecoDataSet,TabPrazosFuncService,
       $state,$mdDialog,$filter,logger
     )
     {
@@ -21,9 +21,10 @@
         function funcoes() {
           var vm = this;
           var isset = UtilsFunctions.isset;
-          vm.onEnter = UtilsFunctions.handleEnter;
+          var onEnter = UtilsFunctions.handleEnter;
           var dataSetMaster = new ItemTabPrecoDataSet.dataSetMaster();
           vm.data = new UtilsDataFunctionService.dataFuncoes(dataSetMaster);
+          vm.tabPrazo = new TabPrazosFuncService.funcoes();
           vm.data.title = "Tabela de Preços dos itens";
           var masterData = null;
           vm.activate = function () {
@@ -43,21 +44,15 @@
             vm.data.filtros.functionRead();//chama a consulta
           }
 
-          vm.setMasterData = function (row) {
-            masterData = row;
-            vm.filtrar();
-          }
-
           vm.filtrar = function () {
-            if (isset(masterData)) {
-              var query = ' and itp.id_item = '+masterData.id_item;
-              if (isset(vm.data.filtros.mainField)) {
-                query += " and CONCAT(t.descricao,' ',tp.descricao) LIKE '"+vm.data.filtros.mainField+"%'";
-              }
-              vm.data.read(query,false);//limitar os registro
-            } else {
-              logger.warning('Atenção! o masterData não foi definido.');
+            var query = '';
+            if (isset(vm.data.rowParent)) {
+              query = ' and itp.id_item = '+vm.data.rowParent.id_item;
             }
+            if (isset(vm.data.filtros.mainField)) {
+              query += " and CONCAT(t.descricao,' ',tp.descricao) LIKE '"+vm.data.filtros.mainField+"%'";
+            }
+            vm.data.read(query,true);//limitar os registro
           }
 
           vm.filtroAutoComplete = function (prm) {
@@ -67,45 +62,78 @@
             });
           }
 
-          vm.changeAutoComplete = function (rowEdit,rowSelect) {
-            if (isset(rowSelect)) {
-              if (isset(rowSelect.parent)) {
-
-              }
+          vm.calcLucro = function (row,tipo,custo) {
+            if (tipo=="%") {
+              row.valor = Number(((custo*row.perc_lucro/100)+custo).toFixed(2));
             } else {
-
+              row.perc_lucro = Number(((row.valor-custo)/custo*100).toFixed(2));//calculo para descobrir o lucro
             }
-          }          
-
-
-          vm.novo = function () {
-            vm.cadastro('create',{id_tabela_preco:null})
           }
 
-          vm.alterar = function (row) {
-            vm.cadastro('update',row);
+          vm.atualizarLucro = function () {
+            //função para atualizar o lucro e o preço automaticamente, quando o usuario
+            //acessa a janela e o custo esta alterado para cima, ideal quando inicia a template
+            //com o ng-init
+            for (var i = 0; i < vm.data.rows.length; i++) {
+              vm.calcLucro(vm.data.rows[i],'%',vm.data.rowParent.custo);
+            }
           }
 
-          vm.cadastro = function (action,row,ev) {
-            switch (action) {
-              case 'create':
-                vm.data.novo(row);
-                break;
-              case 'update':
-                vm.data.alterar(row);
-                break;
-              default:
-            }
-
+          vm.showTabela = function (element) {
             var config = {
-              templateUrl: 'app/sistema/automacao/item/tabelaprecos/templates/tabelapreco-cad.html',
+              templateUrl: 'app/sistema/automacao/item/tabelaprecos/templates/itemtab-preco-cad.html',
               size:'',
               data:vm,
-              backdrop:'static',
+              backdrop:true,
               fullscreen:false,
               modal:{},
             };
-            vm.data.showModal(config);
+            return vm.data.showModal(config,element).then(function (result) {
+              return result;
+            })
+          }
+
+          vm.changeAutoComplete = function (rowEdit,rowSelect) {
+            if (isset(rowSelect)) {
+              if (isset(rowSelect.descricao)) {
+                rowEdit.id_tp          = rowSelect.id_tp;
+                rowEdit.desc_tab_prazo = rowSelect.descricao;
+                rowEdit.perc_lucro     = rowSelect.percentual;
+                rowEdit.desc_tab_comp  = rowSelect.tabela+' '+rowSelect.descricao;
+                rowEdit.tipo           = rowSelect.tipo;
+                vm.calcLucro(rowEdit,'%',vm.data.rowParent.custo);
+                document.getElementById('perc_lucroA').focus();
+              }
+            } else {
+              if (rowEdit) {
+                rowEdit.id_tp          = null;
+                rowEdit.desc_tab_prazo = null;
+                rowEdit.perc_lucro     = null;
+                rowEdit.desc_tab_comp  = null;
+                rowEdit.tipo           = null;
+                rowEdit.valor          = null;
+              }
+            }
+          }
+
+          vm.addNovo = function () {
+            vm.data.novo({id_tabela_preco:null});
+            var startFoco = function () {
+              document.getElementById('selectTab').focus();
+            }
+            setTimeout(startFoco, 500);
+          }
+
+          vm.confimarAddTabela = function () {
+            var existe = $filter('filter')(vm.data.rows,{id_tp:vm.data.row.id_tp},true);
+            if (existe.length == 0) {
+              vm.data.adicionar(vm.data.row);
+            } else {
+              logger.warning('Essa tabela já foi adicionada!');
+            }
+            
+            vm.data.row = null;
+            vm.tabPrazo.data.row = null;
           }
 
           vm.deletar = function (ev,data) {

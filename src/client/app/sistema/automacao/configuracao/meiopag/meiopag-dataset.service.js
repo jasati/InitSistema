@@ -32,6 +32,7 @@
         	dataSet.tableCols        = tableCols;
         	dataSet.camposData       = [];
             dataSet.camposInvalidos  = ['action'];
+            dataSet.camposForeignKey = ['id_empresa'];//campos chave estrangeira
         	return  dataSet;
         }
 

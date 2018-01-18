@@ -116,8 +116,11 @@
             if (arr_c.length > 0) {
               prm.dataset.estrutura = arr_c;
               return create(prm).then(function (res) {
-                  return res;
+                var pos = arr_c.length-1;
+                return res[pos];
               });
+            } else {
+              return 0;
             }
           };
 
@@ -127,6 +130,8 @@
               return update(prm).then(function (res) {
                   return res;
               });
+            } else {
+              return 0;
             }
           };
 
@@ -136,6 +141,8 @@
               return deletar(prm).then(function (res) {
                   return res;
               });
+            } else {
+              return 0;
             }
           };
 

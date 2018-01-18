@@ -23,7 +23,18 @@
                       meiopag: resolveMeioPag
                   }
               }
-            }
+            },
+            {
+              state: 'layout.pgconfig.meiopag.meiopagCad',
+              config: {
+                  url:'/cadastro',
+                  title:'Cadastro do meio de pagamento',
+                  component:'meiopagCad',
+                  resolve : {
+                      meiopag: resolveMeioPagCad
+                  }
+              }
+            }            
         ];
     }
     resolveMeioPag.$inject = ['MeioPagFuncService','FiltroService','layoute','$transitions','$state'];
@@ -36,4 +47,14 @@
       });
       return meiopag; 
     }
+
+    resolveMeioPagCad.$inject = ['MeioPagFuncService','FiltroService','layoute','$transitions','$state','meiopag'];
+
+    function resolveMeioPagCad(MeioPagFuncService,FiltroService,layoute,$transitions,$state,meiopag) {
+      // meiopag.activate();
+      $transitions.onSuccess({}, function(transition) {
+        layoute.setPath($state.getCurrentPath());
+      });
+      return meiopag; 
+    }        
 })();

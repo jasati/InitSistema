@@ -1,5 +1,5 @@
 <md-card-actions ng-show="$ctrl.funcoes.dados.rows.length > 0">
-	<md-button style="position: relative;top:45px" class="md-icon-button" ng-click="$ctrl.funcoes.dados.filtros.functionRead()" aria-label="edit"><md-icon aria-label="refresh">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
+	<md-button style="position: absolute" class="md-icon-button" ng-click="$ctrl.funcoes.dados.filtros.functionRead()" aria-label="edit"><md-icon aria-label="refresh">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
 	<span flex></span>
 	<md-table-pagination md-limit="$ctrl.funcoes.dados.pagination.limit" md-limit-options="$ctrl.funcoes.dados.pagination.limitOptions" md-page="$ctrl.funcoes.dados.pagination.pagina" md-total="{{$ctrl.funcoes.dados.pagination.total}}"  md-on-paginate="$ctrl.funcoes.filtrar" md-page-select md-label="{{$ctrl.funcoes.dados.pagination.label}}"></md-table-pagination>
 </md-card-actions>

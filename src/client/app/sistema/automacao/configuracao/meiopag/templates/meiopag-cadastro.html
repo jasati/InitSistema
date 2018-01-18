@@ -1,27 +1,29 @@
 <div layout="column" flex>
-  <md-card-actions layout="row" flex>
-    <span class="md-title" layout-padding>{{$ctrl.funcoes.data.label}} Meio de pagamento</span>
-    <span flex></span>
-    <md-button class="md-icon-button md-offset" ng-click="$ctrl.cancel()" aria-label="close">
-        <md-icon>close</md-icon>
-        <md-tooltip>Cancelar</md-tooltip>
-    </md-button>
-  </md-card-actions>
-  <md-divider></md-divider>
-  <md-card-content layout-margin>
-    <form name="form" novalidate autocomplete="off">
-      <md-input-container class="md-block">
-        <label class="md-body-2">Descrição do meio de pagamento</label>
-        <input type="text" required  name="descricao" ng-model="$ctrl.funcoes.data.row.descricao" >
-        <div ng-messages="form.descricao.$error">
-          <div ng-message="required">Informe a descrição do meio de pagamento.</div>
-        </div>
-      </md-input-container>
+  <md-card>
+    <md-card-actions layout="row" flex>
+      <span class="md-title" layout-padding>{{$ctrl.meiopag.data.label}} Meio de pagamento</span>
+      <span flex></span>
+      <md-button class="md-icon-button md-offset" ui-sref="layout.pgconfig.meiopag" aria-label="close">
+          <md-icon>close</md-icon>
+          <md-tooltip>Cancelar</md-tooltip>
+      </md-button>
+    </md-card-actions>
+    <md-divider></md-divider>
+    <md-card-content layout-margin>
+      <form name="form" novalidate autocomplete="off">
+        <md-input-container class="md-block">
+          <label class="md-body-2">Descrição do meio de pagamento</label>
+          <input type="text" required  name="descricao" ng-model="$ctrl.meiopag.data.row.descricao" >
+          <div ng-messages="form.descricao.$error">
+            <div ng-message="required">Informe a descrição do meio de pagamento.</div>
+          </div>
+        </md-input-container>
 
-    </form>
-  </md-card-content>
-  <md-divider></md-divider>
-  <md-card-actions layout="row" layout-align="end center" layout-margin>
-    <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.salvar()">Salvar</md-button>
-  </md-card-actions>
+      </form>
+    </md-card-content>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center" layout-margin>
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.meiopag.data.salvar()">Salvar</md-button>
+    </md-card-actions>
+  </md-card>
 </div>

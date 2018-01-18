@@ -1,0 +1,102 @@
+<md-content layout="column">
+  <md-card>
+    <md-card-actions layout-gt-xs="row" layout-xs="column" flex layout-align-gt-xs="start center" layout-align-xs="center start">
+      <div layout-xs="row" flex layout-align-xs="start center">
+        <span class="md-title" flex layout-padding>{{$ctrl.empresa.data.label}} Configuraçoes Gerais</span>
+      </div>
+    </md-card-actions>
+    <md-divider></md-divider>
+
+    <!-- conteudo do formulario -->
+    <md-card-content class="atura-content">
+
+      <form name="form" novalidate autocomplete="off">
+        <div layout-xs="column" layout-gt-xs="row" flex>
+
+            <div layout="column" flex>
+
+              <md-input-container class="md-block">
+                <label class="md-body-2">Slogan da empresa</label>
+                <input type="text" name="descricao" ng-model="$ctrl.empresa.data.row.slogan" ng-change="$ctrl.empresa.data.onChange($ctrl.empresa.data.row)">
+              </md-input-container>
+              
+              <label class="md-body-2 text-muted">Tabela de preço padrão</label>
+              <md-autocomplete
+                  flex
+                  md-no-cache="false"
+                  md-search-text="$ctrl.searchTab"
+                  md-selected-item="$ctrl.empresa.data.row.tabela"
+                  md-items="row in $ctrl.empresa.tabela.filtroAutoComplete($ctrl.searchTab)"
+                  md-selected-item-change="$ctrl.empresa.changeAutoCompleteTab($ctrl.empresa.data.row,row)"
+                  md-item-text="row.descricao"
+                  md-min-length="0"
+                  md-clear-button="true"
+                  md-delay="500"
+                  placeholder="Tabela de preço padrão">
+                <md-item-template>
+                  <span md-highlight-text="$ctrl.searchTab" md-highlight-flags="^i">{{row.tabela}} {{row.descricao}}</span>
+                </md-item-template>
+                <md-not-found>
+                  A tabela "{{$ctrl.searchTab}}" não foi encontrado.
+                </md-not-found>
+              </md-autocomplete>
+
+              <label class="md-body-2 text-muted">Tipo movimento de venda para o cliente no balcão</label>
+              <md-autocomplete
+                  flex
+                  md-no-cache="false"
+                  md-search-text="$ctrl.searchTipoMov"
+                  md-selected-item="$ctrl.empresa.data.row.tipo_mov"
+                  md-items="row in $ctrl.empresa.tipoMov.filtroAutoComplete($ctrl.searchTipoMov)"
+                  md-selected-item-change="$ctrl.empresa.changeAutoCompleteTipoMov($ctrl.empresa.data.row,row)"
+                  md-item-text="row.descricao"
+                  md-min-length="0"
+                  md-clear-button="true"
+                  md-delay="500"
+                  placeholder="Tipo movimento venda para consumidor">
+                <md-item-template>
+                  <span md-highlight-text="$ctrl.searchTipoMov" md-highlight-flags="^i">{{row.descricao}}</span>
+                </md-item-template>
+                <md-not-found>
+                  O tipo de movimento "{{$ctrl.searchTipoMov}}" não foi encontrado.
+                </md-not-found>
+              </md-autocomplete>
+
+              <label class="md-body-2 text-muted">Cliente padrão para venda no balcão</label>
+              <md-autocomplete
+                  flex
+                  md-no-cache="false"
+                  md-search-text="$ctrl.searchCli"
+                  md-selected-item="$ctrl.empresa.data.row.consumidor"
+                  md-items="row in $ctrl.empresa.cliente.filtroAutoComplete($ctrl.searchCli)"
+                  md-selected-item-change="$ctrl.empresa.changeAutoCompleteCli($ctrl.empresa.data.row,row)"
+                  md-item-text="row.nome_comp"
+                  md-min-length="0"
+                  md-clear-button="true"
+                  md-delay="500"
+                  placeholder="Cliente consumidor padrão">
+                <md-item-template>
+                  <span md-highlight-text="$ctrl.searchCli" md-highlight-flags="^i">{{row.nome_red}} - {{row.nome_comp}}</span>
+                </md-item-template>
+                <md-not-found>
+                  O cliente "{{$ctrl.searchCli}}" não foi encontrado.
+                </md-not-found>
+              </md-autocomplete>              
+            </div>
+
+            <div layout="column" flex>
+
+            </div>
+
+        </div>
+      </form>
+
+    </md-card-content>
+
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="start center" layout-margin>
+      <span flex></span>
+      <md-button class="md-raised md-primary md-offset" ng-disabled="form.$invalid" ng-click="$ctrl.empresa.data.salvar()">Salvar</md-button>
+    </md-card-actions>
+  </md-card>
+</md-content>

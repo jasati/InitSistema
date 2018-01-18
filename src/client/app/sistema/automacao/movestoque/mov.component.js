@@ -2,43 +2,27 @@
     'use strict';
     angular
         .module('app.automacao')
-        .component('viewTipoMov', viewTipoMov());
-
-        function viewTipoMov() {
-          var component = {
-            bindings: {
-                tipoMov: '<',
-            },
-            template:'<div class="visao" flex><tipomov tipo-mov="$ctrl.tipoMov"></tipomov><div ui-view></div></div>',
-          }
-          return component;
-        }
-})();
-
-(function() {
-    'use strict';
-    angular
-        .module('app.automacao')
-        .component('tipomov', tipomov());
-
-        function tipomov() {
-          var component = {
-            templateUrl: 'app/sistema/automacao/movestoque/templates/tipos-mov.html',
-            bindings: {
-                tipoMov: '<',
-            },
-          }
-          return component;
-        }
-})();
-
-(function() {
-    'use strict';
-    angular
-        .module('app.automacao')
         .component('movs', movs());
 
         function movs() {
+          var component = {
+            templateUrl: 'app/sistema/automacao/movestoque/templates/movs-main.html',
+            bindings: {
+                movs: '<',
+            }
+          }
+          return component;
+        }
+})();
+
+
+(function() {
+    'use strict';
+    angular
+        .module('app.automacao')
+        .component('movimentacoes', movimentacoes());
+
+        function movimentacoes() {
           var component = {
             templateUrl: 'app/sistema/automacao/movestoque/templates/movimentacoes.html',
             bindings: {
@@ -94,6 +78,24 @@
             templateUrl: 'app/sistema/automacao/movestoque/templates/mov-itens-entrada.html',
             bindings: {
                 funcoes: '<',
+            }
+          }
+          return component;
+        }
+})();
+
+(function() {
+    'use strict';
+    angular
+        .module('app.automacao')
+        .component('movItens', movItens());
+
+        function movItens() {
+          var component = {
+            templateUrl: 'app/sistema/automacao/movestoque/templates/movimento-itens.html',
+            bindings: {
+                funcoes: '<',
+                tipomov: '<'
             }
           }
           return component;

@@ -9,6 +9,7 @@
       '$state','$cookies','$q','logger','$mdPanel','$mdMedia',
       'UtilsDataFunctionService',
       'PerfilFuncService',
+      'EmpresaFuncService',
       'config'
     ];
     /* @ngInject */
@@ -18,6 +19,7 @@
       $state,$cookies,$q,logger,$mdPanel,$mdMedia,
       UtilsDataFunctionService,
       PerfilFuncService,
+      EmpresaFuncService,
       config
     ) {
       this.funcoes = funcoes;
@@ -32,6 +34,7 @@
         func.appTitulo = config.appTitle;
         func.appSubTitulo = config.appSubtitle;
         func.dados = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
+        func.empresa = new EmpresaFuncService.funcoes();
       	func.soma = UtilsFunctions.soma;
       	func.convDate = UtilsFunctions.convDate;
         func.title = 'Cadastro de usuários';
@@ -91,25 +94,34 @@
     				if (isset(resp.reg.length)) {//verifica se tem registros
                 if (resp.reg.length > 0) {
         					var usuario = resp.reg[0];
-        					if (usuario.status == 1) {//verifica se o usuario esta ativo
-                    var sessao = {
-                      usuario:usuario,
-                      empresa:{
-                        id_empresa:usuario.id_empresa,
+                  func.empresa.data.read(' and e.id_empresa = '+usuario.id_empresa).then(function (result) {
+                    var empresa = result.reg[0];
+                    if (empresa.status == 1) {//verifica se a empresa esta ativa
+            					if (usuario.status == 1) {//verifica se o usuario esta ativo
+                        var sessao = {
+                          usuario:usuario,
+                          empresa:empresa,
+                        };
+                        startSession(sessao);
+                        loadModulos(usuario).then(function (resMod) {
+                          dataSetProvider.provider.setPermissoes(resMod.reg);
+                          $state.go('layout');
+                        });
+            					} else {
+                        logger.info('Esse usuário está desativado, Entre em contato com o administrador.');
+                        func.usuario.logando = false;
+        	    					if ($state.current.name !== 'login'){
+        	    						$state.go('login');
+        	    					}
+            					}
+                    } else {
+                      logger.warning('O cadastro geral da empresa está suspenso.');
+                      func.usuario.logando = false;
+                      if ($state.current.name !== 'login'){
+                        $state.go('login');
                       }
-                    };
-                    startSession(sessao);
-                    loadModulos(usuario).then(function (resMod) {
-                      dataSetProvider.provider.setPermissoes(resMod.reg);
-                      $state.go('layout');
-                    });
-        					} else {
-                    logger.info('Esse usuário está desativado, Entre em contato com o administrador.');
-                    func.usuario.logando = false;
-    	    					if ($state.current.name !== 'login'){
-    	    						$state.go('login');
-    	    					}
-        					}
+                    }
+                  });
                 } else {
                     logger.warning('Usuário ou senha inválido!');
                     if ($state.current.name !== 'login'){

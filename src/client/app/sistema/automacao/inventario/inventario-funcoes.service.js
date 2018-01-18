@@ -25,7 +25,6 @@
           var dataSetMaster = new InventarioDataSet.dataSetMaster();
           var dataSetDetalhe = new InventarioDataSet.dataSetDetalhe();
           vm.data = new UtilsDataFunctionService.dataFuncoes(dataSetMaster);
-          vm.itensInventario = new InvItensFuncService.funcoes(vm.data);
           vm.categoria = new CategoriaFuncService.funcoes();
           vm.estoque = new ItemFuncService.funcoes();
           vm.data.title = "Inventário de estoque";
@@ -79,7 +78,7 @@
               'WHEN ca.descricao is null THEN CONCAT(cp.descricao," > ",cf.descricao) '+
               'ELSE CONCAT(ca.descricao," > ",cp.descricao," > ",cf.descricao) END';
               vm.estoque.item.filtroExterno = " and "+query+" LIKE '%"+cat+"%'";
-              vm.estoque.item.dataSetProvider.campos = vm.estoque.item.dataSetProvider.camposDinamicos(0);
+              vm.estoque.item.dataSetProvider.modCamposTab(false);
               vm.estoque.item.read('',false);
             }
 
@@ -92,25 +91,23 @@
               status :0,
             };
             vm.data.novo(data,'layout.tipomov.inventario.cad');
+            vm.data.setNewChilder(InvItensFuncService,vm.data.row,false);
           }
 
           vm.alterar = function (row) {
             vm.data.alterar(row,'layout.tipomov.inventario.cad');
-            vm.showItens();
+            vm.data.setNewChilder(InvItensFuncService,row,true);
           }
-          vm.showItens = function () {
-            vm.itensInventario.setMasterData(vm.data.row);
-            vm.itensInventario.activate();
-          }
+
 
           vm.confirmarItens = function () {
             vm.data.salvar().then(function (result) {
               if (result) {
-                vm.itensInventario.setForengKey(vm.data.row.id_inventario);
-                vm.itensInventario.addItens(vm.estoque.item.rows);
-                vm.itensInventario.data.aplyUpdates(false).then(function (result) {
+                vm.data.row.child.data.setForengKey(vm.data.row.id_inventario,1);
+                vm.data.row.child.addItens(vm.estoque.item.rows);
+                vm.data.row.child.data.aplyUpdates(false).then(function (result) {
                   if (result) {
-                    vm.showItens();
+                    vm.data.row.child.activate();
                   }
                 });
               }
@@ -118,7 +115,7 @@
           }
 
           vm.confirmarContagem = function () {
-            vm.itensInventario.data.aplyUpdates(true).then(function (result) {
+            vm.data.row.child.data.aplyUpdates(true).then(function (result) {
               if (result) {
                 vm.data.row.status = 1;
                 vm.data.salvar();

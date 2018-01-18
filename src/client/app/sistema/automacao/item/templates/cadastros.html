@@ -13,7 +13,7 @@
             <md-icon ng-hide="$ctrl.funcoes.item.filtros.digitando">search</md-icon>
             <md-progress-circular ng-show="$ctrl.funcoes.item.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
           </button>
-          <form class="animacao" flex="{{$ctrl.funcoes.item.filtros.flex}}" layout="row">
+          <form class="animacao" novalidate autocomplete="off" flex="{{$ctrl.funcoes.item.filtros.flex}}" layout="row">
               <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
               <input id="filtro" ng-model="$ctrl.funcoes.item.filtros.mainField"  ng-change="$ctrl.funcoes.item.filtros.onChange()" placeholder="Localizar item">
           </form>
@@ -48,7 +48,7 @@
       </div>
 
       <md-table-container ng-if="$ctrl.funcoes.item.rows.length > 0" class="atura-table">
-        <table md-table>
+        <table md-table ng-init="$ctrl.funcoes.focarGrade()" >
           <thead md-head md-order="$ctrl.funcoes.item.orderBy" md-on-reorder="$ctrl.funcoes.item.filtros.functionRead">
             <tr >
               <th style="width: 1%" md-column><!-- <md-button class="md-icon-button"  aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button> --></th>
@@ -61,9 +61,9 @@
               <th style="width: 1% !important" md-column ><span></span></th>
             </tr>
           </thead>
-          <tbody md-body>
-            <tr  class="striped" md-select="i" md-select-id="id_item" ng-repeat="i in $ctrl.funcoes.item.rows | orderBy:$ctrl.funcoes.item.orderBy">
-              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.alterar(i)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon></md-button></td>
+          <tbody md-body >
+            <tr  class="striped" md-select="i" md-select-id="id_item" ng-repeat="i in $ctrl.funcoes.item.rows | orderBy:$ctrl.funcoes.item.orderBy" id="tr{{$index}}">
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.alterar(i);$ctrl.funcoes.item.setIndex($index)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon></md-button></td>
               <td md-cell>{{i.codigo}}</td>
               <td md-cell>{{i.descricao}}</td>
               <td md-cell>{{i.marca}}</td>

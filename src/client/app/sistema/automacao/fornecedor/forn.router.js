@@ -28,13 +28,28 @@
                         funcoes: resolveforn
                     }
                 }
-            }
+            },
+            {
+              state: 'layout.forn.cadastro',
+              config: {
+                  url:'/cadastro',
+                  title:'Cadastro',
+                   views:{
+                      '^.^.$default':{
+                        component:'fornCad',
+                      }
+                   },
+                  resolve : {
+                      funcoes: resolveFornCad
+                  },
+              }
+            }            
 
         ];
     }
-    resolveforn.$inject = ['FornFuncService','FiltroService'];
+    resolveforn.$inject = ['FornFuncService','FiltroService','$transitions','$state','layoute'];
 
-    function resolveforn(FornFuncService,FiltroService) {
+    function resolveforn(FornFuncService,FiltroService,$transitions,$state,layoute) {
       var funcoes = new FornFuncService.funcoes();
       //configurar filtros
       var funcFiltros = new FiltroService.funcoes();
@@ -43,6 +58,19 @@
       funcFiltros.filtros.functionRead = funcoes.filtrar;//setar a função de gatilho para consulta
       funcoes.forn.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
       funcoes.forn.filtros.functionRead();//chama a consulta
+      $transitions.onSuccess({}, function(transition) {
+        layoute.setPath($state.getCurrentPath());
+      });            
       return funcoes;
     }
+    resolveFornCad.$inject = ['$transitions','$state','layoute','funcoes'];
+    function resolveFornCad($transitions,$state,layoute,funcoes) {
+
+      $transitions.onSuccess({}, function(transition) {
+        layoute.setPath($state.getCurrentPath());
+      });
+      return funcoes;
+    }
+
+
 })();

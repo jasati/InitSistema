@@ -31,3 +31,20 @@
         }
 })();
 
+(function() {
+    'use strict';
+    angular
+        .module('app.automacao')
+        .component('tabelaPrazCad', tabelaPrazCad());
+
+        function tabelaPrazCad() {
+          var component = {
+            templateUrl: 'app/sistema/automacao/configuracao/tabela/templates/tabela-prazos-cadastro.html',
+            bindings: {
+                tabela: '<',
+            }
+          }
+          return component;
+        }
+})();
+

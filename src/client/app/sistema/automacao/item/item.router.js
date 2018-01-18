@@ -37,6 +37,9 @@
                   title:'Listagem',
                   url:'/cadastros',
                   component:'itemCadastros',
+                  resolve : {
+                      funcoes: resolveCadastros
+                  }
               }
             },
 
@@ -59,6 +62,9 @@
                   title:'Listagem de Estoque',
                   url:'/estoque',
                   component:'itemEstoque',
+                  resolve : {
+                      funcoes: resolveEstoque
+                  }
               }
             },
 
@@ -86,12 +92,26 @@
       funcFiltros.filtros.functionDinamic = funcoes.catDataFunc.filtroAutoComplete;//função que aciona o auto complete do filtro      
       funcFiltros.filtros.functionRead = funcoes.filtrar;//setar a função de gatilho para consulta
       funcoes.item.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
+      funcoes.filtrarTabela();
       funcoes.item.filtros.functionRead();//chama a consulta
       funcoes.filtrarUnidade();
       funcoes.layoute = layoute;
       $transitions.onSuccess({}, function(transition) {
         layoute.setPath($state.getCurrentPath());
       });      
+      return funcoes;
+    }
+
+    resolveCadastros.$inject = ['funcoes'];
+    function resolveCadastros(funcoes) {
+      funcoes.item.acionarMainFiltro();
+      return funcoes;
+    }
+
+    resolveEstoque.$inject = ['funcoes'];
+    function resolveEstoque(funcoes) {
+      funcoes.setTabelaPadrao();
+      funcoes.filtrar();
       return funcoes;
     }
 

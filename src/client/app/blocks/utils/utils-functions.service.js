@@ -7,26 +7,26 @@
     /* @ngInject */
     function UtilsFunctions($filter,$uibModal, Extencio,Provider) {
         var service = {
-            formatData: formatData,
-            formatDataView : formatDataView,
+            formatData       : formatData,
+            formatDataView   : formatDataView,
             removeCamposInvalidos:removeCamposInvalidos,
-            soma  : soma,
-            permissao : permissao,
-            copiarObjecto: copiarObjecto,
-            porExtencio:porExtencio,
-            validaCPF:validaCPF,
-            existe : existe,
-            zoomImg : zoomImg,
-            isset  : isset,
-            convDate : convDate,
-            getPrmPanel : getPrmPanel,
-            validarDataset : validarDataset,
-            isNumber    : isNumber,
-            getPermissao : getPermissao,
-            stylePrintTable : stylePrintTable,
-            montarTabela : montarTabela,
+            soma             : soma,
+            permissao        : permissao,
+            copiarObjecto    : copiarObjecto,
+            porExtencio      : porExtencio,
+            validaCPF        : validaCPF,
+            existe           : existe,
+            zoomImg          : zoomImg,
+            isset            : isset,
+            convDate         : convDate,
+            getPrmPanel      : getPrmPanel,
+            validarDataset   : validarDataset,
+            isNumber         : isNumber,
+            getPermissao     : getPermissao,
+            stylePrintTable  : stylePrintTable,
+            montarTabela     : montarTabela,
             escreverArquivo  : escreverArquivo,
-            handleEnter  : handleEnter,
+            handleEnter      : handleEnter,
         };
         return service;
         ////////////////
@@ -142,12 +142,14 @@
         }
 
         function copiarObjecto(obj) {
-            if (obj === null || typeof obj !== 'object') {
+            if (obj === null || typeof obj !== 'object' || obj === undefined) {
                 return obj;
             }
             var temp = obj.constructor();
             for (var key in obj) {
+              if (key != 'child') {
                 temp[key] = copiarObjecto(obj[key]);
+              }
             }
             return temp;
         }
@@ -413,12 +415,14 @@
           return table;
         }
 
-        function handleEnter ($event,el) {
+        function handleEnter ($event,el,select) {
           var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
           if (keyCode == 13) {
             document.getElementById(el).focus();
-            document.getElementById(el).select();
-          } 
+            if (select) {
+              document.getElementById(el).select();
+            }
+          }
         }
 
     }

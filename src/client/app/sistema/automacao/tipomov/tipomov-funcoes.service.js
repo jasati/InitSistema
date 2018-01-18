@@ -6,13 +6,13 @@
         .service('TipoMovFuncService', TipoMovFuncService);
 
     TipoMovFuncService.$inject = [
-      'UtilsFunctions','AutomacaoDataset','UtilsDataFunctionService','FiltroService',
+      'UtilsFunctions','TipoMovDataSet','UtilsDataFunctionService','FiltroService',
       '$state','$mdDialog','$filter','$rootScope'
     ];
 
     /* @ngInject */
     function TipoMovFuncService(
-      UtilsFunctions,AutomacaoDataset,UtilsDataFunctionService,FiltroService,
+      UtilsFunctions,TipoMovDataSet,UtilsDataFunctionService,FiltroService,
       $state,$mdDialog,$filter,$rootScope
     ) {
         this.funcoes = funcoes;
@@ -20,19 +20,25 @@
         function funcoes() {
           var vm = this;
           var isset = UtilsFunctions.isset;
-          var dataSetProvider = AutomacaoDataset.tipoMov();
+          var dataSetProvider = TipoMovDataSet.tipomov();
           vm.data = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
-          vm.divider = 'botton';
-          vm.title = 'Modulo de tipoMov';
+          vm.data.title = 'Tipos de Movimentação';
           vm.tabela =0;
 
           vm.activate = function () {
+            var toobarPrm = {
+              btAddNovo  : vm.novo,
+              btAddTootip: 'Novo tipo de movimentação',
+            };            
             var funcFiltros = new FiltroService.funcoes();
             funcFiltros.filtros.fields = vm.data.camposFiltro;//setar os campos de consulta
             funcFiltros.filtros.fildsQuery = vm.data.filtroDefault;//setar o filtro default
             funcFiltros.filtros.functionDinamic = vm.filtroAutoComplete;//função que aciona o auto complete do filtro      
             funcFiltros.filtros.functionRead = vm.filtrar;//setar a função de gatilho para consulta
             vm.data.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
+            vm.data.setToolbar(toobarPrm);
+            vm.data.setTable({alterar:vm.alterar});
+            vm.data.setPagination();
             vm.data.filtros.functionRead();//chama a consulta
           }
 
@@ -60,12 +66,14 @@
 
 
           vm.novo = function () {
-            vm.cadastro('create',{})
+            var data = {};
+            vm.data.novo(data,'layout.pgconfig.tipomovs.tipomovcad');
           }
 
           vm.alterar = function (row) {
-            vm.cadastro('update',row);
+            vm.data.alterar(row,'layout.pgconfig.tipomovs.tipomovcad');
           }
+
 
           vm.cadastro = function (action,row,ev) {
             switch (action) {

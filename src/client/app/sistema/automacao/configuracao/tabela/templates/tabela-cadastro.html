@@ -1,7 +1,7 @@
 <md-content layout="column" flex>
   <md-card>
     <md-card-actions layout="row" flex>
-      <span class="md-title" layout-padding>{{$ctrl.tabela.data.label}} Tabela</span>
+      <span class="md-title" layout-padding>{{$ctrl.tabela.data.label}} Classe</span>
       <span flex></span>
       <md-button class="md-icon-button md-offset" ui-sref="layout.pgconfig.tabela" aria-label="close">
           <md-icon>close</md-icon>
@@ -12,14 +12,14 @@
     <md-card-content>
       <form name="form" novalidate autocomplete="off" layout-gt-xs="row">
         <md-input-container class="md-block" flex>
-          <label class="md-body-2">Descrição da tabela</label>
-          <input type="text" required  name="descricao" ng-model="$ctrl.tabela.data.row.descricao" >
+          <label class="md-body-2">Descrição da classe</label>
+          <input type="text" required  name="descricao" ng-model="$ctrl.tabela.data.row.descricao" ng-change="$ctrl.tabela.data.onChange($ctrl.tabela.data.row)">
           <div ng-messages="form.descricao.$error">
-            <div ng-message="required">Informe a descrição da tabela.</div>
+            <div ng-message="required">Informe a descrição da classe da tabela.</div>
           </div>
         </md-input-container>
-        <md-radio-group class="md-block" name="tipo" ng-model="$ctrl.tabela.data.row.tipo" class="md-block" flex>
-          <label class="md-body-2">Tipo de tabela</label>
+        <md-radio-group required class="md-block" name="tipo" ng-model="$ctrl.tabela.data.row.tipo" ng-change="$ctrl.tabela.data.onChange($ctrl.tabela.data.row)" class="md-block" flex>
+          <label class="md-body-2">Tipo de classe</label>
           <div layout="row">
             <md-radio-button value="A" class="md-caption">Atacado</md-radio-button>
             <md-radio-button value="V" class="md-caption">Varejo</md-radio-button>
@@ -28,20 +28,22 @@
         </md-radio-group>
       </form>
 
-      <md-divider></md-divider>
-
-      <md-card-actions layout="row" layout-align="start center" layout-margin>
-        <md-button class="md-fab md-mini" ng-click="null">
-            <md-icon>add</md-icon>
-            <md-tooltip md-autohide="true">Adicionar Prazos</md-tooltip>
-        </md-button>
-        <span>Prazos da tabela</span>
-      </md-card-actions>
-      <j-table flex funcoes="$ctrl.tabela.tabPrazos.data.funcTable"></j-table>
+      <div ng-show="$ctrl.tabela.data.row.id_tabela">
+        <md-divider></md-divider>
+        <md-card-actions layout="row" layout-align="start center" layout-margin>
+          <md-button class="md-fab md-mini" ng-click="$ctrl.tabela.tabPrazos.novo()">
+              <md-icon>add</md-icon>
+              <md-tooltip md-autohide="true">Adicionar tabelas</md-tooltip>
+          </md-button>
+          <span>Tabelas da classe</span>
+        </md-card-actions>
+        <j-table layout-wrap funcoes="$ctrl.tabela.tabPrazos.data.funcTable"></j-table>
+      </div>
 
     </md-card-content>
     <md-divider></md-divider>
     <md-card-actions layout="row" layout-align="end center" layout-margin>
-      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.salvar()">Salvar</md-button>
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-show="$ctrl.tabela.data.row.action" ng-click="$ctrl.tabela.data.salvar()">Salvar</md-button>
     </md-card-actions>
   </md-card>
+</md-content>

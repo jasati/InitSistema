@@ -24,7 +24,7 @@
 	        var left_join = {
 	            0:"estoque_mov em ON ei.id_mov = em.id_mov",
 	        };
-        	dataSet.campos         = 'ei.id_inventario, ei.id_filial, ei.id_categoria, ei.id_mov, ei.data_cad, ei.status, c.descricao as categoria, em.n_nf,  CASE WHEN ei.status = 0 THEN "CONTAGEM EM ANDAMENTO" ELSE "CONTAGEM CONCLUIDA" END AS desc_status';
+        	dataSet.campos         = 'ei.id_inventario, ei.id_filial, ei.id_categoria, ei.id_mov, ei.data_cad, ei.status, c.descricao as categoria, em.numero,  CASE WHEN ei.status = 0 THEN "CONTAGEM EM ANDAMENTO" ELSE "CONTAGEM CONCLUIDA" END AS desc_status';
         	dataSet.inner_join     = inner_join;
         	dataSet.left_join      = left_join;
         	dataSet.modulo         = 'estoque_inventario';
@@ -33,7 +33,7 @@
         	dataSet.id_tabelaQuery = 'ei.id_inventario';
         	dataSet.tableCols      = tableCols;
         	dataSet.camposData     = ['data_cad'];
-            dataSet.camposInvalidos  = ['action','categoria','n_nf','desc_status'];
+            dataSet.camposInvalidos  = ['action','categoria','numero','desc_status'];
         	return  dataSet;
 
         }
@@ -63,7 +63,7 @@
             dataSet.camposData       = [];
             dataSet.camposForeignKey = ['id_inventario'];
             dataSet.valueForeignKey  = [];
-            dataSet.camposInvalidos  = ['action','codigo','descricao','marca','ref','sigla','categoria','custo','data_cad','detalhes','fornecedor','id_categoria','id_empresa','id_galeria','id_unidade','imagem','perc_preco','perc_tabela','preco','saldo','saldo_max','saldo_min','status','valor'];
+            dataSet.camposInvalidos  = ['action','codigo','descricao','marca','ref','sigla','categoria','custo','data_cad','detalhes','fornecedor','id_categoria','id_empresa','id_galeria','id_unidade','imagem','perc_preco','perc_tabela','preco','saldo','saldo_max','saldo_min','status','valor','id_fornecedor','razao_fornecedor'];
             dataSet.id_index_main    = 'i.id_empresa';
             return  dataSet;
         }

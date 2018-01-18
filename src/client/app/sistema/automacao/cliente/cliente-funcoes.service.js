@@ -6,13 +6,13 @@
         .service('ClienteFuncService', ClienteFuncService);
 
     ClienteFuncService.$inject = [
-      'UtilsFunctions','AutomacaoDataset','UtilsDataFunctionService','PessoaFuncService',
+      'UtilsFunctions','AutomacaoDataset','UtilsDataFunctionService','PessoaFuncService','TabelaFuncService',
       '$state','$mdDialog','$filter'
     ];
 
     /* @ngInject */
     function ClienteFuncService(
-      UtilsFunctions,AutomacaoDataset,UtilsDataFunctionService,PessoaFuncService,
+      UtilsFunctions,AutomacaoDataset,UtilsDataFunctionService,PessoaFuncService,TabelaFuncService,
       $state,$mdDialog,$filter
     ) {
         this.funcoes = funcoes;
@@ -24,7 +24,7 @@
           var dataSetTabela = AutomacaoDataset.classeTabela();
           vm.cliente = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
           vm.pessoaFunc = new PessoaFuncService.funcoes();
-          vm.tabela = new UtilsDataFunctionService.dataFuncoes(dataSetTabela);
+          vm.tabela = new TabelaFuncService.funcoes();
           vm.divider = 'botton';
           vm.title = 'Modulo de cliente';
 
@@ -50,8 +50,8 @@
           }
 
           vm.filtrarTabela = function () {
-            if (vm.tabela.rows.length == 0) {
-              vm.tabela.read('');
+            if (vm.tabela.data.rows.length == 0) {
+              vm.tabela.data.read('');
             }
           }
 
@@ -116,12 +116,12 @@
           }
 
           vm.novo = function (data) {
-            vm.cliente.novo(data);
+            vm.cliente.novo(data,'layout.cliente.cadastro');
             vm.pessoaFunc.pessoa.novo(data);
           }
 
           vm.alterar = function (row) {
-            vm.cliente.alterar(row);
+            vm.cliente.alterar(row,'layout.cliente.cadastro');
             vm.pessoaFunc.load(row.id_pessoa);
           }
 
@@ -132,7 +132,7 @@
               }
               vm.cliente.salvar();
             });
-          }          
+          }
 
           vm.cadastro = function (action,row,ev) {
             switch (action) {
@@ -145,15 +145,15 @@
               default:
             }
 
-            var config = {
-              templateUrl: 'app/sistema/automacao/cliente/templates/cliente-cad.html',
-              size:'',
-              data:vm,
-              backdrop:'static',
-              fullscreen:false,
-              modal:{},
-            };
-            vm.cliente.showModal(config);
+            // var config = {
+            //   templateUrl: 'app/sistema/automacao/cliente/templates/cliente-cad.html',
+            //   size:'',
+            //   data:vm,
+            //   backdrop:'static',
+            //   fullscreen:false,
+            //   modal:{},
+            // };
+            // vm.cliente.showModal(config);
           }
 
           vm.deletar = function (ev,data) {

@@ -11,25 +11,24 @@
   </div>
 </md-toolbar>
 
-<div ng-if="$ctrl.funcoes.dados.rows.length === 0" layout-padding layout-margin layout-align=" center center" layout="row" class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.dados.reading,'alert-info':$ctrl.funcoes.dados.reading}" role="alert">
-  <div ng-if="$ctrl.funcoes.dados.reading" >
+<div ng-if="$ctrl.funcoes.dados.rows.length === 0" layout-padding layout-margin layout-align=" center center" layout="row" class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.dados.reading,'alert-info':$ctrl.funcoes.dados.reading}" role="alert" flex>
+  <div ng-if="$ctrl.funcoes.dados.reading" flex>
     <md-progress-circular ng-disabled="!$ctrl.funcoes.dados.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
     <p>Buscando Registros...</p>
   </div>
-  <div ng-if="!$ctrl.funcoes.dados.reading" align="center">
-    <p><b>Descupe!</b> Os registros não foram encontrados, talvez você ainda não tenha cadastrado ou atualize para recarregar.</p>
-    <md-button class="md-icon-button" ng-click="$ctrl.funcoes.dados.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
+  <div ng-if="!$ctrl.funcoes.dados.reading" align="center" layout="column" flex>
+    Não tem registro para serem exibidos!
   </div>
 </div>
-<md-table-container ng-show="$ctrl.funcoes.dados.rows.length > 0" ng-class="{'table-responsive':$ctrl.funcoes.responsive}" flex>
-   <table md-table md-row-select multiple ng-model="$ctrl.funcoes.dados.rowsSelected" class="table table-condensed table-striped">
+<md-table-container ng-show="$ctrl.funcoes.dados.rows.length > 0" class="atura-table" flex>
+   <table md-table md-row-select multiple ng-model="$ctrl.funcoes.dados.rowsSelected">
     <thead md-head md-order="$ctrl.funcoes.dados.orderBy" md-on-reorder="$ctrl.funcoes.dados.filtros.functionRead">
       <tr >
         <th style="width:{{c.width}}% !important"  ng-repeat="c in $ctrl.funcoes.colunas" md-column md-order-by="{{c.prop}}" ng-show="{{c.show}}">{{c.name?c.name:c.prop}}</th>
       </tr>
     </thead>
    <tbody md-body>
-      <tr  class="row-table-click" md-select="row" md-select-id="$ctrl.funcoes.id" ng-repeat="row in $ctrl.funcoes.dados.rows | orderBy: myOrder" ng-click="$ctrl.funcoes.alterar(row)">
+      <tr md-row class="row-table-click striped" md-select="row" md-select-id="$ctrl.funcoes.id" ng-repeat="row in $ctrl.funcoes.dados.rows | orderBy: myOrder" ng-click="$ctrl.funcoes.alterar(row)">
         <td ng-repeat="c in $ctrl.funcoes.colunas" ng-show="{{c.show}}" md-cell>{{$ctrl.isset(c.express)?c.express(row[c.prop]):row[c.prop]}}</td>
       </tr>
     </tbody>

@@ -14,21 +14,28 @@
     function getStates() {
         return [
             {
-                state: 'shell.config',
+                state: 'layout.pgconfig.geral',
                 config: {
-                    url: 'config',
-                    templateUrl: 'app/empresa/templates/empresa-cadastro.html',
-                    controller: 'EmpresaController',
-                    controllerAs: 'vm',
-                    title: 'Configurações',
-                    settings: {
-                        nav: 2,
-                        icon   : 'settings',
-                        content: 'Configurações',
-                        perm: 6,
-                    }                    
+                    url:'/gerais',
+                    title:'Configuração Geral',
+                    component:'empresaConfig',
+                    resolve : {
+                        empresa: resolveConfig
+                    }
                 }
             }
         ];
     }
+
+    resolveConfig.$inject = ['EmpresaFuncService','FiltroService','layoute','$transitions','$state'];
+
+    function resolveConfig(EmpresaFuncService,FiltroService,layoute,$transitions,$state) {
+      var empresa = new EmpresaFuncService.funcoes();
+      empresa.load();
+      $transitions.onSuccess({}, function(transition) {
+        layoute.setPath($state.getCurrentPath());
+      });
+      return empresa; 
+    }
+
 })();

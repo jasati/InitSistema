@@ -58,33 +58,33 @@
           }
 
           vm.novo = function () {
-            vm.cadastro('create',{id_meio_pag:null})
+            var data = {id_meio_pag:null};
+            vm.data.novo(data,'layout.pgconfig.meiopag.meiopagCad');
           }
 
           vm.alterar = function (row) {
-            vm.cadastro('update',row);
+            vm.data.alterar(row,'layout.pgconfig.meiopag.meiopagCad');
           }
 
-          vm.cadastro = function (action,row,ev) {
-            switch (action) {
-              case 'create':
-                vm.data.novo(row);
-                break;
-              case 'update':
-                vm.data.alterar(row);
-                break;
-              default:
-            }
-
+         vm.selectMeioPag = function ($event,element) {
             var config = {
-              templateUrl: 'app/sistema/automacao/configuracao/meiopag/templates/meiopag-cadastro.html',
+              templateUrl: 'app/sistema/automacao/configuracao/meiopag/templates/meiopag-select.html',
               size:'',
               data:vm,
-              backdrop:'static',
+              backdrop:true,
               fullscreen:false,
               modal:{},
             };
-            vm.data.showModal(config);
+            return vm.data.showModal(config,element).then(function (result) {
+              return result;
+            });
+          }
+          vm.startFoco = function () {
+            // função para iniciar o foco do autocomplete na template select
+            var focus = function () {
+              document.getElementById('autocompleteMeiopag').focus();
+            }
+            setTimeout(focus,500);
           }
 
           vm.deletar = function (ev,data) {
@@ -99,20 +99,7 @@
             });
           }
 
-          vm.deleteAll = function (ev) {
-            for (var i = 0; i < vm.data.rowsSelected.length; i++) {
-              vm.data.remover(vm.data.rowsSelected[i]);
-            }
-            vm.data.confirmDel(ev,'Todos os registros selecionados').then(function (result) {
-              if (result) {
-                vm.data.aplyUpdates(/*atualizar apos a alterao*/true).then(function (result) {
-                  if (result) {
-                    vm.data.rowsSelected = [];
-                  }
-                });
-              }
-            });
-          }
+
         }
     }
 })();

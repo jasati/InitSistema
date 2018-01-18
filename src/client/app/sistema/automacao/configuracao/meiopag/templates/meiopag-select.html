@@ -1,0 +1,51 @@
+<md-toolbar class="md-table-toolbar md-accent">
+  <div class="md-toolbar-tools">
+    <md-icon>search</md-icon>
+    <span>Localizar meio de pagamento</span>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+        <md-icon>close</md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<form name="formeiopag" novalidate autocomplete="off" >  
+  <md-autocomplete
+    required
+    id="autocompleteMeiopag"
+    md-autofocus="true"
+    md-no-cache="true"
+    md-search-text="$ctrl.searchMeioPag"
+    md-selected-item="$ctrl.funcoes.data.row"
+    md-items="row in $ctrl.funcoes.filtroAutoComplete($ctrl.searchMeioPag)"
+    md-selected-item-change="row?$ctrl.ok(row):null"
+    md-item-text="row.descricao"
+    md-min-length="0"
+    md-menu-class="autocomplete-custom-template"
+    md-dropdown-items="10"
+    md-delay="500"
+    md-top-index="$ctrl.index"
+    placeholder="Selecione o meio de pagamento e tecle enter para confirmar ou esq para cancelar.">
+  <md-item-template >
+    <div layout="column">
+      <div layout="row">
+        <div flex="10" class="li-table-auto">
+          <span class="text-warning">{{$ctrl.index}}</span>
+        </div>
+        <div flex class="li-table-auto">
+          <span ><b>{{row.descricao}}</b></span>
+        </div>
+      </div>
+    </div>
+  </md-item-template>
+  <md-not-found>
+    O Meio de Pagamento"{{$ctrl.searchMeioPag}}" não foi encontrado.
+  </md-not-found>
+    <div ng-messages="formeiopag.descricao.$error">
+      <div ng-message="required">Informe o Item.</div>
+    </div>
+  </md-autocomplete>
+</form>
+<div ng-init="$ctrl.funcoes.startFoco()">
+</div>
+
+

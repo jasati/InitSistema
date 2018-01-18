@@ -5,7 +5,7 @@
       md-selected-nav-item="currentNavItem"
       nav-bar-aria-label="navigation links">
       <md-truncate>
-      <md-nav-item md-nav-sref="layoute" name="gerais">
+      <md-nav-item md-nav-sref="layout.pgconfig.geral" name="gerais">
         <md-icon>tune</md-icon>
         <span hide-xs>Gerais</span>
       </md-nav-item>
@@ -13,23 +13,23 @@
         <md-icon>store</md-icon>
         <span hide-xs> Dados Filial </span>
       </md-nav-item>
-      <md-nav-item md-nav-sref="layoute" name="tipoMov">
+      <md-nav-item md-nav-sref="layout.pgconfig.tipomovs" name="tipoMov">
         <md-icon>chrome_reader_mode</md-icon>
         <span hide-xs>Tipo de Movimentações</span>
       </md-nav-item>
       <md-nav-item md-nav-sref="layout.pgconfig.tabela" name="tabelas">
         <md-icon>assignment</md-icon>
-        <span hide-xs>Tabelas de Preço</span>
+        <span hide-xs>Classificar tabelas</span>
       </md-nav-item>
       <md-nav-item md-nav-sref="layout.pgconfig.meiopag" name="pagamento">
         <md-icon>monetization_on</md-icon>
-        <span hide-xs>Formas de pagamento</span>
+        <span hide-xs>Meios de pagamento</span>
       </md-nav-item>
       </md-truncate>
     </md-nav-bar>
   </div>
   <md-divider></md-divider>
-  <div layout="column" flex="auto">  
+  <div layout="column" flex="auto" >  
     <div ui-view></div>
   </div>
 </div>

@@ -16,7 +16,7 @@
             {
               state: 'layout.pgconfig.tabela',
               config: {
-                  url:'/tabela',
+                  url:'/classificar',
                   title:'Tabela',
                   component:'tabelaListagem',
                   resolve : {
@@ -28,19 +28,30 @@
               state: 'layout.pgconfig.tabela.tabelaCad',
               config: {
                   url:'/cadastro',
-                  title:'Cadastro de tabela',
+                  title:'Cadastro de Classes',
                   component:'tabelaCad',
                   resolve : {
                       tabela: resolveTabelaCad
                   }
               }
-            }            
+            },
+            {
+              state: 'layout.pgconfig.tabela.tabelaPrazCad',
+              config: {
+                  url:'/tabelas',
+                  title:'Cadastro de tabela',
+                  component:'tabelaPrazCad',
+                  resolve : {
+                      tabela: resolveTabelaCadPraz
+                  }
+              }
+            }
 
         ];
     }
-    resolveTabela.$inject = ['TabelaFuncService','FiltroService','layoute','$transitions','$state'];
+    resolveTabela.$inject = ['TabelaFuncService','layoute','$transitions','$state'];
 
-    function resolveTabela(TabelaFuncService,FiltroService,layoute,$transitions,$state) {
+    function resolveTabela(TabelaFuncService,layoute,$transitions,$state) {
       var tabela = new TabelaFuncService.funcoes();
       tabela.activate();
       $transitions.onSuccess({}, function(transition) {
@@ -48,14 +59,22 @@
       });
       return tabela; 
     }
-    resolveTabelaCad.$inject = ['TabelaFuncService','FiltroService','layoute','$transitions','$state','tabela'];
+    resolveTabelaCad.$inject = ['layoute','$transitions','$state','tabela'];
 
-    function resolveTabelaCad(TabelaFuncService,FiltroService,layoute,$transitions,$state,tabela) {
-      tabela.activate();
+    function resolveTabelaCad(layoute,$transitions,$state,tabela) {
       $transitions.onSuccess({}, function(transition) {
         layoute.setPath($state.getCurrentPath());
       });
       return tabela; 
-    }    
+    }
+
+    resolveTabelaCadPraz.$inject = ['layoute','$transitions','$state','tabela'];
+
+    function resolveTabelaCadPraz(layoute,$transitions,$state,tabela) {
+      $transitions.onSuccess({}, function(transition) {
+        layoute.setPath($state.getCurrentPath());
+      });
+      return tabela; 
+    }        
 
 })();

@@ -6,13 +6,13 @@
         .service('TabelaFuncService', TabelaFuncService);
 
     TabelaFuncService.$inject = [
-      'UtilsFunctions','TabelaDataSet','UtilsDataFunctionService','FiltroService','TabPrazosFuncService','TabPrazosMeioPagFuncService',
+      'UtilsFunctions','TabelaDataSet','UtilsDataFunctionService','FiltroService','TabPrazosFuncService',
       '$state','$mdDialog','$filter'
     ];
 
     /* @ngInject */
     function TabelaFuncService(
-      UtilsFunctions,TabelaDataSet,UtilsDataFunctionService,FiltroService,TabPrazosFuncService,TabPrazosMeioPagFuncService,
+      UtilsFunctions,TabelaDataSet,UtilsDataFunctionService,FiltroService,TabPrazosFuncService,
       $state,$mdDialog,$filter
     )
     {
@@ -25,8 +25,7 @@
           var dataSetTabela = new TabelaDataSet.tabela();
           vm.data = new UtilsDataFunctionService.dataFuncoes(dataSetTabela);
           vm.tabPrazos = new TabPrazosFuncService.funcoes();
-          vm.tabPrazosMp = new TabPrazosMeioPagFuncService.funcoes()
-          vm.data.title = "Tabelas de preço";
+          vm.data.title = "Classificar tabelas";
           vm.tipos = [
             {descricao:'ATACADO',value:'A'},
             {descricao:'VAREJO',value:'V'},
@@ -34,7 +33,7 @@
           vm.activate = function () {
             var toobarPrm = {
               btAddNovo  : vm.novo,
-              btAddTootip: 'Nova tabela',
+              btAddTootip: 'Nova Classe',
             };
             var funcFiltros = new FiltroService.funcoes();
             funcFiltros.filtros.fields = vm.data.camposFiltro;//setar os campos de consulta
@@ -66,39 +65,12 @@
           vm.novo = function () {
             var data = {};
             vm.data.novo(data,'layout.pgconfig.tabela.tabelaCad');
+            vm.tabPrazos.start(vm);
           }
 
           vm.alterar = function (row) {
             vm.data.alterar(row,'layout.pgconfig.tabela.tabelaCad');
-            vm.showTabPrazos();
-          }
-
-          vm.showTabPrazos = function () {
-            vm.tabPrazos.setMasterData(vm.data.row);
-            vm.tabPrazos.activate();
-          }
-
-          vm.confirmarItens = function () {
-            vm.data.salvar().then(function (result) {
-              if (result) {
-                vm.itensInventario.setForengKey(vm.data.row.id_inventario);
-                vm.itensInventario.addItens(vm.estoque.item.rows);
-                vm.itensInventario.data.aplyUpdates(false).then(function (result) {
-                  if (result) {
-                    vm.showItens();
-                  }
-                });
-              }
-            });
-          }
-
-          vm.confirmarContagem = function () {
-            vm.itensInventario.data.aplyUpdates(true).then(function (result) {
-              if (result) {
-                vm.data.row.status = 1;
-                vm.data.salvar();
-              }
-            });
+            vm.tabPrazos.start(vm);
           }
 
         }

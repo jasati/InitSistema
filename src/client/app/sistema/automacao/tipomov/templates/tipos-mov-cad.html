@@ -1,0 +1,67 @@
+<md-content layout="column" flex>
+  <md-card>
+    <md-card-actions layout="row" flex>
+      <span class="md-title" layout-padding>{{$ctrl.tipoMov.data.label}} Tipo de Movimentação</span>
+      <span flex></span>
+      <md-button class="md-icon-button md-offset" ui-sref="layout.pgconfig.tipomovs" aria-label="close">
+          <md-icon>close</md-icon>
+          <md-tooltip>Cancelar</md-tooltip>
+      </md-button>
+    </md-card-actions>
+    <md-divider></md-divider>
+    <md-card-content>
+      <form name="form" novalidate autocomplete="off">
+
+        <md-input-container class="md-block" flex>
+          <label class="md-body-2">Descrição do tipo</label>
+          <input type="text" required  name="descricao" ng-model="$ctrl.tipoMov.data.row.descricao" ng-change="$ctrl.tipoMov.data.onChange($ctrl.tipoMov.data.row)">
+          <div ng-messages="form.descricao.$error">
+            <div ng-message="required">Informe a descrição do tipo de movimentação.</div>
+          </div>
+        </md-input-container>
+
+        <md-radio-group required class="md-block" name="tipo" ng-model="$ctrl.tipoMov.data.row.tipo" ng-change="$ctrl.tipoMov.data.onChange($ctrl.tipoMov.data.row)" class="md-block" flex>
+          <label class="md-body-2 text-muted">Tipo de movimentação</label>
+          <div layout="row">
+            <md-radio-button layout-margin value="E" class="md-caption">Entrada</md-radio-button>
+            <md-radio-button layout-margin value="S" class="md-caption">Saída</md-radio-button>
+            <md-radio-button layout-margin value="P" class="md-caption">Pedido</md-radio-button>
+          </div>
+          <md-tooltip>Classificar o tipo de movimentação</md-tooltip>
+        </md-radio-group>
+
+        <md-radio-group ng-show="$ctrl.tipoMov.data.row.tipo=='E'" class="md-block" name="alt_cad_item" ng-model="$ctrl.tipoMov.data.row.alt_cad_item" ng-change="$ctrl.tipoMov.data.onChange($ctrl.tipoMov.data.row)" class="md-block" flex>
+          <label class="md-body-2 text-muted">Alterar o cadastro o item?</label>
+          <div layout="row">
+            <md-radio-button layout-margin value="1" class="md-caption">Sim</md-radio-button>
+            <md-radio-button layout-margin value="0" class="md-caption">Não</md-radio-button>
+          </div>
+          <md-tooltip>Altera o cadastro do item apos a conclusão da movimentação? Ideal para entrada de itens</md-tooltip>
+        </md-radio-group>
+
+        <md-radio-group required class="md-block" name="mov_estoque" ng-model="$ctrl.tipoMov.data.row.mov_estoque" ng-change="$ctrl.tipoMov.data.onChange($ctrl.tipoMov.data.row)" class="md-block" flex>
+          <label class="md-body-2 text-muted">Movimenta o estoque?</label>
+          <div layout="row">
+            <md-radio-button layout-margin value="1" class="md-caption">Sim</md-radio-button>
+            <md-radio-button layout-margin value="0" class="md-caption">Não</md-radio-button>
+          </div>
+          <md-tooltip>Esse tipo movimenta o estoque?</md-tooltip>
+        </md-radio-group>
+
+        <md-radio-group required class="md-block" name="status" ng-model="$ctrl.tipoMov.data.row.status" ng-change="$ctrl.tipoMov.data.onChange($ctrl.tipoMov.data.row)" class="md-block" flex>
+          <label class="md-body-2 text-muted">Status</label>
+          <div layout="row">
+            <md-radio-button layout-margin value="1" class="md-caption">Ativo</md-radio-button>
+            <md-radio-button layout-margin value="0" class="md-caption">Inativo</md-radio-button>
+          </div>
+          <md-tooltip>Exibe ou não o tipo de movimentação</md-tooltip>
+        </md-radio-group>
+      </form>
+
+    </md-card-content>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center" layout-margin>
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-show="$ctrl.tipoMov.data.row.action" ng-click="$ctrl.tipoMov.data.salvar()">Salvar</md-button>
+    </md-card-actions>
+  </md-card>
+</md-content>

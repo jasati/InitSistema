@@ -16,7 +16,7 @@
         	var dataSet = new AutomacaoProvider.provider();
         	//realizar as configurações do dataset
 	        var tableCols = [
-	          {prop:'descricao',name:'Descrição',show:true},
+	          {prop:'descricao',name:'Classificações',show:true},
 	        ];
 	        var inner_join = {
 	             0:"",
@@ -34,6 +34,7 @@
         	dataSet.tableCols      = tableCols;
         	dataSet.camposData     = [];
             dataSet.camposInvalidos  = ['action'];
+            dataSet.camposForeignKey = ['id_empresa'];//campos chave estrangeira
         	return  dataSet;
 
         }
@@ -43,7 +44,7 @@
             var dataSet = new AutomacaoProvider.provider();
             //realizar as configurações do dataset
             var tableCols = [
-              {prop:'descricao',name:'Descrição do Prazo',show:true},
+              {prop:'descricao',name:'Descrição da tabela',show:true},
               {prop:'percentual',name:'% Lucro Opcional',show:true}
             ];
             var inner_join = {
@@ -73,7 +74,7 @@
             var dataSet = new AutomacaoProvider.provider();
             //realizar as configurações do dataset
             var tableCols = [
-              {prop:'descricao',name:'Prazo',show:true},
+              {prop:'meio_pag',name:'Meio de Pagamento',show:true},
             ];
             var inner_join = {
                  0:"meios_pag mp ON tpmp.id_meio_pag = mp.id_meio_pag",

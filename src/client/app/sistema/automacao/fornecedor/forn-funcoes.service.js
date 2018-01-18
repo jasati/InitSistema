@@ -29,7 +29,7 @@
           vm.filtrar = function () {
             var query = '';
             if (isset(vm.forn.filtros.mainField)) {
-              query += " and p.nome_comp LIKE '%"+vm.forn.filtros.mainField+"%'";
+              query += " and CONCAT(p.nome_comp,p.nome_red) LIKE '%"+vm.forn.filtros.mainField+"%'";
             }
             vm.forn.read(query,true);//limitar os registro
           }
@@ -37,7 +37,7 @@
           vm.filtroAutoComplete = function (prm,id) {
             var query = "";
             if (isset(prm)) {
-              query += " and p.nome_comp LIKE '"+prm+"%'";
+              query += " and CONCAT(p.nome_comp,p.nome_red) LIKE '%"+prm+"%'";
             }
             if (isset(id)) {
               query += " and f.id_pessoa = "+id;
@@ -109,12 +109,12 @@
           }
 
           vm.novo = function (data) {
-            vm.forn.novo(data);
+            vm.forn.novo(data,'layout.forn.cadastro');
             vm.pessoaFunc.pessoa.novo(data);
           }
 
           vm.alterar = function (row) {
-            vm.forn.alterar(row);
+            vm.forn.alterar(row,'layout.forn.cadastro');
             vm.pessoaFunc.load(row.id_pessoa);
           }
 
@@ -138,15 +138,15 @@
               default:
             }
 
-            var config = {
-              templateUrl: 'app/sistema/automacao/fornecedor/templates/forn-cad.html',
-              size:'',
-              data:vm,
-              backdrop:'static',
-              fullscreen:false,
-              modal:{},
-            };
-            vm.forn.showModal(config);
+            // var config = {
+            //   templateUrl: 'app/sistema/automacao/fornecedor/templates/forn-cad.html',
+            //   size:'',
+            //   data:vm,
+            //   backdrop:'static',
+            //   fullscreen:false,
+            //   modal:{},
+            // };
+            // vm.forn.showModal(config);
           }
 
           vm.deletar = function (ev,data) {
