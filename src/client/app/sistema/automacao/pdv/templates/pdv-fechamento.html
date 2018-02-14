@@ -1,0 +1,113 @@
+
+<div id="cabecario">
+	<div layout="row" md-whiteframe="4" flex style="min-height: 17vh" md-colors="{background: 'indigo'}" layout-align="
+	center center" layout-padding>
+		<div layout="row">
+			<span class="md-display-3"><b>Fechar Venda</b></span>
+		</div>
+	</div>
+</div>
+<div id="pdv-livre" layout="column" flex >
+	<div layout="row" flex class="visao">
+		<div layout="column" flex style="min-height: 75vh" md-colors="{background: 'indigo-700'}">
+			<div layout="column" layout-padding flex>
+				<div layout="row" flex md-whiteframe="3" layout-padding layout-align="space-between end" md-colors="{background: 'indigo-600'}">
+					<span class="md-subhead">
+						SubTotal Itens :
+					</span>
+					<span class="md-display-2"><b>{{$ctrl.funcoes.totalizacao.subTotal() | currency}}</b></span>
+				</div>
+				<div layout="row" flex md-whiteframe="3" layout-padding layout-align="space-between end" md-colors="{background: 'indigo-600'}">
+					<span class="md-subhead">
+						Descontos :
+					</span>
+					<span class="md-display-2"><b>{{$ctrl.funcoes.totalizacao.totalDesc() | currency}}</b></span>
+				</div>
+				<div layout="row" flex md-whiteframe="3" layout-padding layout-align="space-between end" md-colors="{background: 'grey-A100'}">
+					<span class="md-subhead">
+						Total Venda :
+					</span>
+					<span class="md-display-3" ng-class="{'text-danger':$ctrl.funcoes.totalizacao.totalRec()<$ctrl.funcoes.totalizacao.totalVenda(),'text-success':$ctrl.funcoes.totalizacao.totalRec()>=$ctrl.funcoes.totalizacao.totalVenda()}"><b>{{$ctrl.funcoes.totalizacao.totalVenda() | currency}}</b>
+						<md-icon class="text-success" ng-show="$ctrl.funcoes.totalizacao.totalRec()>=$ctrl.funcoes.totalizacao.totalVenda()">done</md-icon>
+					</span>
+				</div>
+			</div>
+			<div flex layout="column" layout-padding>
+				<div flex layout="row">
+					<span>-</span>
+				</div>
+				<div flex layout="column" layout-align="end none">
+					<md-list class="md-dense" flex >
+						<md-list-item class="md-2-line" ng-show="$ctrl.funcoes.pdv.data.row">
+							<img ng-src="{{$ctrl.funcoes.pdv.data.pathImg}}{{$ctrl.funcoes.pdv.data.userLogado.foto?$ctrl.funcoes.pdv.data.userLogado.foto:'noImg.jpg'}}" class="md-avatar" alt="{{$ctrl.funcoes.pdv.data.userLogado.nome}}" />
+							<div layout="column" class="md-list-item-text">
+							    <div layout="row" layout-align="space-between end">
+							      <h3 class="md-caption"><b>Operador : </b> {{$ctrl.funcoes.pdv.data.row.child.data.row.operador}}</h3>
+							      <h3><b>Filial : </b> {{$ctrl.funcoes.pdv.data.row.child.data.row.filial}}</h3>
+							    </div>
+
+							    <div layout="row" layout-align="space-between end">
+							      <h4><b class="md-caption">Data Abertura :</b>{{$ctrl.funcoes.pdv.data.row.child.data.row.data_ini | date:'dd/MM/yyyy HH:mm'}}</h4>
+							      <h4 ng-show="$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'"><b class="md-caption">Data Fechamento :</b>{{$ctrl.funcoes.pdv.data.row.child.data.row.data_fim | date:'dd/MM/yyyy HH:mm'}}</h4>
+							    </div>
+							</div>
+						</md-list-item>
+					</md-list>
+				</div>
+			</div>
+		</div>
+		<div layout="column"  flex  style="min-height: 75vh" md-colors="{background: 'indigo-700'}">
+			<div layout-padding layout="column" flex>
+				<span class="md-display-1" layout="row" md-whiteframe="3" layout-align="center center">Valores Recebido</span>
+				<md-list class="dense" class="conteudo-table">
+					<md-list-item ng-repeat="r in $ctrl.funcoes.pdv.data.row.child.data.row.child.data.rows">
+						<div class="md-list-item-text">
+							<h3>{{r.meio_pag}}</h3>
+							<h3 class="md-secondary"><b>{{r.valor | currency}}</b></h3>
+						</div>
+						<md-divider ng-if="!$last"></md-divider>
+					</md-list-item>
+				</md-list>
+			</div>
+
+			<div layout="row" md-whiteframe="3" flex="15" layout-padding md-colors="{background: 'indigo-600'}"  layout-align="space-between start">
+				<span class="md-subhead">
+					Total Recebido :
+				</span>
+				<span class="md-display-2"><b>{{$ctrl.funcoes.totalizacao.totalRec() | currency}}</b></span>
+			</div>
+
+			<div ng-show="$ctrl.funcoes.totalizacao.troco > 0" layout="row" md-whiteframe="3" flex="15" layout-padding md-colors="{background: 'grey-A100'}"  layout-align="space-between start">
+				<span class="md-subhead">
+					Troco :
+				</span>
+				<span class="md-display-3 text-danger"><b>{{$ctrl.funcoes.totalizacao.troco | currency}}</b></span>
+			</div>			
+		</div>
+	</div>
+</div>
+
+<div id="pdv-rodape" >
+	<div layout="row" flex layout-align="space-between none" style="min-height: 8vh" md-colors="{background: 'grey'}">
+		<div id="btn-controles">
+		    <div  flex layout="row" layout-align="center center">
+	          	<md-button ng-click="$ctrl.funcoes.setModosPdv(0)">
+		            <span class="md-caption">F2 - Voltar</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.desconto()">
+		            <span class="md-caption">F9 - Aplicar Desconto</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.recebimentos()" id="btn-rec" ng-keydown="$ctrl.funcoes.onKeydown($event)">
+		            <span class="md-caption">F7 - Receber Pagamento</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.concluirVenda()" class="md-raised md-accent" ng-show="$ctrl.funcoes.totalizacao.totalRec()>=$ctrl.funcoes.totalizacao.totalVenda()">
+		            <span class="md-caption">F10-Concluir</span>
+	          	</md-button>
+		    </div>
+		</div>
+		<div id="logo" layout="row" layout-align="space-between center" layout-margin>
+			<img alt="{{$ctrl.funcoes.altImg}}" src="images/jasati_logo.png" height="20">
+			<span class="md-subhead"></span>
+		</div>
+	</div>
+</div>

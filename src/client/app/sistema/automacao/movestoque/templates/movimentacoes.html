@@ -6,7 +6,11 @@
           	<md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
           	<input id="filtro" ng-model="$ctrl.movs.data.filtros.mainField"  ng-change="$ctrl.movs.data.filtros.onChange()" placeholder="{{$ctrl.movs.data.filtros.placeholder}}">
       	</form>
-    	<span class="md-title" layout-padding ng-class="{'md-subhead':$ctrl.movs.data.mediaxs()}" ng-show="!$ctrl.movs.data.filtros.showField">{{$ctrl.movs.tipoMov.data.row.descricao}}</span>
+      	<div layout-gt-xs="row" layout-xs="column" ng-show="!$ctrl.movs.data.filtros.showField" layout-align="start center">
+      		<span class="md-title" layout-padding ng-class="{'md-caption':$ctrl.movs.data.mediaxs()}" >Movimentos {{$ctrl.movs.tipoMov.data.row.descricao}}</span>
+      		<filtro-data filtros="$ctrl.movs.data.filtros"></filtro-data>
+      	</div>
+    	
 
       	<div flex></div>
       	<button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.movs.data.filtros.onClick()" aria-label="Filtro" ng-show="!$ctrl.movs.data.filtros.showField">
@@ -36,7 +40,7 @@
 		  <md-button class="md-icon-button" ng-click="$ctrl.movs.data.filtros.functionRead()" aria-label="edit"><md-icon aria-label="editar">refresh</md-icon><md-tooltip md-autohide="true">Recarrgar registros</md-tooltip></md-button>
 		</div>
 	</div>
-	<div layout-gt-xs="row" flex>
+	<div layout-gt-xs="row" flex hide-xs>
 		<div layout="column" flex="grow">
 			<j-pagination funcoes="$ctrl.movs.data.funcPag"></j-pagination>
 			<div ng-switch on="$ctrl.movs.tipoMov.data.row.tipo" class="atura-table">
@@ -73,27 +77,29 @@
 					   <table md-table class="table table-condensed table-striped">
 					    <thead md-head md-order="$ctrl.movs.data.orderBy" md-on-reorder="$ctrl.movs.data.filtros.functionRead">
 					      <tr >
-					      	<th style="width: 10% !important" md-column md-order-by="em.numero">
+					      	<th style="width: 5% !important" md-column md-order-by="em.numero">
 					        Numero</th>
 					        <th style="width: 15% !important" md-column md-order-by="em.data_mov">
 					        Data</th>
-					        <th style="width: 20% !important" md-column md-order-by="p.p_dest_nome_red">Apelido</th>
-					        <th style="width: 30% !important" md-column md-order-by="p.p_dest_nome_comp">Cliente</th>
-					        <th style="width: 15% !important" md-column md-order-by="vv.vendedor_nome_red">
+					        <th style="width: 18% !important" md-column md-order-by="p.p_dest_nome_red">Apelido</th>
+					        <th style="width: 25% !important" md-column md-order-by="p.p_dest_nome_comp">Cliente</th>
+					        <th style="width: 13% !important" md-column md-order-by="vv.vendedor_nome_red">
 					        Vendedor</th>
-					        <th style="width: 5% !important" md-column md-order-by="em.desc_status">Situação</th>
-					        <th style="width: 10% !important" md-column md-order-by="total">Total</th>
+					        <th style="width: 8% !important" md-column md-order-by="subtotal">Subtotal</th>
+					        <th style="width: 8% !important" md-column md-order-by="total_desc">Descontos</th>
+					        <th style="width: 8% !important" md-column md-order-by="total">Total</th>
 					      </tr>
 					    </thead>
 					   <tbody md-body>
 					      <tr  class="row-table-click striped" md-select="row" md-select-id="id_mov" ng-repeat="row in $ctrl.movs.data.rows | orderBy: $ctrl.movs.data.orderBy" ng-click="$ctrl.movs.alterar(row)">
 					      	<td md-cell>{{row.numero}}</td>
-					        <td md-cell>{{$ctrl.movs.data.convDT(row.data_mov) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+					        <td md-cell>{{$ctrl.movs.data.convDT(row.data_mov) | date:'dd/MM/yyyy HH:mm'}}</td>
 					        <td md-cell>{{row.p_dest_nome_red}}</td>
 					        <td md-cell>{{row.p_dest_nome_comp}}</td>
 					        <td md-cell>{{row.vendedor_nome_red}}</td>
-					        <td md-cell>{{row.desc_status}}</td>
-					        <td md-cell md-number><b>{{row.total | currency}}</b></td>
+					        <td md-cell>{{row.subtotal | currency:''}}</td>
+					        <td md-cell>{{row.total_desc | currency:''}}</td>
+					        <td md-cell md-number><b>{{row.total | currency:''}}</b></td>
 					      </tr>
 					    </tbody>
 					  </table>
@@ -108,5 +114,40 @@
 		  	 	</span>
 		  	</div>			
 		</div>
+	</div>
+	<div layout="column" flex hide-gt-xs >
+		<md-virtual-repeat-container  id="j-virtual-repeat">
+		    <md-list class="md-dense" flex >
+		      <md-list-item class="md-2-line" md-virtual-repeat="row in $ctrl.movs.data.loadVirtualRepeat" md-on-demand="true" ng-click="$ctrl.movs.alterar(row)" >
+		        	<div layout="column" class="md-list-item-text">
+						<div layout="row" flex>
+							<h3 class="" flex><span class="text-danger">Nº {{row.numero}}</span> : {{row.p_dest_nome_red?row.p_dest_nome_red:row.p_dest_nome_comp}} </h3>
+						</div>
+						<div layout="row" flex>
+							<h4 flex><small class="text-muted">subtotal :</small> {{row.subtotal | currency:''}} </h4>
+							<h4 flex><small class="text-muted">desc :</small> {{row.total_desc | currency}} </h4>
+							<h4 flex><small class="text-muted">total :</small> <b>{{row.total | currency}}</b></h4>
+						</div>
+						<div layout="row" flex>
+							<p flex>{{row.vendedor_nome_red}}</p>
+							<p flex>{{row.data_mov | date:'dd/MM/yyyy HH:mm'}}</p>
+						</div>
+
+
+		        	</div>
+	        		<md-divider></md-divider>
+	      		</md-list-item>
+		    </md-list>
+		</md-virtual-repeat-container>
+		<md-divider></md-divider>
+	  	<div layout="row" layout-padding layout-align="start center">
+	  		<span>{{$ctrl.movs.data.rows.length}} de {{$ctrl.movs.data.pagination.total}} <small class="text-muted">Registros</small></span>
+	  		<div class="md-offset">
+		  		<span class="md-subtitle">Total da Listado : </span>
+		  		<span class="md-subtitle text-info">
+		  	 		<b>{{$ctrl.movs.soma($ctrl.movs.data.rows,'','total')|currency}}</b>
+		  	 	</span>
+	  		</div>
+	  	</div>			
 	</div>
 </div>

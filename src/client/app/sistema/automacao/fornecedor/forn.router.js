@@ -22,7 +22,7 @@
                         nav    : 1,
                         icon   : 'location_city',
                         content: 'Fornecedor',
-                        perm   :0
+                        perm   : 2
                     },
                     resolve : {
                         funcoes: resolveforn

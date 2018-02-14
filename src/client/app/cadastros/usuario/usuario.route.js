@@ -18,11 +18,12 @@
                 config: {
                     url: '/ctrol-acesso',
                     component:'ctrlAcesso',
+                    title:'Controle de Acesso',
                     settings: {
                         nav    : 2,
-                        icon   : 'assignment_ind',
+                        icon   : 'security',
                         content: 'Controle de Acesso',
-                        perm   :-1
+                        perm   :5
                     },
                     resolve : {
                         funcoes: resolveUsuario
@@ -35,6 +36,7 @@
                 config: {
                     url:'/usuarios',
                     component:'usuarios',
+                    title:'Usuários'
 
                 }
             },
@@ -44,14 +46,15 @@
                 config: {
                     url:'/cadastro',
                     component:'usuarioCadastro',
+                    title:'Cadastro'
                 }
             }
 
         ];
     }
-    resolveUsuario.$inject = ['UsuarioFuncService','FiltroService'];
+    resolveUsuario.$inject = ['UsuarioFuncService','FiltroService','$transitions','$state','layoute'];
 
-    function resolveUsuario(UsuarioFuncService,FiltroService) {
+    function resolveUsuario(UsuarioFuncService,FiltroService,$transitions,$state,layoute) {
       var funcoes = new UsuarioFuncService.funcoes();
       //funcoes.showTable();//ir para o state .lista para mostra a lista de usuarios
       var funcFiltros = new FiltroService.funcoes();
@@ -60,6 +63,9 @@
       funcFiltros.filtros.functionRead = funcoes.filtrar;//setar a função de gatilho para consulta
       funcoes.dados.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
       funcoes.dados.filtros.functionRead();//chama a consulta
+      $transitions.onSuccess({}, function(transition) {
+        layoute.setPath($state.getCurrentPath());
+      });            
       return funcoes;
     }
 })();

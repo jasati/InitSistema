@@ -63,7 +63,7 @@
           </thead>
           <tbody md-body >
             <tr  class="striped" md-select="i" md-select-id="id_item" ng-repeat="i in $ctrl.funcoes.item.rows | orderBy:$ctrl.funcoes.item.orderBy" id="tr{{$index}}">
-              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.alterar(i);$ctrl.funcoes.item.setIndex($index)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon></md-button></td>
+              <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.funcoes.alterar(i)" aria-label="edit"><md-icon aria-label="editar">edit</md-icon></md-button></td>
               <td md-cell>{{i.codigo}}</td>
               <td md-cell>{{i.descricao}}</td>
               <td md-cell>{{i.marca}}</td>

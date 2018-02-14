@@ -1,11 +1,11 @@
 <md-content>
-	<md-card flex layout-gt-xs="row" layout-xs="column">
+	<div flex layout-gt-xs="row" layout-xs="column">
 		<md-list flex>
 			<md-list-item class="md-2-line" ng-repeat="row in $ctrl.tipoMov.data.rows" ng-click="$ctrl.tipoMov.showMovs(row)">
 				<md-icon>{{row.tipo=='S'?'call_made':row.tipo=='E'?'call_received':'vertical_align_center'}}</md-icon>
 				<div class="md-list-item-text">
-			      <span class="md-headline">{{row.descricao}}</span>
-			      <span class="md-subhead description">{{row.desc_tipo}}</span>
+			      <h3 class="md-headline">{{row.descricao}}</h3>
+			      <p class="md-subhead description">{{row.desc_tipo}}</p>
 				</div>
 				<md-divider></md-divider>
 			</md-list-item>
@@ -15,10 +15,10 @@
 			<md-list-item class="md-2-line" ui-sref="layout.tipomov.inventario">
 				<md-icon>format_list_numbered</md-icon>
 				<div class="md-list-item-text">
-			      <span class="md-headline">Inventário</span>
-			      <span class="md-subhead description">Contagem de Estoque</span>
+			      <h3  class="md-headline">Inventário</h3>
+			      <p class="md-subhead description">Contagem de Estoque</p>
 				</div>
 			</md-list-item>
 		</md-list>
-	</md-card>
+	</div>
 </md-content >

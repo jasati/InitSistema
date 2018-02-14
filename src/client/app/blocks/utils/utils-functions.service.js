@@ -63,17 +63,20 @@
           arquivo.Close();
         }        
         function formatData (data, hora) {
-            var d, m, y,hr='', dt;
+            var d, m, y, H, M, S, dt, hr;
             if (hora) {
                 hr = hora;
             }
             d = data.getDate();
             m = data.getMonth()+1; //janeiro = 0
             y = data.getFullYear();
-            if (hr !== '') {
+            H = data.getHours();
+            M = data.getMinutes();
+            S = data.getSeconds();
+            if (isset(hr)) {
                 dt = y+'-'+m+'-'+d+' '+hr;
             } else {
-                dt = y+'-'+m+'-'+d;
+                dt = y+'-'+m+'-'+d+' '+H+':'+M+':'+S;
             }
             return dt;
         }

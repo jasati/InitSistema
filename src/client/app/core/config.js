@@ -9,13 +9,13 @@
     /* @ngInject */
     function toastrConfig(toastr) {
         toastr.options.timeOut = 4000;
-        toastr.options.positionClass = 'toast-bottom-right';
+        toastr.options.positionClass = 'toast-top-center';
     }
     var index = 2;/*indice abaixo do sistema que esta sendo executado */
     var sistemas = [
       {nome:"psicanalise",ambiente:1,/*0 = Local; 1 = producao*/api:["http://mucontratos.alan.dev/v1/","http://swishi.psicorpo.com.br/api/v1/"]},
       {nome:"ecc",ambiente:0,/*0 = Local; 1 = producao*/api:["http://localhost/v1/","https://ws.ecc.pibdecoite.com.br/v1/"]},
-      {nome:"automacao",ambiente:0,/*0 = Local; 1 = producao*/api:["http://localhost/v1/","http://35.198.44.190/api/v1/"]}
+      {nome:"automacao",ambiente:1,/*0 = Local; 1 = producao*/api:["http://localhost/v1/","http://35.198.44.190/api/v1/"]}
     ];
 
     /*
@@ -68,7 +68,7 @@
                 'default':'400'
             })
             .backgroundPalette('grey',{
-                'default':'200'
+                'default':'A100'
             });
         $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
         $mdThemingProvider.theme('dark-orange').backgroundPalette('orange').dark();

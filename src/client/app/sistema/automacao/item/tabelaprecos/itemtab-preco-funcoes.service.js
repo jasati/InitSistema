@@ -70,6 +70,10 @@
             }
           }
 
+          vm.valorBaixo = function (itemtab) {
+            return itemtab.valor<((vm.data.rowParent.custo*itemtab.perc_lucro/100)+vm.data.rowParent.custo).toFixed(2)
+          }
+
           vm.atualizarLucro = function () {
             //função para atualizar o lucro e o preço automaticamente, quando o usuario
             //acessa a janela e o custo esta alterado para cima, ideal quando inicia a template

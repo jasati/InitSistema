@@ -10,6 +10,8 @@
 
     function ApiService($filter, $http, $q, config,UtilsFunctions,logger) {
       var isset = UtilsFunctions.isset;
+      var reconect = 0;
+      var prmReconect = {};
         var service = {
             read                : read,
             create              : create,
@@ -157,6 +159,7 @@
         }
 
         function API(prmWebService, servico) {
+            setPrmReconect(prmWebService, servico);
             prmWebService.db = config.dbase;
             var req = {
                     url    : config.urlWebService+servico,
@@ -180,14 +183,26 @@
             function fail(error) {
               var msgErro = 'Solicitação não concluida, tente outra vez!'
                 if (error.status == -1) {
-                    logger.error(msgErro+' Erro : Falha na conexão com o servidor, verifique sua conexão.');
+                  if (reconect<=3) {
+                    reconect++;
+                    API(prmReconect.prmWebService,prmReconect.servico);
+                    logger.info(reconect+' - Reconectando ao serviço web...');
+                  } else {
+                    return $q.reject('Falha na conexão com o servidor, verifique sua conexão. Detalhes : '+ error.statusText);
+                  }
                 } else {
-                    logger.error(msgErro+' Erro : '+error.statusText);
+                    return $q.reject(msgErro+' Detalhes : '+error.statusText);
                 }
-                return $q.reject(msgErro);
             }
 
-
         }
+
+        function setPrmReconect(prmWebService, servico) {
+          prmReconect = {
+            prmWebService:prmWebService, 
+            servico:servico,
+          };
+        }
+        
     }
 })();

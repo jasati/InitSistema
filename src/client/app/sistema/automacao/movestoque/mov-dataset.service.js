@@ -65,10 +65,10 @@ pd.complemento as p_dest_complemento,
 c.id_tabela,
 f.id_fornecedor,
 t.descricao as tabela,
-@subtotal:=(SELECT SUM(emi.qt*emi.valor) as total FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as subtotal,
-@desc:=(SELECT SUM(emi.desconto) as desconto FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total_desc,
-@acres:=(SELECT SUM(emi.acres) as acres FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total_acres ,
-@total:=(@subtotal+@acres-@desc) as total,
+(SELECT SUM(emi.qt*emi.valor) FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as subtotal,
+(SELECT SUM(emi.desconto) FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total_desc,
+(SELECT SUM(emi.acres)  FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total_acres ,
+(SELECT (SUM(emi.qt*emi.valor)+SUM(emi.acres-emi.desconto)) FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total
 FROM estoque_mov em
 INNER JOIN view_filial vf ON em.id_filial = vf.id_filial
 INNER JOIN empresas emp ON vf.id_empresa = emp.id_empresa
@@ -98,10 +98,10 @@ WHERE 1
               'pd.nome_comp as p_dest_nome_comp,pd.nome_red as p_dest_nome_red,pd.cpf_cnpj as p_dest_cpf_cnpj,pd.logradouro as p_dest_logradouro,'+
               'pd.numero as p_dest_numero,pd.uf as p_dest_uf,pd.tel as p_dest_tel,pd.cel1 as p_dest_cel1,pd.complemento as p_dest_complemento,'+
               'c.id_tabela,f.id_fornecedor,t.descricao as tabela,'+
-              '@subtotal:=(SELECT SUM(emi.qt*emi.valor) as total FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as subtotal,'+
-              '@desc:=(SELECT SUM(emi.desconto) as desconto FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total_desc,'+
-              '@acres:=(SELECT SUM(emi.acres) as acres FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total_acres ,'+
-              '@total:=(@subtotal+@acres-@desc) as total';
+              '(SELECT SUM(emi.qt*emi.valor) FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as subtotal,'+
+              '(SELECT SUM(emi.desconto) as desconto FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total_desc,'+
+              '(SELECT SUM(emi.acres)FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total_acres ,'+
+              '(SELECT (SUM(emi.qt*emi.valor)+SUM(emi.acres-emi.desconto)) FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total';
 
           var camposFiltro = [
             {field:"data_mov",alias:"Data",type:"string"}
@@ -150,6 +150,7 @@ WHERE 1
         	dataSet.camposData     = ['data_mov','data_emissao','data_saida'];
           dataSet.camposInvalidos  = camposInvalidos;
           dataSet.camposForeignKey = ['id_filial','id_tipo_mov'];//campos chave estrangeira
+          dataSet.campoDataQry   = 'em.data_mov';//campo que sera filtrado por data
         	return  dataSet;
 
         }
@@ -161,12 +162,13 @@ SELECT
 emi.id_mov_item,
 emi.id_mov,
 emi.id_item,
-@qt:=sum(emi.qt) as qt,
-emi.valor,
-emi.desconto,
+SUM(emi.qt) as qt,
+AVG(emi.valor) as valor,
+SUM(emi.desconto) AS desconto,
 emi.desc_perc,
-emi.acres,
-@qt*(emi.valor+emi.acres-emi.desconto) as subtotal,
+SUM(emi.acres) AS acres,
+(SUM(emi.qt*emi.valor)+SUM(emi.acres-emi.desconto)) as subtotal,
+
 em.data_mov,
 em.id_filial,
 em.numero,
@@ -185,12 +187,19 @@ iu.sigla
 
 
 FROM estoque_mov_itens emi
+INNER JOIN estoque_mov em ON emi.id_mov = em.id_mov
+INNER JOIN tipo_mov_estoque tmp ON em.id_tipo_mov = tmp.id_tipo_mov
 INNER JOIN itens i ON emi.id_item = i.id_item
 LEFT JOIN item_unidade iu ON i.id_unidade = iu.id_unidade
+LEFT JOIN pessoas pe ON em.id_pessoa_emitente = pe.id_pessoa
+LEFT JOIN pessoas pd ON em.id_pessoa_destinatario = pd.id_pessoa
+where em.id_tipo_mov = 1
+
+group by i.id_item
              */
             var dataSet = new AutomacaoProvider.provider();
             //realizar as configurações do dataset
-            var campos = 'emi.id_mov_item, emi.id_mov, emi.id_item, @qt:=sum(emi.qt) as qt, emi.valor, emi.desconto, emi.desc_perc, emi.acres,em.data_mov, em.id_filial, em.numero, tmp.descricao as desc_tipo_mov, tmp.tipo as tipo_mov, i.descricao, i.detalhes, i.marca, i.codigo, i.id_empresa, iu.sigla, @qt*(emi.valor+emi.acres-emi.desconto) as subtotal';
+            var campos = ' emi.id_mov_item, emi.id_mov, emi.id_item, SUM(emi.qt) as qt, AVG(emi.valor) as valor, SUM(emi.desconto) AS desconto, emi.desc_perc, SUM(emi.acres) AS acres, (SUM(emi.qt*emi.valor)+SUM(emi.acres-emi.desconto)) as subtotal, em.data_mov, em.id_filial, em.numero, tmp.descricao as desc_tipo_mov, tmp.tipo as tipo_mov, i.descricao, i.detalhes, i.marca, i.perc_preco, i.preco, i.codigo, i.id_empresa, iu.sigla';
             var camposFiltro = [
                 {field:"data_mov",alias:"Data",type:"string"}
             ];
@@ -261,6 +270,7 @@ LEFT JOIN item_unidade iu ON i.id_unidade = iu.id_unidade
             dataSet.camposInvalidos  = camposInvalidos;
             dataSet.id_index_main    = 'i.id_empresa';
             dataSet.groupBy          = 'emi.id_item';//group by da consulta sql
+            dataSet.campoDataQry     = 'em.data_mov';//campo que sera filtrado por data
             return  dataSet;
         }
 

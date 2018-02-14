@@ -1,62 +1,112 @@
+
 <md-toolbar class="md-table-toolbar md-accent">
   <div class="md-toolbar-tools">
     <md-icon>search</md-icon>
     <span>Localizar Item</span>
     <span flex></span>
+    <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.item.filtros.setConfigFiltro()" aria-label="Filtro">
+      <md-tooltip>filtro Avançado</md-tooltip>
+      <md-icon>filter_list</md-icon>
+    </button>    
     <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
         <md-icon>close</md-icon>
     </md-button>
   </div>
 </md-toolbar>
-<form name="formitens" novalidate autocomplete="off" >  
-  <md-autocomplete
-    required
-    id="autocompleteItem"
-    md-autofocus
-    md-no-cache="true"
-    md-search-text="$ctrl.searchItem"
-    md-selected-item="$ctrl.funcoes.item.row"
-    md-items="row in $ctrl.funcoes.filtroAutoComplete($ctrl.searchItem,$ctrl.funcoes.tabela)"
-    md-selected-item-change="row?$ctrl.ok(row):null"
-    md-item-text="row.descricao"
-    md-min-length="0"
-    md-menu-class="autocomplete-custom-template"
-    md-dropdown-items="10"
-    md-delay="500"
-    md-top-index="$ctrl.index"
-    placeholder="Selecione o item e tecle enter para confirmar ou esq para cancelar.">
-  <md-item-template >
-    <div layout="column">
-      <div layout="row">
-        <div flex="10" class="li-table-auto">
-          <span class="text-warning">{{$ctrl.index}}</span>
-          <span class="text-warning">{{row.codigo}}</span>
+<md-content layout="column" ng-keydown="$ctrl.funcoes.item.keyDownPress($event)?$ctrl.ok($ctrl.funcoes.item.row):null;">
+
+  <filtro filtros="$ctrl.funcoes.item.filtros"></filtro>
+  <md-divider></md-divider>
+  <div layout-padding layout="row" layout-align="start center">
+    <form  autocomplete="off" novalidate flex layout="row">
+      <md-progress-circular ng-show="$ctrl.funcoes.item.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+      <md-icon ng-hide="$ctrl.funcoes.item.filtros.digitando">search</md-icon>
+        <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+        <input md-autofocus id="filtro" ng-model="$ctrl.funcoes.item.filtros.mainField"  ng-change="$ctrl.funcoes.item.filtros.onChange()" placeholder="Digite a descrição do item e tecle enter para confirmar ou esq para cancelar." >
+    </form>
+  </div>
+
+  <div ng-if="$ctrl.funcoes.item.rows.length === 0 && $ctrl.funcoes.item.filtros.mainField" layout-padding layout-margin layout-align="center center" layout="row" class="alert alert-warning" role="alert">
+    <p class="md-caption">O item "{{$ctrl.funcoes.item.filtros.mainField}}" não foi encontrado!</p>
+  </div>
+
+  <md-virtual-repeat-container md-top-index="$ctrl.funcoes.item.rowIndexTop" md-auto-shrink id="j-virtual-repeat">
+    <md-list class="md-dense" flex >
+      <md-list-item class="md-2-line" ng-class="{'selected':$ctrl.funcoes.item.rowIndex==$index}" md-virtual-repeat="row in $ctrl.funcoes.item.loadVirtualRepeat" md-on-demand="true" ng-click="$ctrl.funcoes.item.rowIndexClick($index)?$ctrl.ok($ctrl.funcoes.item.row):null" >
+        <div layout="column" class="md-list-item-text">
+          <h3><b>{{row.descricao}}</b></h3>
+          <div layout="row" flex>
+            <h4 flex class="text-warning">{{row.codigo}} </h4>
+            <p flex>{{row.marca}} </p>
+            <p flex>{{row.sigla}} </p>
+            <h3 flex><b class="text-danger">{{row.valor | currency:''}}</b> </h3>
+          </div>
+          <p style="font-size: 70%">{{row.detalhes}}</p>
         </div>
-        <div flex="55" class="li-table-auto">
-          <span ><b>{{row.descricao}}</b></span>
+        <md-divider></md-divider>
+      </md-list-item>
+    </md-list>
+
+  </md-virtual-repeat-container>
+
+
+<!--   <form name="formitens" novalidate autocomplete="off" >
+    <md-virtual-repeat-container>
+      <md-autocomplete
+        required
+        id="autocompleteItem"
+        md-autofocus
+        md-no-cache="true"
+        md-search-text="$ctrl.searchItem"
+        md-selected-item="$ctrl.funcoes.item.row"
+        md-items="row in $ctrl.funcoes.filtroAutoComplete($ctrl.searchItem,$ctrl.funcoes.tabela)"
+        md-selected-item-change="row?$ctrl.ok(row):null"
+        md-item-text="row.descricao"
+        md-min-length="0"
+        
+        md-dropdown-items="10"
+        md-delay="500"
+        md-top-index="$ctrl.index"
+        placeholder="Selecione o item e tecle enter para confirmar ou esq para cancelar.">
+      <md-item-template >
+      
+        <div layout="column">
+          <div layout="row">
+            <div flex="10" class="li-table-auto">
+              <span class="text-warning">{{$ctrl.index}}</span>
+              <span class="text-warning">{{row.codigo}}</span>
+            </div>
+            <div flex="55" class="li-table-auto">
+              <span ><b>{{row.descricao}}</b></span>
+            </div>
+            <div flex="15" class="li-table-auto">
+              <span >{{row.marca}}</span>
+            </div>
+            <div flex="15" class="li-table-auto">
+              <span class="text-danger"><b>{{row.valor | currency}}</b></span>
+            </div>
+            <div flex="5" class="li-table-auto">
+              <span>{{row.sigla}}</span>
+            </div>
+          </div>
+          <small flex class="li-table-auto text-capitalize text-muted" style="font-size: 70%">{{row.detalhes}}</small>
         </div>
-        <div flex="15" class="li-table-auto">
-          <span >{{row.marca}}</span>
+      </md-item-template>
+
+
+
+        <md-not-found>
+          O Item "{{$ctrl.searchItem}}" não foi encontrado.
+        </md-not-found>
+        <div ng-messages="formitens.descricao.$error">
+          <div ng-message="required">Informe o Item.</div>
         </div>
-        <div flex="15" class="li-table-auto">
-          <span class="text-danger"><b>{{row.valor | currency}}</b></span>
-        </div>
-        <div flex="5" class="li-table-auto">
-          <span>{{row.sigla}}</span>
-        </div>
-      </div>
-      <small flex class="li-table-auto text-capitalize text-muted" style="font-size: 70%">{{row.detalhes}}</small>
-    </div>
-  </md-item-template>
-  <md-not-found>
-    O Item "{{$ctrl.searchItem}}" não foi encontrado.
-  </md-not-found>
-    <div ng-messages="formitens.descricao.$error">
-      <div ng-message="required">Informe o Item.</div>
-    </div>
-  </md-autocomplete>
-</form>
-<div ng-init="$ctrl.funcoes.startFoco()">
-</div>
+      </md-autocomplete>
+    </md-virtual-repeat-container>
+  </form>
+  
+   </div>-->
+   <div ng-init="$ctrl.funcoes.startFoco()">
+</md-content>
 
 

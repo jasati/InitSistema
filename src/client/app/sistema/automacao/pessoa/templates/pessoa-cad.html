@@ -5,7 +5,7 @@
   <!-- dados pessoais -->
   <div layout="column" flex>
     <div layout="row">
-      <md-radio-group flex="30" required name="tipo" ng-model="$ctrl.funcoes.pessoa.row.tipo" class="md-block">
+      <md-radio-group flex="30" required name="tipo" ng-model="$ctrl.funcoes.pessoa.row.tipo" class="md-block" ng-hide="$ctrl.hidetipo">
         <label class="md-body-1">Tipo de Pessoa</label>
         <div layout="row">
           <md-radio-button value="F" class="md-caption">Física</md-radio-button>

@@ -59,28 +59,31 @@
 
         function usuario() {
           // campos são os campos da tabela que são visiveis no sistema
-        	var campos = ' u.id_usuario, u.id_empresa, u.id_galeria, u.nome, u.status, u.email, u.id_perfil, u.data_acess, u.ip_acess, g.imagem as foto';
+        	var campos = ' u.id_usuario, u.id_empresa, u.id_galeria, u.nome, u.status, u.email, u.id_perfil, u.data_acess, u.ip_acess, u.id_vendedor,u.id_filial, g.imagem as foto, p.nome_red as vendedor,pf.nome_red as filial,pf.id_pessoa as id_pessoa_filial';
           // camposFiltro são os campos usados para fazer a pesquisa no sistema
           var camposFiltro = [
-              {field:"status",alias:"Status",type:"fixed",values:[{value:1,alias:"Ativo"},{value:0,alias:"Inativo"}]},
-              {field:"email",alias:"Email",type:"string"},
-              {field:"id_usuario",alias:"Código",type:"number"}
+              {field:"u.status",alias:"Status",type:"fixed",values:[{value:1,alias:"Ativo"},{value:0,alias:"Inativo"}]},
+              {field:"u.email",alias:"Email",type:"string"},
+              {field:"u.id_usuario",alias:"Código",type:"number"}
           ];
           // filtroDefault é a pesquisa que ja vem padrao pelo sistema
           var filtroDefault = [
-            {campo:"status",express:"=",value:"1",alias:"Status",aliasValue:"Ativo",type:"fixed"},
+            {campo:"u.status",express:"=",value:"1",alias:"Status",aliasValue:"Ativo",type:"fixed"},
           ];
 
   	    	var inner_join = {
-  	            0:"",
+  	            0:"filial f on u.id_filial = f.id_filial",
+                1:"pessoas pf on f.id_pessoa = pf.id_pessoa",
   	        };
 
   	    	var left_join = {
   	            0:"galeria g on u.id_galeria = g.id_galeria",
+                1:"vendedor v on  u.id_vendedor = v.id_vendedor",
+                2:"pessoas p on v.id_pessoa = p.id_pessoa",
   	        };
           var camposData = [];
           var camposForeignKey = ['id_empresa'];
-	        var camposInvalidos = ['action','foto'];
+	        var camposInvalidos = ['action','foto','vendedor','filial','id_pessoa_filial'];
           var emp = empresa();
         	var dataset = {
             setForeignKey   : true,//esse campo determina se a cada novo registro será recibido o campo id_empresa

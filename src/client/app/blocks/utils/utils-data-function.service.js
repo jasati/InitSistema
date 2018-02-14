@@ -5,17 +5,16 @@
         .module('blocks.utils')
         .service('UtilsDataFunctionService', UtilsDataFunctionService);
 
-    UtilsDataFunctionService.$inject = ['UtilsFunctions','config','FileUploader','$state','$mdDialog','$mdMedia','$mdPanel','$uibModal','$document','$filter','logger'];
+    UtilsDataFunctionService.$inject = ['UtilsFunctions','config','FileUploader','$state','$mdDialog','$mdMedia','$mdPanel','$uibModal','$document','$filter','logger','$rootScope'];
 
     /* @ngInject */
-    function UtilsDataFunctionService(UtilsFunctions,config,FileUploader,$state,$mdDialog,$mdMedia,$mdPanel,$uibModal,$document,$filter,logger) {
+    function UtilsDataFunctionService(UtilsFunctions,config,FileUploader,$state,$mdDialog,$mdMedia,$mdPanel,$uibModal,$document,$filter,logger,$rootScope) {
         this.dataFuncoes = dataFuncoes;
 
         function dataFuncoes(dataSetProvider) {
           var vm = this;
           var isset = UtilsFunctions.isset;
           var _flexcad = 60;
-          vm.title = '';
           vm.flexCad = 0;
           vm.ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
           vm.verPermissao = UtilsFunctions.getPermissao;
@@ -25,8 +24,11 @@
           vm.row = null;//obejeto unico
           vm.rowParent = null;//objeto que chamou a instancia
           vm.rowsSelected = []; //lista de registros selecionados
-          vm.rowIndex = 0;
+          vm.rowIndex = -1;//indice do registro atual
+          vm.rowIndexTop = 0;//indice do registro top do virtual repeat
           vm.empresa = dataSetProvider.empresa;
+          vm.userLogado = dataSetProvider.user;
+          vm.filtroData = dataSetProvider.filtroData;
           vm.camposFiltro = dataSetProvider.camposFiltro;
           vm.filtroDefault = dataSetProvider.filtroDefault;
           vm.filtroExterno = '';
@@ -48,6 +50,7 @@
                 of: 'de'
             }
           }
+
 
           var setOptionLimitPagination = function (max) {
             var options = [5,10,15,20,50,100,200,300];
@@ -114,6 +117,21 @@
             vm.salvando = true;
             var nData = UtilsFunctions.copiarObjecto(vm.rows);
             var dts = vm.getDataset(false);
+
+            //se tiver campos com data formatar a data para o servidor
+            if (dataSetProvider.camposData.length > 0) {
+              for (var i = 0; i < dataSetProvider.camposData.length; i++) {
+                //pegar a data original, pq depois que passa por copiarObjecto() fica a data default
+                for (var x = 0;  x < vm.rows.length;  x++) {
+                  if (isset(vm.rows[x][dataSetProvider.camposData[i]])) {
+                    var dt = new Date(vm.rows[x][dataSetProvider.camposData[i]]);
+                    nData[x][dataSetProvider.camposData[i]] = UtilsFunctions.formatData(dt);
+                  }
+                }
+
+              }
+            }
+
             dataSetProvider.provider.setValor(dts,'estrutura',nData);
             var post = {
               camposInvalidos : dataSetProvider.camposInvalidos,
@@ -150,7 +168,9 @@
                 }
 
                 if (filterAfterPost&&res) {
-                  vm.filtros.functionRead();
+                  if (isset(vm.filtros.functionRead)) {
+                    vm.filtros.functionRead();
+                  }
                 }
                 return res;
             });
@@ -209,6 +229,13 @@
                   );
               }
             }
+            //filtro por data
+            if (isset(dataSetProvider.campoDataQry)) {
+              if (isset(vm.filtros.filtroData.dtIni)) {
+                query += " and "+dataSetProvider.campoDataQry+" BETWEEN '"+UtilsFunctions.formatData(vm.filtros.filtroData.dtIni,'00:00')
+                +"' and '"+UtilsFunctions.formatData(vm.filtros.filtroData.dtFim,'23:59')+"'";
+              }
+            }
 
             dataSetProvider.provider.setValor(dts,'consulta',query);
             if (limit) {
@@ -245,8 +272,16 @@
             vm.reading = true;
             var dts = vm.getDataset(true);
             dataSetProvider.provider.setValor(dts,'consulta',query);
-            if (limit) {
+            if (limit==true) {
               dataSetProvider.provider.setValor(dts,'limit',vm.getLimite());
+            }
+            if (limit=="FIRST") {
+              dataSetProvider.provider.setValor(dts,'order by',dataSetProvider.id_tabela);
+              dataSetProvider.provider.setValor(dts,'limit','1');
+            }
+            if (limit=="LAST") {
+              dataSetProvider.provider.setValor(dts,'order by',dataSetProvider.id_tabela+' DESC');
+              dataSetProvider.provider.setValor(dts,'limit','1');
             }
             var post = {
               dataset:dts,
@@ -437,7 +472,7 @@
             }
             if (isset(index)) {
               rem(index)
-            } else if (isset(vm.rowIndex)) {
+            } else if (vm.rowIndex>=0) {
                 rem(vm.rowIndex);
             } else {
               logger.warning('O indice deve ser definido para remover o item pelo index.');
@@ -471,7 +506,7 @@
               for (var i = 0; i < dataSetProvider.camposData.length; i++) {
                 //converter para a data no formato 00-00-0000
                 //para o tipo objeto, que usado no elemento tipo date
-                var dt = new Date($filter('date')(data[dataSetProvider.camposData[i]],'MM/dd/yyyy'));
+                var dt = new Date($filter('date')(data[dataSetProvider.camposData[i]],'MM/dd/yyyy HH:mm:ss'));
                 data[dataSetProvider.camposData[i]] = dt;
               }
             }
@@ -511,7 +546,24 @@
             }, function () {
               return false
             });
-          }          
+          }
+
+          vm.showMenssage = function(ev,msg) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+              .title('Menssagem')
+              .textContent(msg)
+              .ariaLabel('Menssagem')
+              .targetEvent(ev)
+              .ok('Confirmar')
+              .cancel('cancelar');
+
+            return $mdDialog.show(confirm).then(function(result) {
+              return true
+            }, function () {
+              return false
+            });
+          }
 
           vm.select = function () {
             vm.actionRow = 'select';
@@ -540,6 +592,11 @@
 
           vm.mediaxs = function() {
             return $mdMedia('xs');
+          }
+
+          vm.setTitle = function (title) {
+            vm.title = title;
+            config.docTitle = vm.title;
           }
 
           vm.setflexCad = function (value) {
@@ -579,8 +636,8 @@
             }
           }
 
-          vm.setIndex = function (index) {
-            vm.rowIndex = index;
+          vm.setIndex = function () {
+            vm.row = vm.rows[vm.rowIndex];
           }
           vm.nextRow = function () {
             vm.rowIndex++;
@@ -606,9 +663,86 @@
 
           }
 
-          vm.keyDownPress = function ($event) {
+          vm.loadVirtualRepeat = {
+            // Required.
+            getItemAtIndex: function(index) {
+              if (index >= vm.rows.length) {
+                if (vm.rows.length < vm.pagination.total && !vm.reading) {
+                  vm.pagination.limit += 15;
+                  vm.filtros.functionRead().then(function (result) {
+                    return vm.rows[index];
+                  });
+                } else {
+                  return null;
+                }
+              } else {
+                return vm.rows[index];
+              }
+            },
+            getLength: function() {
+              return vm.rows.length;
+            },
+          };
+
+          vm.moverRowIndexTop = function () {
+            if (vm.rowIndex>=-1) {
+              if (vm.rowIndex>vm.rowIndexTop) {
+                var r = vm.rowIndex - vm.rowIndexTop;
+                if (r>5) {
+                  vm.rowIndexTop++;
+                }
+              } 
+              if (vm.rowIndex<vm.rowIndexTop || vm.rowIndex==0) {
+                  vm.rowIndexTop = vm.rowIndex;
+              }
+              vm.setIndex();
+            }
+          }
+
+          vm.keyDownPress = function ($event,i) {
             var keyCode = $event.which || $event.keyCode;
-            alert('precionou '+keyCode);
+            if (keyCode==40||keyCode==38) {
+              vm.changeRowIndexkey(keyCode);
+              return false;
+            } else if (keyCode==13) {
+              return vm.rowIndexEnter(i);
+            }
+
+          }
+
+          vm.changeRowIndexkey = function (key) {
+            if (key==40) {
+              if (vm.rowIndex<(vm.rows.length-1)) {
+                vm.rowIndex++
+              } else {
+                vm.rowIndex = vm.rows.length -1;
+              }
+            } else {
+              if (vm.rowIndex>0) {
+                vm.rowIndex--
+              }
+            }
+            vm.moverRowIndexTop();
+          }
+
+          vm.rowIndexClick = function (index) {
+            vm.rowIndex = index;
+            vm.setIndex();
+            vm.acionarMainFiltro();
+            return true;
+          }
+
+          vm.rowIndexEnter = function () {
+            if (isset(vm.row)) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+
+          vm.resetRowIndex = function () {
+            vm.rowIndex = -1;
+            vm.rowIndexTop = 0;
           }
 
           vm.showPainel = function (prm) {
@@ -637,6 +771,7 @@
               ariaDescribedBy: prm.ariaDescribedBy,
               controllerAs: '$ctrl',
               size: prm.size,
+              keyboard:isset(prm.keyboard)?prm.keyboard:true,
               appendTo: parentElem,
               backdrop:prm.backdrop,
               resolve: {

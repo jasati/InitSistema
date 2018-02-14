@@ -73,7 +73,7 @@
           <md-list class="md-dense" flex>
             <md-subheader md-no-sticky>Atacado</md-subheader >
             <md-list-item class="md-3-line" ng-repeat="itemtab in $ctrl.funcoes.data.rows | filter:{tipo:'A'} track by $index">
-
+              <span ng-hide="true">{{$ctrl.precoErroAt=$ctrl.funcoes.valorBaixo(itemtab)}}</span>
               <div layout="row">
                 <md-input-container flex="40">
                   <label class="md-body-1">Tabela</label>
@@ -84,14 +84,11 @@
                   <label class="md-body-1">% Lucro</label>
                   <input type="number" name="perc_lucroA{{$index}}" min="0.00" ng-model="itemtab.perc_lucro" ng-change="$ctrl.funcoes.calcLucro(itemtab,'%',$ctrl.funcoes.data.rowParent.custo);$ctrl.funcoes.data.onChange(itemtab)">
                 </md-input-container>
-                <span ng-hide="true">
-                  {{$ctrl.precoErro = itemtab.valor<(($ctrl.funcoes.data.rowParent.custo*itemtab.perc_lucro/100)+$ctrl.funcoes.data.rowParent.custo).toFixed(2)}}
-                </span>
-                <md-input-container flex="30" ng-class="{'md-input-invalid':$ctrl.precoErro}">
+                <md-input-container flex="30" ng-class="{'md-input-invalid':$ctrl.precoErroAt}">
                   <label class="md-body-1">Preço</label>
                   <input type="number" name="valorA{{$index}}" min="0.00" ng-model="itemtab.valor" ng-change="$ctrl.funcoes.calcLucro(itemtab,'$',$ctrl.funcoes.data.rowParent.custo);$ctrl.funcoes.data.onChange(itemtab)">
                 </md-input-container>
-                <div layout="column" layout-align="start center" ng-show="$ctrl.precoErro">
+                <div layout="column" layout-align="start center" ng-show="$ctrl.precoErroAt">
                   <small style="font-size: 90%" class="md-body-1 text-muted">Sugerido</small>
                   <span style="font-size: 90%" class="text-info md-body-1">{{(($ctrl.funcoes.data.rowParent.custo*itemtab.perc_lucro/100)+$ctrl.funcoes.data.rowParent.custo).toFixed(2)}}</span>
                 </div>
@@ -106,6 +103,7 @@
           <md-list class="md-dense" flex>
             <md-subheader>Varejo</md-subheader>
             <md-list-item class="md-3-line"  ng-repeat="itemtab in $ctrl.funcoes.data.rows | filter:{tipo:'V'} track by $index">
+              <span ng-hide="true">{{$ctrl.precoErroVr=$ctrl.funcoes.valorBaixo(itemtab)}}</span>
               <div layout="row">
                 <md-input-container flex="40">
                   <label class="md-body-1">Tabela</label>
@@ -116,14 +114,12 @@
                   <label class="md-body-1">% Lucro</label>
                   <input type="number" name="perc_lucroV{{$index}}" min="0.00" ng-model="itemtab.perc_lucro" ng-change="$ctrl.funcoes.calcLucro(itemtab,'%',$ctrl.funcoes.data.rowParent.custo);$ctrl.funcoes.data.onChange(itemtab)">
                 </md-input-container>
-                <span ng-hide="true">
-                  {{$ctrl.precoErro = itemtab.valor<(($ctrl.funcoes.data.rowParent.custo*itemtab.perc_lucro/100)+$ctrl.funcoes.data.rowParent.custo).toFixed(2)}}
-                </span>
-                <md-input-container flex="30" ng-class="{'md-input-invalid':$ctrl.precoErro}">
+
+                <md-input-container flex="30" ng-class="{'md-input-invalid':$ctrl.precoErroVr}">
                   <label class="md-body-1">Preço</label>
                   <input type="number" name="valorV{{$index}}" min="0.00" ng-model="itemtab.valor" ng-change="$ctrl.funcoes.calcLucro(itemtab,'$',$ctrl.funcoes.data.rowParent.custo);$ctrl.funcoes.data.onChange(itemtab)">
                 </md-input-container>
-                <div layout="column" layout-align="start center" ng-show="$ctrl.precoErro">
+                <div layout="column" layout-align="start center" ng-show="$ctrl.precoErroVr">
                   <small style="font-size: 90%" class="md-body-1 text-muted">Sugerido</small>
                   <span style="font-size: 90%" class="text-info md-body-1">{{(($ctrl.funcoes.data.rowParent.custo*itemtab.perc_lucro/100)+$ctrl.funcoes.data.rowParent.custo).toFixed(2)}}</span>
                 </div>                
@@ -142,14 +138,14 @@
     <md-divider></md-divider>
     <md-card-actions layout="row" layout-align="start center">
       <span layout="column" layout-align="start center">
-        <md-button  class="md-grid-item-content md-primary" ng-show="$ctrl.precoErro" aria-label="atualizar preços" ng-click="$ctrl.funcoes.atualizarLucro()">
+        <md-button  class="md-grid-item-content md-primary" ng-show="$ctrl.precoErroVr||$ctrl.precoErroAt" aria-label="atualizar preços" ng-click="$ctrl.funcoes.atualizarLucro()">
           <md-icon>flash_on</md-icon>
           <span class="md-grid-text">Atualizar Preços</span>
           <md-tooltip md-autohide="true">Atualiza os preços conforme o percentual de lucro</md-tooltip>
         </md-button>
       </span>
       <span flex></span>
-      <md-button class="md-raised md-primary md-offset" ng-disabled="form.$invalid||$ctrl.precoErro" ng-click="$ctrl.ok();">Concluir</md-button>
+      <md-button class="md-raised md-primary md-offset" ng-disabled="form.$invalid||$ctrl.precoErroVr||$ctrl.precoErroAt" ng-click="$ctrl.ok();">Concluir</md-button>
 
   </md-card-actions>
   </md-card-footer>

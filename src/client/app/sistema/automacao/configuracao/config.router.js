@@ -23,7 +23,7 @@
                         nav    : 3,
                         icon   : 'settings',
                         content: 'Configurações',
-                        perm   :0
+                        perm   :7
                     },
                     resolve : {
                         funcoes: resolveConfig

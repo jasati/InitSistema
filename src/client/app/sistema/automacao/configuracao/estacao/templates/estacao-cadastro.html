@@ -1,0 +1,38 @@
+<div layout="column" flex>
+  <md-card>
+    <md-card-actions layout="row" flex>
+      <span class="md-title" layout-padding>{{$ctrl.estacao.data.label}} Estação</span>
+      <span flex></span>
+      <md-button class="md-icon-button md-offset" ui-sref="layout.pgconfig.estacoes" aria-label="close">
+          <md-icon>close</md-icon>
+          <md-tooltip>Cancelar</md-tooltip>
+      </md-button>
+    </md-card-actions>
+    <md-divider></md-divider>
+    <md-card-content layout-margin>
+      <form name="form" novalidate autocomplete="off">
+        <md-input-container class="md-block">
+          <label class="md-body-2">Descrição da estação</label>
+          <input type="text" required  name="descricao" ng-model="$ctrl.estacao.data.row.descricao" >
+          <div ng-messages="form.descricao.$error">
+            <div ng-message="required">Informe a descrição da estação de PDV.</div>
+          </div>
+        </md-input-container>
+
+        <md-radio-group flex name="status" ng-model="$ctrl.estacao.data.row.status" class="md-block">
+          <label class="md-body-2">Status da estação</label>
+          <div layout="row">
+            <md-radio-button value="1" class="md-caption">Ativo</md-radio-button>
+            <md-radio-button value="0" class="md-caption">Inativo</md-radio-button>
+          </div>
+          <md-tooltip>Para deixar de exibir a estação, marque como inativo.</md-tooltip>
+        </md-radio-group>        
+
+      </form>
+    </md-card-content>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center" layout-margin>
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.estacao.data.salvar()">Salvar</md-button>
+    </md-card-actions>
+  </md-card>
+</div>

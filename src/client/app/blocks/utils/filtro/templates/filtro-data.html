@@ -1,0 +1,25 @@
+<div layout="row" flex>
+	<md-select ng-model="$ctrl.filtros.filtroData.idperiodo" ng-hide="$ctrl.filtros.filtroData.idperiodo==7" ng-change="" style="margin: 0;">
+  		<md-option ng-value="p.id" ng-repeat="p in $ctrl.filtros.filtroData.periodoDef" ng-blur="$ctrl.filtros.filtroData.onChangePeriodo(p.id)">{{p.desc}}</md-option>
+  		<md-tooltip>Exibindo dados do período</md-tooltip>
+	</md-select>
+	{{$ctrl.filtros.filtroData.dtini}}
+	<div layout="row" ng-hide="$ctrl.filtros.filtroData.idperiodo!=7">
+      	<md-input-container flex style="margin: 0;">
+        	<label class="md-body-1">Filtrar registros de :</label>
+        	<input type="date" name="dtini" ng-model="$ctrl.filtros.filtroData.dtini">
+      	</md-input-container>
+      	<md-input-container flex style="margin: 0;">
+        	<label class="md-body-1">Até</label>
+        	<input type="date" name="dtfim" ng-model="$ctrl.filtros.filtroData.dtfim">
+      	</md-input-container>
+		<button class="md-icon-button md-button" type="button" ng-click="$ctrl.filtros.functionRead()" aria-label="Filtro">
+			<md-tooltip>Confirmar data</md-tooltip>
+			<md-icon>check</md-icon>
+		</button>
+      	<button class="md-icon-button md-button" type="button" ng-click="$ctrl.filtros.filtroData.setDataDefault()" aria-label="Filtro">
+        	<md-tooltip>Volta data padrão</md-tooltip>
+        	<md-icon>check</md-icon>
+      	</button>      	
+	</div>
+</div>

@@ -1,0 +1,28 @@
+<md-toolbar class="md-table-toolbar md-accent">
+  <div class="md-toolbar-tools">
+    <md-icon>desktop_windows</md-icon>
+    <span>Estações de Trabalho</span>
+    <span flex></span>
+    <md-button class="md-icon-button" ui-sref="layout" aria-label="close">
+        <md-icon>close</md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content layout="row" layout-wrap>
+	<md-card  ng-repeat="e in $ctrl.funcoes.pdv.data.rows">
+		<md-card-title>
+			<md-card-title-text>
+				<md-card-title-media>
+					<md-icon>desktop_windows</md-icon>
+				</md-card-title-media>
+				<span class="md-headline">{{e.descricao}}</span>
+				<span class="md-subhead">Small</span>
+			</md-card-title-text>
+
+		</md-card-title>
+		<md-card-actions layout="row" layout-align="end center">
+			<md-button>Action 1</md-button>
+			<md-button>Action 2</md-button>
+		</md-card-actions>
+	</md-card>
+</md-content>

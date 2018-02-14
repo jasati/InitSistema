@@ -1,0 +1,16 @@
+<md-table-container ng-show="$ctrl.funcoes.data.rows.length > 0" class="atura-table">
+   <table md-table class="table table-condensed">
+    <thead md-head md-order="$ctrl.funcoes.data.orderBy">
+      <tr>
+        <th style="width: 30% !important" md-column md-order-by="meio_pag">Meio de Pagamento</th>
+        <th style="width: 10% !important" md-column md-order-by="valor">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="striped" md-select="row" md-select-id="id_recebimento" ng-repeat="row in $ctrl.funcoes.data.rows | orderBy: $ctrl.funcoes.data.orderBy track by $index">
+        <td md-cell>{{row.meio_pag}}</td>
+        <td md-cell class="text-right">{{row.valor | currency:''}}</td>
+      </tr>
+    </tbody>
+  </table> 
+</md-table-container>

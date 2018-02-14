@@ -6,13 +6,13 @@
         .service('MovFuncService', MovFuncService);
 
     MovFuncService.$inject = [
-      'UtilsFunctions','MovDataSet','AutomacaoDataset','UtilsDataFunctionService','FiltroService','PessoaFuncService','ClienteFuncService','TabPrazosFuncService','MovItensFuncService',
+      'UtilsFunctions','MovDataSet','AutomacaoDataset','UtilsDataFunctionService','FiltroService','PessoaFuncService','ClienteFuncService','TabPrazosFuncService','MovItensFuncService','VendedorFuncService',
       '$state','$mdDialog','$filter'
     ];
 
     /* @ngInject */
     function MovFuncService(
-      UtilsFunctions,MovDataSet,AutomacaoDataset,UtilsDataFunctionService,FiltroService,PessoaFuncService,ClienteFuncService,TabPrazosFuncService,MovItensFuncService,
+      UtilsFunctions,MovDataSet,AutomacaoDataset,UtilsDataFunctionService,FiltroService,PessoaFuncService,ClienteFuncService,TabPrazosFuncService,MovItensFuncService,VendedorFuncService,
       $state,$mdDialog,$filter
     ) {
         this.funcoes = funcoes;
@@ -33,9 +33,10 @@
           vm.pessoa_dest = new PessoaFuncService.funcoes();
           vm.clientes = new ClienteFuncService.funcoes();
           vm.tabelas = new TabPrazosFuncService.funcoes();
+          vm.vendedor = new VendedorFuncService.funcoes();
 
           vm.divider = 'botton';
-          vm.data.title = 'Movimentações';
+          vm.tabview = 0;//dados movimento
 
           vm.activate = function () {
             var toobarPrm = {
@@ -51,7 +52,8 @@
             vm.data.setToolbar(toobarPrm);
             vm.data.setTable({alterar:vm.alterar});
             vm.data.setPagination();
-            vm.data.filtros.functionRead();//chama a consulta
+            vm.data.filtros.setFiltroData(vm.data.filtroData);
+            vm.data.filtros.functionRead();
           }
 
           vm.filtrar = function () {
@@ -59,7 +61,9 @@
             if (isset(vm.data.filtros.mainField)) {
               query += " and pessoa_mov_nome_comp LIKE '"+vm.data.filtros.mainField+"%'";
             }
-            vm.data.read(query,true);//limitar os registro
+            return vm.data.read(query,true).then(function (result) {
+              return result.reg;
+            });
           }
 
           vm.filtroAutoComplete = function (prm,tipo) {
@@ -114,6 +118,17 @@
             }
           }
 
+          vm.changeAutoCompleteVend = function (rowEdit,rowSelect) {
+            if (isset(rowSelect)) {
+              if (isset(rowSelect.id_vendedor)) {
+                rowEdit.id_vendedor       = rowSelect.id_vendedor;
+                rowEdit.vendedor_nome_red = rowSelect.nome_red;
+              }
+            } else {
+              rowEdit.id_vendedor       = null;
+              rowEdit.vendedor_nome_red = null;
+            }
+          }
 
           vm.startMovimento = function () {
             if (vm.data.actionRow == 'create') {
@@ -142,7 +157,12 @@
                 vm.data.row.id_tp = vm.data.empresa.config_id_tp_padrao;
                 vm.data.row.child.clearItemSel();
                 if (isset(id_consumidor_padrao)) {
-                  vm.data.row.child.selectItem(undefined);
+                  if (isset(vm.data.row.id_vendedor)) {
+                    vm.tabview = 1;//tab itens
+                    vm.data.row.child.selectItem(undefined);
+                  } else {
+                    document.getElementById('vendedor').focus();
+                  }
                 } else {
                   document.getElementById('p_dest_nome_comp').focus();
                 }
@@ -163,17 +183,18 @@
 
           vm.novo = function () {
             var row = {
-              id_mov         : 0,
-              id_vendedor    : 1,
-              status         : 'A',
-              desc_status    : 'ABERTO',
-              data_emissao   : new Date(),
-              desc_tipo_mov  : vm.tipoMov.data.row.descricao,
-              tipo_mov       : vm.tipoMov.data.row.tipo,
-              total          : 0,
-              total_desc     : 0,
-              total_acres    : 0,
-            }
+              id_mov            : 0,
+              id_vendedor       : vm.data.userLogado.id_vendedor,
+              vendedor_nome_red : vm.data.userLogado.vendedor,
+              status            : 'A',
+              desc_status       : 'ABERTO',
+              data_emissao      : new Date(),
+              desc_tipo_mov     : vm.tipoMov.data.row.descricao,
+              tipo_mov          : vm.tipoMov.data.row.tipo,
+              total             : 0,
+              total_desc        : 0,
+              total_acres       : 0,
+            };
             vm.data.setForengKey(1,0);//id filial posicao 0
             vm.data.setForengKey(vm.tipoMov.data.row.id_tipo_mov,1);
             vm.data.novo(row,'layout.tipomov.movs.mov');

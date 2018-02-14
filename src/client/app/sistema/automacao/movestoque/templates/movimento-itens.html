@@ -1,41 +1,46 @@
 <div layout="column">
-    <md-card-action layout="row" layout-align="start center">
-        <form class="animacao" autocomplete="off" novalidate flex ng-show="$ctrl.funcoes.data.filtros.showField" layout="row">
-          <md-progress-circular ng-show="$ctrl.funcoes.data.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
-          <md-icon ng-hide="$ctrl.funcoes.data.filtros.digitando">search</md-icon>
-            <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
-            <input id="filtro" ng-model="$ctrl.funcoes.data.filtros.mainField"  ng-change="$ctrl.funcoes.data.filtros.onChange()" placeholder="{{$ctrl.funcoes.data.filtros.placeholder}}">
-        </form>
-        <span class="md-title" layout-padding ng-class="{'md-subhead':$ctrl.funcoes.data.mediaxs()}" ng-show="!$ctrl.funcoes.data.filtros.showField">{{$ctrl.tipomov.data.row.descricao}}</span>
+  <md-card-action layout="row" layout-align="start center">
+      <form class="animacao" autocomplete="off" novalidate flex ng-show="$ctrl.funcoes.data.filtros.showField" layout="row">
+        <md-progress-circular ng-show="$ctrl.funcoes.data.filtros.digitando" class="md-hue-2" md-diameter="20"></md-progress-circular>
+        <md-icon ng-hide="$ctrl.funcoes.data.filtros.digitando">search</md-icon>
+          <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
+          <input id="filtro" ng-model="$ctrl.funcoes.data.filtros.mainField"  ng-change="$ctrl.funcoes.data.filtros.onChange()" placeholder="{{$ctrl.funcoes.data.filtros.placeholder}}">
+      </form>
 
-        <div flex></div>
-        <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.data.filtros.onClick()" aria-label="Filtro" ng-show="!$ctrl.funcoes.data.filtros.showField">
-          <md-icon ng-hide="$ctrl.funcoes.data.filtros.digitando">search</md-icon>
-        </button>
-        <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.data.filtros.showField" ng-click="$ctrl.funcoes.data.filtros.onClick()" aria-label="close">
-          <md-tooltip>Remover filtro</md-tooltip>
-          <md-icon>close</md-icon>
-        </button>
-        <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.data.filtros.setConfigFiltro()" aria-label="Filtro">
-          <md-tooltip>filtro Avançado</md-tooltip>
-          <md-icon>filter_list</md-icon>
-        </button>
-        <button class="md-icon-button md-button" type="button" ng-click="$ctrl.funcoes.report()" aria-label="print">
-          <md-tooltip>Imprimir</md-tooltip>
-          <md-icon>print</md-icon>
-        </button>
-    </md-card-action>
-    <filtro filtros="$ctrl.funcoes.data.filtros"></filtro>
-    <div ng-if="$ctrl.funcoes.data.rows.length === 0" layout-margin layout-align=" center center"  class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.data.reading,'alert-info':$ctrl.funcoes.data.reading}" role="alert">
-      <div ng-if="$ctrl.funcoes.data.reading" layout="row">
-        <md-progress-circular ng-disabled="!$ctrl.funcoes.data.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
-        <p>Buscando registros de itens movimentados...</p>
+      <div layout-gt-xs="row" layout-xs="column" ng-show="!$ctrl.movs.data.filtros.showField" layout-align="start center">
+        <span class="md-title" layout-padding ng-class="{'md-caption':$ctrl.movs.data.mediaxs()}" ng-show="!$ctrl.funcoes.data.filtros.showField">Itens movimentados {{$ctrl.tipomov.data.row.descricao}}</span>
+        <filtro-data filtros="$ctrl.funcoes.data.filtros"></filtro-data>
       </div>
-      <div ng-if="!$ctrl.funcoes.data.reading" align="center">
-        <p>Sem itens movimentados no período.</p>
-      </div>
+
+      <div flex></div>
+      <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.data.filtros.onClick()" aria-label="Filtro" ng-show="!$ctrl.funcoes.data.filtros.showField">
+        <md-icon ng-hide="$ctrl.funcoes.data.filtros.digitando">search</md-icon>
+      </button>
+      <button class="md-icon-button md-button animacao" type="button" ng-show="$ctrl.funcoes.data.filtros.showField" ng-click="$ctrl.funcoes.data.filtros.onClick()" aria-label="close">
+        <md-tooltip>Remover filtro</md-tooltip>
+        <md-icon>close</md-icon>
+      </button>
+      <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.data.filtros.setConfigFiltro()" aria-label="Filtro">
+        <md-tooltip>filtro Avançado</md-tooltip>
+        <md-icon>filter_list</md-icon>
+      </button>
+      <button class="md-icon-button md-button" type="button" ng-click="$ctrl.funcoes.report()" aria-label="print">
+        <md-tooltip>Imprimir</md-tooltip>
+        <md-icon>print</md-icon>
+      </button>
+  </md-card-action>
+  <filtro filtros="$ctrl.funcoes.data.filtros"></filtro>
+  <div ng-if="$ctrl.funcoes.data.rows.length === 0" layout-margin layout-align=" center center" flex class="alert" ng-class="{'alert-warning':!$ctrl.funcoes.data.reading,'alert-info':$ctrl.funcoes.data.reading}" role="alert">
+    <div ng-if="$ctrl.funcoes.data.reading" layout="row">
+      <md-progress-circular ng-disabled="!$ctrl.funcoes.data.reading" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+      <p>Buscando registros de itens movimentados...</p>
     </div>
-  <div layout-gt-xs="row" flex>
+    <div ng-if="!$ctrl.funcoes.data.reading" align="center">
+      <p>Sem itens movimentados no período.</p>
+    </div>
+  </div>
+  <!-- view desktop > 600px -->
+  <div layout-gt-xs="row" flex hide-xs>
     <div layout="column" flex="grow">
       <j-pagination funcoes="$ctrl.funcoes.data.funcPag"></j-pagination>
       <div ng-switch on="$ctrl.tipomov.data.row.tipo" class="atura-table">
@@ -77,8 +82,8 @@
                   <th style="width: 45% !important" md-column md-order-by="descricao">Descricao</th>
                   <th style="width: 12% !important" md-column md-order-by="marca">Marca</th>
                   <th style="width: 5% !important" md-column md-order-by="sigla">UNI.</th>
-                  <th style="width: 10% !important" md-column md-order-by="valor">Valor</th>
-                  <th style="width: 10% !important" md-column md-order-by="desconto">Desconto</th>
+                  <th style="width: 10% !important" md-column md-order-by="valor">Valor Médio</th>
+                  <th style="width: 10% !important" md-column md-order-by="desconto">Descontos</th>
                   <th style="width: 15% !important" md-column md-order-by="total">Sub Total</th>
                 </tr>
               </thead>
@@ -104,5 +109,37 @@
           </span>
         </div>            
     </div>
+  </div>
+  <!-- view mobile < 600px -->
+  <div layout="column" flex hide-gt-xs >
+    <md-virtual-repeat-container id="j-virtual-repeat">
+      <md-list class="md-dense" flex >
+        <md-list-item class="md-2-line" md-virtual-repeat="row in $ctrl.funcoes.data.loadVirtualRepeat" md-on-demand="true">
+          <div layout="column" class="md-list-item-text">
+            <div layout="row">
+              <h3 class=""><span class="text-danger">{{row.qt | currency :'' }}</span> - <md-truncate>{{row.descricao}}</md-truncate></h3>
+            </div>
+            <div layout="row" flex>
+              <p flex>{{row.marca}} </p>
+              <p flex>{{row.sigla}} </p>
+              <p flex><small class="text-muted">preço :</small>{{row.valor | currency:''}} </p>
+              <p flex><small class="text-muted">desc.:</small>{{row.desconto | currency:''}} </p>
+            </div>
+            <h4><small class="text-muted">total :</small> {{row.subtotal | currency}} </h4>
+
+          </div>
+          <md-divider></md-divider>
+        </md-list-item>
+      </md-list>
+    </md-virtual-repeat-container>
+    <div layout="row" layout-padding layout-align="start center">
+      <span>{{$ctrl.funcoes.data.rows.length}} de {{$ctrl.funcoes.data.pagination.total}} <small class="text-muted">Registros</small></span>
+      <div class="md-offset">
+        <span class="md-subtitle">Total da Listado : </span>
+        <span class="md-subtitle text-info">
+          <b>{{$ctrl.funcoes.soma($ctrl.funcoes.data.rows,'','subtotal')|currency}}</b>
+        </span>
+      </div>
+    </div>    
   </div>
 </div>

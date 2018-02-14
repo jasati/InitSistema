@@ -18,6 +18,7 @@
               config: {
                   url:'/perfil',
                   component:'perfil',
+                  title:'Perfils',
                   resolve : {
                       funcoes: resolvePerfil
                   }
@@ -27,12 +28,13 @@
               state: 'layout.ctrlAcesso.perfils.permissoes',
               config: {
                   url:'/permissoes',
-                  component:'permissoes',
-                  // resolve : {
-                  //     funcoes: function (funcoes) {
-                  //         return funcoes
-                  //     }
-                  // }
+                  //component:'permissoes',
+                  title:'Permissões do Perfil',
+                   views:{
+                      '^.^.^.$default':{
+                        component:'permissoes',
+                      }
+                   },
               }
             }
         ];

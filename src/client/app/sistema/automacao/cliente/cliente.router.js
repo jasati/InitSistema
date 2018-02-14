@@ -22,7 +22,7 @@
                         nav    : 1,
                         icon   : 'account_box',
                         content: 'Clientes',
-                        perm   :0
+                        perm   : 1
                     },
                     resolve : {
                         funcoes: resolveCliente

@@ -1,0 +1,36 @@
+<md-content layout="column" id="movcad">
+	<md-tabs  class="md-accent" md-selected="$ctrl.movimento.tabview" flex md-dynamic-height>
+	    <md-tab label=""  md-on-select="" md-on-deselect="">
+	        <md-tab-label>
+	            <span>Dados {{$ctrl.movimento.data.row.desc_tipo_mov}}</span>
+	        </md-tab-label>
+	        <md-tab-body>
+			    <div ng-include="'app/sistema/automacao/movestoque/templates/movimento.html'" ></div>
+	        </md-tab-body>
+	    </md-tab>
+	    <md-tab label=""  md-on-select="" md-on-deselect="">
+	        <md-tab-label>
+	            <span>Itens</span>
+
+	        </md-tab-label>
+	        <md-tab-body>
+				<itens-saida ng-if="$ctrl.movimento.data.row.tipo_mov != 'E'" funcoes="$ctrl.movimento.data.row.child"></itens-saida>
+
+				<itens-entrada ng-if="$ctrl.movimento.data.row.tipo_mov == 'E'" funcoes="$ctrl.movimento.data.row.child"></itens-entrada>
+	        </md-tab-body>
+	    </md-tab>
+	</md-tabs>
+	<md-divider></md-divider>
+	<md-card-action layout="row" layout-align-gt-xs="end center" layout-align-xs="center center">
+		<md-button class="md-raised md-warn" ng-class="{'flex':$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.child.data.rows.length>0 && $ctrl.movimento.data.row.status == 'F'" ng-click="$ctrl.movimento.cancelarMov($event)" >
+			Cancelar {{$ctrl.movimento.data.row.desc_tipo_mov}}
+			<md-tooltip md-autohide="true">Conluir a movimentação</md-tooltip>
+		</md-button>
+
+		<md-button class="md-raised md-accent" ng-class="{'flex':$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.child.data.rows.length>0 && $ctrl.movimento.data.row.status == 'A'" ng-click="$ctrl.movimento.finalizarMov($event)" ng-disabled="$ctrl.movimento.data.row.tipo_mov=='E'&&!$ctrl.movimento.data.row.numero">
+			Fechar {{$ctrl.movimento.data.row.desc_tipo_mov}}
+			<md-tooltip md-autohide="true">Conluir a movimentação</md-tooltip>
+		</md-button>
+	</md-card-action>
+</md-content>
+<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>

@@ -1,0 +1,76 @@
+<div layout="column">
+  <md-toolbar class="md-table-toolbar">
+    <div class="md-toolbar-tools">
+      <md-icon>attach_money</md-icon>
+      <span> Recebimento de valores</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content layout="column" layout-padding>
+    <div layout="row" layout-align="center center">
+      <span class="md-title text-danger">{{$ctrl.funcoes.totalRec | currency}}</span>
+    </div>
+
+    <form name="form" novalidate autocomplete="off" >
+      <md-autocomplete
+        ng-keypress="$ctrl.funcoes.onEnter($event,'valor',true)"
+        required
+        id="meiopag"
+        name="meiopag"
+        md-autofocus="true"
+        md-no-cache="true"
+        md-search-text="$ctrl.searchMeioPag"
+        md-selected-item="$ctrl.funcoes.data.row.meio_pag"
+        md-items="row in $ctrl.funcoes.meiopag.filtroAutoComplete($ctrl.searchMeioPag)"
+        md-selected-item-change="$ctrl.funcoes.changeAutoCompleteMeioPag($ctrl.funcoes.data.row,row)"
+        md-item-text="row.descricao"
+        md-min-length="0"
+        md-menu-class="autocomplete-custom-template"
+        md-dropdown-items="10"
+        md-delay="500"
+        md-floating-label="Meio de Pagamento">
+      <md-item-template >
+        <div layout="column">
+          <div layout="row">
+            <div flex class="li-table-auto">
+              <span >{{row.descricao}}</span>
+            </div>
+          </div>
+        </div>
+      </md-item-template>
+      <md-not-found>
+        O Meio de Pagamento"{{$ctrl.searchMeioPag}}" não foi encontrado.
+      </md-not-found>
+        <div ng-messages="form.meiopag.$error">
+          <div ng-message="required">Informe o Item.</div>
+        </div>
+      </md-autocomplete>
+
+        <div class="form-group" ng-init="$ctrl.funcoes.data.row.valor=$ctrl.funcoes.totalRec">
+          <input required type="number" class="form-control input-lg" id="valor" min="0.01" name="valor" ng-model="$ctrl.funcoes.data.row.valor" placeholder="Valor" ng-keypress="$ctrl.funcoes.onEnter($event,'doc',true)">
+        </div>
+
+        <div class="form-group" >
+          <input type="text" class="form-control input-lg" id="doc" name="doc" ng-model="$ctrl.funcoes.data.row.n_doc" placeholder="Nº Documento" ng-keypress="$ctrl.funcoes.onEnter($event,'obs',true)">
+        </div>
+
+        <div class="form-group" >
+          <label class="md-caption">Observações:</label>
+          <textarea row="3" class="form-control" id="obs" ng-model="$ctrl.funcoes.data.row.obs" ng-keypress="$ctrl.funcoes.onEnter($event,'btn-confirm',false)"></textarea>
+        </div>
+
+    </form>
+
+  </md-content>
+  <md-card-footer>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" id="btn-confirm" ng-click="$ctrl.ok($ctrl.funcoes.data.row);">Confirmar</md-button>
+
+  </md-card-actions>
+  </md-card-footer>  
+</div>
+<div ng-init="$ctrl.funcoes.startFoco()"></div>

@@ -10,6 +10,7 @@
       'UtilsDataFunctionService',
       'PerfilFuncService',
       'EmpresaFuncService',
+      'VendedorFuncService',
       'config'
     ];
     /* @ngInject */
@@ -20,6 +21,7 @@
       UtilsDataFunctionService,
       PerfilFuncService,
       EmpresaFuncService,
+      VendedorFuncService,
       config
     ) {
       this.funcoes = funcoes;
@@ -40,6 +42,7 @@
         func.title = 'Cadastro de usuários';
     		func.logando = false;
         func.userLogado = dataSetProvider.provider.getSessaoUsuario();
+        func.vendedor = new VendedorFuncService.funcoes();
         func.alterarSenha = {
           senhaInvalida : false,
           oldSenha : '',
@@ -59,6 +62,18 @@
 
     		}
 
+        func.changeAutoCompleteVend = function (rowEdit,rowSelect) {
+          if (isset(rowSelect)) {
+            if (isset(rowSelect.nome_red)) {
+              rowEdit.vendedor = rowSelect.nome_red;
+              rowEdit.id_vendedor = rowSelect.id_vendedor;
+            }
+          } else {
+            rowEdit.vendedor = '';
+            rowEdit.id_vendedor = null;
+          }
+        }
+
     		func.activate = function() {
 	            var promises = [func.setFieldsQry()];
 	            $q.all(promises);
@@ -70,7 +85,7 @@
     			if (isset(func.fieldsQry.id_usuario)) {
     				query += " and u.id_usuario = "+func.fieldsQry.id_usuario;
     			} else {
-    				query += " and email = '"+func.fieldsQry.email+"' and senha = '"+func.fieldsQry.senha+"'";
+    				query += " and u.email = '"+func.fieldsQry.email+"' and u.senha = '"+func.fieldsQry.senha+"'";
     			}
           //seta o valor 1 para possibilitar fazer o login em qualquer empresa, so dependendo do email e senha
           dataSetProvider.provider.setValor(dts,'id_index_main','1');
@@ -91,13 +106,15 @@
                 return resMod;
               });
             }
-    				if (isset(resp.reg.length)) {//verifica se tem registros
+    				if (!isset(resp.status)) {//verifica se ocorreu algum erro, caso apresente a variavel status
                 if (resp.reg.length > 0) {
         					var usuario = resp.reg[0];
                   func.empresa.data.read(' and e.id_empresa = '+usuario.id_empresa).then(function (result) {
                     var empresa = result.reg[0];
                     if (empresa.status == 1) {//verifica se a empresa esta ativa
             					if (usuario.status == 1) {//verifica se o usuario esta ativo
+                        ///consulta filial do usuario
+                        empresa.filial = {id_filial:1};
                         var sessao = {
                           usuario:usuario,
                           empresa:empresa,
@@ -129,6 +146,7 @@
                     }
                 }
     				} else {
+              logger.warning('Ocorreu uma falha no login. Motivo : '+resp.msg);
     					if ($state.current.name !== 'login'){
     						$state.go('login');
     					}
@@ -190,7 +208,7 @@
 
         function enviarSenhaEmail(user) {
             var msg =
-                "<h1>Bem vindo ao Ecc WebApp <small>Sistema on-line para gerenciamento de ECC</small></h1>"+
+                "<h1>Bem vindo ao WebApp Comercio <small>Sistema on-line para gerenciamento de Comercio Atacado e Varejo</small></h1>"+
                 "<h3>Abaixo esta os dados para acesso ao sistema</h3>"+
                 "<p><b>Link para acessar o sistema : </b><a href='"+config.urlSistema+"'>Click Aqui</a></p>"+
                 "<p><b>Login : </b>"+user.email+"</p>"+
@@ -198,9 +216,9 @@
 
             var email = {
                 email:user.email,
-                assunto:'Acesso ao Ecc WebApp',
+                assunto:'Acesso ao WebApp Comercio',
                 mensagem:msg,
-                head_from:'appecc@pibdecoite.com.br',
+                head_from:'appcomercio@jasati.com.br',
             }
             return func.dados.enviarEmail(email).then(function (res) {
                 return res;

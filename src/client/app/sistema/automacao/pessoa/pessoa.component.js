@@ -9,6 +9,7 @@
             templateUrl: 'app/sistema/automacao/pessoa/templates/pessoa-cad.html',
             bindings: {
                 funcoes: '<',
+                hidetipo: '=',
             }
           }
           return component;

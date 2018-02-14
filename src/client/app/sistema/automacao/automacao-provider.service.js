@@ -25,6 +25,8 @@
 	          api             : ApiService,
   	          provider        : Provider,
 	          empresa         : emp,
+	          user            : Provider.getSessaoUsuario(),
+	          filtroData      : Provider.getFiltroData(),
 	          campos          : '',//campos da consulta sql
 	          inner_join      : inner_join,
 	          left_join       : left_join,
@@ -44,6 +46,7 @@
 	          valueForeignKey : [emp.id_empresa],//será preenchido quando dentro da classe que chamar essa função
 	          campoImagem     : '',//campo que leva o path de uma imagem a ser carregado
 	          tableCols       : [],//sao os campos de colunas na tabela
+	          campoDataQry    : ''//campo que sera filtrado por data
 	        };
 	        return dataSet;
         }

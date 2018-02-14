@@ -1,0 +1,51 @@
+<md-toolbar class="md-table-toolbar md-accent">
+  <div class="md-toolbar-tools">
+    <md-icon>desktop_windows</md-icon>
+    <span>Estações de PDV</span>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+        <md-icon>close</md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<form name="form" novalidate autocomplete="off" >  
+  <md-autocomplete
+    required
+    id="autocomplete"
+    md-autofocus="true"
+    md-no-cache="true"
+    md-search-text="$ctrl.search"
+    md-selected-item="$ctrl.funcoes.data.row"
+    md-items="row in $ctrl.funcoes.filtroAutoComplete($ctrl.search)"
+    md-selected-item-change="row?$ctrl.ok(row):null"
+    md-item-text="row.descricao"
+    md-min-length="0"
+    md-menu-class="autocomplete-custom-template"
+    md-dropdown-items="10"
+    md-delay="500"
+    md-top-index="$ctrl.index"
+    placeholder="Selecione um ponto de venda e tecle enter para confirmar.">
+  <md-item-template >
+    <div layout="column">
+      <div layout="row">
+        <div flex="10" class="li-table-auto">
+          <span class="text-warning">{{$ctrl.index}}</span>
+        </div>
+        <div flex class="li-table-auto">
+          <span ><b>{{row.descricao}}</b></span>
+        </div>
+      </div>
+    </div>
+  </md-item-template>
+  <md-not-found>
+    A estação "{{$ctrl.search}}" não foi encontrado.
+  </md-not-found>
+    <div ng-messages="form.descricao.$error">
+      <div ng-message="required">Informe o Item.</div>
+    </div>
+  </md-autocomplete>
+</form>
+<div ng-init="$ctrl.funcoes.startFoco()">
+</div>
+
+

@@ -1,0 +1,84 @@
+<div id="cabecario" >
+	<div layout="row" md-whiteframe="4" flex style="min-height: 17vh" md-colors="{background: 'indigo'}" layout-align="{{$ctrl.funcoes.itens.item.row?'space-between center':'center center'}}" layout-padding>
+		<div ng-if="!$ctrl.funcoes.itens.item.row" layout="row">
+			<span class="md-display-3"><b>Consulta</b></span>
+		</div>
+		<div ng-if="$ctrl.funcoes.itens.item.row" layout="row" layout-align="space-between center" flex>
+			<md-list-item>
+				<p class="md-display-3"><b>{{$ctrl.funcoes.itens.item.row.descricao}}</b></p>
+				<p class="md-display-3 md-secondary"><b>{{$ctrl.funcoes.itens.item.row.sigla}}</b></p>
+			</md-list-item>
+		</div>
+	</div>
+</div>
+<div id="pdv-livre" layout="column" flex >
+	<div layout="row" flex class="visao">
+		<div layout="column" flex="40" style="min-height: 75vh" md-colors="{background: 'indigo-700'}">
+			<div layout-padding flex>
+				<div layout="row">
+					<input type="text" ng-model="$ctrl.funcoes.itens.item.filtros.mainField" class="form-control input-lg" id="cod-barras" placeholder="CODIGO DE BARRAS" ng-keypress="$ctrl.funcoes.onKeyEnter($event,'consultaItem')" ng-keydown="$ctrl.funcoes.onKeydown($event)">
+				</div>
+				<md-divider></md-divider>
+				<div layout="row" layout-padding>
+					<span class="md-caption">
+						{{$ctrl.funcoes.itens.item.row.detalhes}}
+					</span>
+				</div>
+			</div>
+			<div flex layout="column" layout-padding>
+				<div flex layout="row">
+					<span></span>
+				</div>
+				<div flex layout="column" layout-align="end none">
+					<md-list class="md-dense" flex >
+						<md-list-item class="md-2-line" ng-show="$ctrl.funcoes.pdv.data.row">
+							<img ng-src="{{$ctrl.funcoes.pdv.data.pathImg}}{{$ctrl.funcoes.pdv.data.userLogado.foto?$ctrl.funcoes.pdv.data.userLogado.foto:'noImg.jpg'}}" class="md-avatar" alt="{{$ctrl.funcoes.pdv.data.userLogado.nome}}" />
+							<div layout="column" class="md-list-item-text">
+							    <div layout="row" layout-align="space-between end">
+							      <h3 class="md-caption"><b>Operador : </b> {{$ctrl.funcoes.pdv.data.row.child.data.row.operador}}</h3>
+							      <h3><b>Filial : </b> {{$ctrl.funcoes.pdv.data.row.child.data.row.filial}}</h3>
+							    </div>
+
+							    <div layout="row" layout-align="space-between end">
+							      <h4><b class="md-caption">Abertura :</b>{{$ctrl.funcoes.pdv.data.row.child.data.row.data_ini | date:'dd/MM/yyyy HH:mm'}}</h4>
+							      <h4 ng-show="$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'"><b class="md-caption">Fechamento :</b>{{$ctrl.funcoes.pdv.data.row.child.data.row.data_fim | date:'dd/MM/yyyy HH:mm'}}</h4>
+							    </div>
+							</div>
+						</md-list-item>
+					</md-list>
+				</div>
+			</div>
+		</div>
+		<div layout="column"  flex="60"  style="min-height: 75vh" md-colors="{background: 'indigo-700'}">
+			<div layout-padding layout="column" flex layout-align="center center">
+				<!-- <md-icon style="font-size: 5rem">search</md-icon> -->
+				<img src="images/search.png" class="img-responsive">
+			</div>
+			<div layout="row" flex="20" layout-padding  ng-show="$ctrl.funcoes.itens.item.row" layout-align="space-between start">
+				<span class="md-subhead">
+					Preço: 
+				</span>
+				<span class="md-display-3"><b>{{$ctrl.funcoes.itens.item.row.valor | currency}}</b></span>
+			</div>			
+		</div>
+	</div>
+</div>
+
+<div id="pdv-rodape" >
+	<div layout="row" flex layout-align="space-between none" style="min-height: 8vh" md-colors="{background: 'grey'}">
+		<div id="btn-controles">
+		    <div  flex layout="row" layout-align="center center">
+	          	<md-button ng-click="$ctrl.funcoes.setModosPdv(0)">
+		            <span class="md-caption">F2-Voltar</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.sair()">
+		            <span class="md-caption">F10-Sair</span>
+	          	</md-button>
+		    </div>
+		</div>
+		<div id="logo" layout="row" layout-align="space-between center" layout-margin>
+			<img alt="{{$ctrl.funcoes.altImg}}" src="images/jasati_logo.png" height="20">
+			<span class="md-subhead"></span>
+		</div>
+	</div>
+</div>

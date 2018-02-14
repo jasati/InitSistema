@@ -1,0 +1,44 @@
+
+<md-content layout="column" layout-padding>
+    <md-card-actions layout-gt-xs="row" layout-xs="column" flex layout-align-gt-xs="start center" layout-align-xs="center start">
+        <span class="md-title" flex>{{$ctrl.funcoes.data.label}} Vendedor</span>
+        <span flex></span>
+        <md-button class="md-icon-button" ui-sref="layout.vendedores" aria-label="close">
+            <md-icon>close</md-icon>
+        </md-button>
+    </md-card-actions>
+
+    <md-divider></md-divider>
+
+    <md-card-content class="atura-content">
+
+      <form name="form" novalidate autocomplete="off">
+        <div layout-xs="column" layout-gt-xs="row" flex>
+
+          <pessoa funcoes="$ctrl.funcoes.pessoaFunc" hidetipo="true">
+          </pessoa>
+
+
+        </div>
+        <div layout="row">
+          <md-radio-group name="status" required ng-model="$ctrl.funcoes.data.row.status" class="md-block">
+            <label class="md-body-2">Status do vendedor</label>
+            <div layout="row">
+              <md-radio-button value="1" class="md-caption">Ativo</md-radio-button>
+              <md-radio-button value="0" class="md-caption">Inativo</md-radio-button>
+            </div>
+          </md-radio-group>
+        </div>
+
+      </form>
+
+    </md-card-content>
+
+    <md-card-footer>
+      <md-divider></md-divider>
+      <md-card-actions layout="row" layout-align="end center">
+        <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.salvar();">Salvar</md-button>
+
+        </md-card-actions>
+    </md-card-footer>
+</md-content>

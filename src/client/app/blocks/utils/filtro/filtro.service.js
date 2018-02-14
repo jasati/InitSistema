@@ -10,6 +10,82 @@
     /* @ngInject */
     function FiltroService(UtilsFunctions) {
         this.funcoes = funcoes ;
+        this.funcData = funcData;
+
+        function funcData() {
+          var vm = this;
+          var isset = UtilsFunctions.isset;
+          vm.filtroData = {
+            dtIni:null,
+            dtFim:null,
+            idperiodo:'',
+            functionRead :null,
+            periodoDef: [
+              {id:0,desc:'Hoje'},
+              {id:1,desc:'Ontem'},
+              {id:2,desc:'Útimos 7 Dias'},
+              {id:3,desc:'Mês Atual'},
+              {id:4,desc:'Útimos 30 Dias'},
+              {id:5,desc:'Útimos 60 Dias'},
+              {id:6,desc:'Útimos 90 Dias'},
+              {id:7,desc:'Predefinir período'}
+            ],
+            onChangePeriodo : function (id) {
+              var dtI = new Date();
+              var dtF = new Date();
+              vm.filtroData.idperiodo = id;
+              switch (id){
+                case 0:
+                  vm.filtroData.dtIni = dtI;
+                  vm.filtroData.dtFim = dtF;
+                  break;
+                case 1:
+                  dtI.setDate(dtI.getDate()-1);
+                  dtF.setDate(dtF.getDate()-1);
+                  vm.filtroData.dtIni = dtI;
+                  vm.filtroData.dtFim = dtF;
+                  break;
+                case 2:
+                  dtI.setDate(dtI.getDate()-7);
+                  vm.filtroData.dtIni = dtI;
+                  vm.filtroData.dtFim = dtF;
+                  break;
+                case 3:
+                  dtI.setDate(1);;
+                  vm.filtroData.dtIni = dtI;
+                  vm.filtroData.dtFim = dtF;
+                  break;
+                case 4:
+                  dtI.setDate(dtI.getDate()-30);
+                  vm.filtroData.dtIni = dtI;
+                  vm.filtroData.dtFim = dtF;
+                  break;
+                case 5:
+                  dtI.setDate(dtI.getDate()-60);
+                  vm.filtroData.dtIni = dtI;
+                  vm.filtroData.dtFim = dtF;
+                  break;
+                case 6:
+                  dtI.setDate(dtI.getDate()-90);
+                  vm.filtroData.dtIni = dtI;
+                  vm.filtroData.dtFim = dtF;
+                  break;
+                default:
+                  vm.filtroData.dtIni = dtI;
+                  vm.filtroData.dtFim = dtF;
+                  break;
+              }
+              if (isset(vm.filtroData.functionRead)) {
+                vm.filtroData.functionRead();
+              }
+            },
+            setDataDefault : function () {
+              vm.filtroData.onChangePeriodo(3);
+            }
+          };
+          //aplicar quando instanciado
+          vm.filtroData.onChangePeriodo(3);
+        }
 
         function funcoes () {
           var vm = this;
@@ -27,6 +103,7 @@
               functionDinamic:{},//funçao que faz a pesquisa em autocomplete
               fieldDinamic:'',//campo que liga ao text de pesquisa do autocomplete
               filtro:{},
+              filtroData : {},
               onClick:function(){//gatilho que seta a var showField e faz o procedimento para exibir o campo
                   vm.filtros.showField = !vm.filtros.showField;
                   if (vm.filtros.showField) {
@@ -99,7 +176,13 @@
 
               onChangeDinamic:function (row) {
                 vm.filtros.filtro.value = row[vm.filtros.filtro.typeValues];
-              }
+              },
+
+              setFiltroData : function (fd) {
+                vm.filtros.filtroData = fd.filtroData;
+                vm.filtros.filtroData.functionRead = vm.filtros.functionRead;
+              },
+
           };
         }
     }

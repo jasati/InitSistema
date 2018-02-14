@@ -168,6 +168,28 @@
             });
           }
 
+         vm.selectClientes = function (element) {
+            var config = {
+              templateUrl: 'app/sistema/automacao/cliente/templates/cliente-select.html',
+              size:'',
+              data:vm,
+              backdrop:true,
+              fullscreen:false,
+              modal:{},
+            };
+            return vm.cliente.showModal(config,element).then(function (result) {
+              return result;
+            });
+          }          
+
+          vm.startFoco = function () {
+            // função para iniciar o foco do autocomplete na template select
+            var focus = function () {
+              document.getElementById('autocomplete').focus();
+            }
+            setTimeout(focus,500);
+          }          
+
         }
     }
 })();

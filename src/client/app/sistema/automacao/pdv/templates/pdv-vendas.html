@@ -1,0 +1,156 @@
+<div id="cabecario" >
+	<div layout="row" md-whiteframe="4" flex style="min-height: 17vh " md-colors="{background: 'indigo'}" layout-align="{{$ctrl.funcoes.tipomov.data.row.child.data.row?'space-between center':'center center'}}">
+		<div ng-if="!$ctrl.funcoes.tipomov.data.row.child.data.row" layout="row">
+			<span class="md-display-3"><b>{{$ctrl.funcoes.pdv.data.row.child.data.row.status=='A'?'Caixa Livre':'Caixa Fechado'}}</b></span>
+		</div>
+		<div ng-if="$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.row" layout="row" layout-align="space-between center" flex>
+			<md-list-item>
+				<p class="md-display-3"><b>{{$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.row.descricao}}</b></p>
+				<p class="md-display-3 md-secondary"><b>{{$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.row.sigla}}</b></p>
+			</md-list-item>
+		</div>
+	</div>
+</div>
+<div id="pdv-livre" layout="column" flex >
+	<div layout="row" flex class="visao">
+		<div layout="column" flex="40" style="min-height: 75vh" md-colors="{background: 'indigo-700'}">
+			<div layout-padding flex>
+				<div layout="row">
+					<input type="text" ng-model="$ctrl.funcoes.itens.item.filtros.mainField" class="form-control input-lg" id="cod-barras" placeholder="CODIGO DE BARRAS" ng-keypress="$ctrl.funcoes.onKeyEnter($event,'informaItem')" ng-keydown="$ctrl.funcoes.onKeydown($event)">
+				</div>
+				<div  layout="row" layout-align="space-between center">
+					<div class="form-group" flex="30">
+						<input type="number" min="0.01" class="form-control input-lg" id="qt" ng-model="$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.row.qt" ng-keypress="$ctrl.funcoes.onKeyEnter($event,'novoItem',$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.row)" placeholder="QTDE.">
+					</div>
+					<div class="form-group" flex="65" >
+						<input type="text" class="form-control input-lg" id="preco" disabled="true" ng-model="$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.row.valor" placeholder="VALOR">
+					</div>
+				</div>
+				<md-divider></md-divider>
+				<div layout="row" layout-align="space-between start">
+					<span class="md-caption">
+						Valor Total do Item :
+					</span>
+					<span class="md-display-2">{{$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.row.qt*$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.row.valor|currency}}</span>
+				</div>
+			</div>
+			<div flex layout="column" layout-padding>
+				<div flex layout="row">
+					<span></span>
+				</div>
+				<div flex layout="column" layout-align="end none">
+					<md-list class="md-dense" flex >
+						<md-list-item class="md-2-line" ng-show="$ctrl.funcoes.pdv.data.row">
+							<img ng-src="{{$ctrl.funcoes.pdv.data.pathImg}}{{$ctrl.funcoes.pdv.data.userLogado.foto?$ctrl.funcoes.pdv.data.userLogado.foto:'noImg.jpg'}}" class="md-avatar" alt="{{$ctrl.funcoes.pdv.data.userLogado.nome}}" />
+							<div layout="column" class="md-list-item-text">
+							    <div layout="row" layout-align="space-between end">
+							      <h3 class="md-caption"><b>Operador : </b> {{$ctrl.funcoes.pdv.data.row.child.data.row.operador}}</h3>
+							      <h3><b>Filial : </b> {{$ctrl.funcoes.pdv.data.row.child.data.row.filial}}</h3>
+							    </div>
+
+							    <div layout="row" layout-align="space-between end">
+							      <h4><b class="md-caption">Abertura :</b>{{$ctrl.funcoes.pdv.data.row.child.data.row.data_ini | date:'dd/MM/yyyy HH:mm'}}</h4>
+							      <h4 ng-show="$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'"><b class="md-caption">Fechamento :</b>{{$ctrl.funcoes.pdv.data.row.child.data.row.data_fim | date:'dd/MM/yyyy HH:mm'}}</h4>
+							    </div>
+							</div>
+						</md-list-item>
+					</md-list>
+				</div>
+			</div>
+		</div>
+		<div layout="column"  flex="60"  style="min-height: 75vh" md-colors="{background: 'indigo-700'}">
+			<div layout-padding layout="column" flex layout-align="center center" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row">
+				<!-- <md-icon style="font-size: 5rem">search</md-icon> -->
+				<img ng-show="$ctrl.funcoes.pdv.data.row.child.data.row.status=='A'" src="images/ok.png" class="img-responsive">
+				<img ng-show="$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'" src="images/close.png" class="" width="50%">
+			</div>
+			<div layout-padding layout="column" flex ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row">
+				<div class="pdv-cupom" layout="column" flex md-colors="{background: 'grey-A100'}">
+					<div layout="row"  layout-align="space-between start" style="border-bottom: 1px dashed black">
+						<p class="md-caption"><b>Cliente : </b>{{$ctrl.funcoes.tipomov.data.row.child.data.row.p_dest_nome_red}}</p>
+						<p class="md-caption">{{$ctrl.funcoes.tipomov.data.row.child.data.row.data_mov | date:'dd/MM/yyyy HH:mm'}}</p>
+					</div>
+					<div layout="row" layout-align="center start" >
+						<p class="md-caption"><b>ITENS DA VENDA</b></p>
+					</div>
+				    <md-table-container class="conteudo-table">
+				       <table md-table class="table table-condensed">
+				        <thead md-head>
+				          <tr>
+				            <th style="width: 3% !important" md-column md-order-by="qt">
+				            Qtde.</th>
+				            <th style="width: 45% !important" md-column md-order-by="descricao">Descricao</th>
+				            <th style="width: 12% !important" md-column md-order-by="marca">Marca</th>
+				            <th style="width: 5% !important" md-column md-order-by="sigla">UNI.</th>
+				            <th style="width: 10% !important" md-column md-order-by="valor">Valor</th>
+				            <th style="width: 10% !important" md-column md-order-by="desconto">Desconto</th>
+				            <th style="width: 15% !important" md-column md-order-by="total">Sub Total</th>
+				          </tr>
+				        </thead>
+				        <tbody>
+				          <tr class="striped" md-select="row" md-select-id="id_item_mov" ng-repeat="row in $ctrl.funcoes.tipomov.data.row.child.data.row.child.data.rows track by $index" ">
+				            <td md-cell>{{row.qt | currency :'' }}</td>
+				            <td md-cell>{{row.descricao}}</td>
+				            <td md-cell>{{row.marca}}</td>
+				            <td md-cell>{{row.sigla}}</td>
+				            <td md-cell class="text-right">{{row.valor | currency:''}}</td>
+				            <td md-cell class="text-right">{{row.desconto | currency:''}}</td>
+				            <td md-cell class="text-right"><b>{{(row.qt*row.valor)-row.desconto | currency:''}}</b></td>
+				          </tr>
+				        </tbody>
+				      </table>
+				    </md-table-container>
+
+				</div>
+				<div layout="row" flex="20" md-whiteframe="3" md-colors="{background: 'indigo-600'}" layout-align="space-between start">
+					<span class="md-subhead">
+						Total Venda: 
+					</span>
+					<span class="md-display-3"><b>{{$ctrl.funcoes.soma($ctrl.funcoes.tipomov.data.row.child.data.row.child.data.rows,'qt','valor')-$ctrl.funcoes.soma($ctrl.funcoes.tipomov.data.row.child.data.row.child.data.rows,'','desconto') | currency}}</b></span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<div id="pdv-rodape" >
+	<div layout="row" flex layout-align="space-between none" style="min-height: 8vh" md-colors="{background: 'grey'}">
+		<div id="btn-controles">
+		    <div  flex layout="row" layout-align="center center" ng-show="$ctrl.funcoes.pdv.data.row">
+	          	<md-button ng-click="$ctrl.funcoes.abreVenda()" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
+		            <span class="md-caption">INS - Abrir Venda</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.abreVenda()" ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
+		            <span class="md-caption">INS - Abrir Caixa</span>
+	          	</md-button>	          	
+	          	<md-button ng-click="$ctrl.funcoes.setModosPdv(1)">
+		            <span class="md-caption">F2 - Consultar</span>
+	          	</md-button>
+<!-- 	          	<md-button ng-click="$ctrl.funcoes.onKeydown($event)" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
+		            <span class="md-caption">F3 - Vender Pedido</span>
+	          	</md-button> -->
+	          	<md-button ng-click="$ctrl.funcoes.cancelaVenda($event)" ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row">
+		            <span class="md-caption">DEL - Cancelar</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.fechaCaixa()" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
+		            <span class="md-caption">F4 - Fechar Caixa</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.fechaVenda()" ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row&&$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.rows.length>0">
+		            <span class="md-caption">F7 - Fechar Venda</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.informaCliente()" ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row">
+		            <span class="md-caption">F9 - Cliente</span>
+	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.sair()" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row" id="sair" ngsf-toggle-fullscreen>
+	          		<md-icon>exit_to_app</md-icon>
+		            <span class="md-caption"> Sair</span>
+	          	</md-button>
+		    </div>
+		</div>
+		<div id="logo" layout="row" layout-align="space-between center" layout-margin>
+			<img alt="{{$ctrl.funcoes.altImg}}" src="images/jasati_logo.png" height="20">
+			<span class="md-subhead"></span>
+		</div>
+	</div>
+</div>
+

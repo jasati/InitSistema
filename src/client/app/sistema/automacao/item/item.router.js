@@ -23,7 +23,7 @@
                         nav    : 2,
                         icon   : 'view_module',
                         content: 'Itens',
-                        perm   :0
+                        perm   : 4
                     },
                     resolve : {
                         funcoes: resolveItem
@@ -81,20 +81,11 @@
             }
         ];
     }
-    resolveItem.$inject = ['ItemFuncService','FiltroService','layoute','$transitions','$state'];
+    resolveItem.$inject = ['ItemFuncService','layoute','$transitions','$state'];
 
-    function resolveItem(ItemFuncService,FiltroService,layoute,$transitions,$state) {
+    function resolveItem(ItemFuncService,layoute,$transitions,$state) {
       var funcoes = new ItemFuncService.funcoes();
-      //configurar filtros
-      var funcFiltros = new FiltroService.funcoes();
-      funcFiltros.filtros.fields = funcoes.item.camposFiltro;//setar os campos de consulta
-      funcFiltros.filtros.fildsQuery = funcoes.item.filtroDefault;//setar o filtro default
-      funcFiltros.filtros.functionDinamic = funcoes.catDataFunc.filtroAutoComplete;//função que aciona o auto complete do filtro      
-      funcFiltros.filtros.functionRead = funcoes.filtrar;//setar a função de gatilho para consulta
-      funcoes.item.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
-      funcoes.filtrarTabela();
-      funcoes.item.filtros.functionRead();//chama a consulta
-      funcoes.filtrarUnidade();
+      funcoes.activate();
       funcoes.layoute = layoute;
       $transitions.onSuccess({}, function(transition) {
         layoute.setPath($state.getCurrentPath());

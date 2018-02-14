@@ -1,0 +1,56 @@
+<div layout="column">
+  <md-toolbar class="md-table-toolbar">
+    <div class="md-toolbar-tools">
+      <md-icon>money_off</md-icon>
+      <span> Aplicar Desconto</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+          <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content layout="column" layout-padding>
+        <div layout="row" flex layout-padding layout-align="space-between start" >
+          <span class="md-subhead">
+            SubTotal :
+          </span>
+          <span class="md-display-2"><b>{{$ctrl.funcoes.totalizacao.subTotal() | currency}}</b></span>
+        </div>
+
+        <md-divider></md-divider>
+
+        <div layout="row" flex layout-padding layout-align="space-between start" >
+          <span class="md-subhead">
+            Desconto:
+          </span>
+          <div layout="column" layout-padding flex>
+            <div class="input-group input-group-lg">
+              <span class="input-group-addon" id="sizing-addon1">%</span>
+              <input type="number" class="form-control input-lg" id="desc_perc" ng-model="$ctrl.funcoes.totalizacao.desc_perc" ng-change="$ctrl.funcoes.totalizacao.calcDesconto('%')" placeholder="Desconto em %" ng-keypress="$ctrl.funcoes.onEnter($event,'desc_real',true)">
+            </div>
+
+            <div class="input-group input-group-lg">
+              <span class="input-group-addon" id="sizing-addon1">R$</span>
+              <input type="number" class="form-control input-lg" id="desc_real" ng-model="$ctrl.funcoes.totalizacao.desc_real" ng-change="$ctrl.funcoes.totalizacao.calcDesconto('$')" placeholder="Desconto em R$" ng-keypress="$ctrl.funcoes.onEnter($event,'btn-confirm',false)">
+            </div>
+          </div>
+        </div>
+
+        <md-divider></md-divider>
+
+        <div layout="row" flex layout-padding layout-align="space-between start" >
+          <span class="md-subhead">
+            Total :
+          </span>
+          <span class="md-display-2 text-danger"><b>{{ $ctrl.funcoes.totalizacao.subTotal()-$ctrl.funcoes.totalizacao.desc_real  | currency}}</b></span>
+        </div>
+
+  </md-content>
+  <md-card-footer>
+  <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised md-primary" ng-disabled="form.$invalid" id="btn-confirm" ng-click="$ctrl.ok();">Aplicar</md-button>
+    </md-card-actions>
+  </md-card-footer>  
+</div>
+<div ng-init="$ctrl.funcoes.setFocusDesc()"></div>

@@ -6,13 +6,13 @@
         .service('ItemFuncService', ItemFuncService);
 
     ItemFuncService.$inject = [
-      'UtilsFunctions','ItemDataSet','UtilsDataFunctionService','CategoriaFuncService','FornFuncService','ItemTabPrecoFuncService','TabPrazosFuncService',
+      'UtilsFunctions','ItemDataSet','UtilsDataFunctionService','CategoriaFuncService','FornFuncService','ItemTabPrecoFuncService','TabPrazosFuncService','FiltroService',
       '$state','$mdDialog','$filter','logger','AutomacaoDataset'
     ];
 
     /* @ngInject */
     function ItemFuncService(
-      UtilsFunctions,ItemDataSet,UtilsDataFunctionService,CategoriaFuncService,FornFuncService,ItemTabPrecoFuncService,TabPrazosFuncService,
+      UtilsFunctions,ItemDataSet,UtilsDataFunctionService,CategoriaFuncService,FornFuncService,ItemTabPrecoFuncService,TabPrazosFuncService,FiltroService,
       $state,$mdDialog,$filter,logger,AutomacaoDataset
     ) {
         this.funcoes = funcoes;
@@ -37,8 +37,20 @@
             abaixo_saldo_max:false,
           };
 
+          vm.activate = function () {
+            var funcFiltros = new FiltroService.funcoes();
+            funcFiltros.filtros.fields = vm.item.camposFiltro;//setar os campos de consulta
+            funcFiltros.filtros.fildsQuery = vm.item.filtroDefault;//setar o filtro default
+            funcFiltros.filtros.functionDinamic = vm.catDataFunc.filtroAutoComplete;//função que aciona o auto complete do filtro      
+            funcFiltros.filtros.functionRead = vm.filtrar;//setar a função de gatilho para consulta
+            vm.item.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
+            vm.item.setPagination();
+            vm.filtrarTabela();
+            vm.filtrarUnidade();
+            vm.item.filtros.functionRead();//chama a consulta
+          }
 
-          vm.filtrar = function () {
+          vm.filtrar = function (mult) {
             var query = '';
             if (isset(vm.tabela)) {
               query += ' and tp.id_tp = '+vm.tabela;
@@ -46,8 +58,11 @@
             } else {
               dataSetProvider.modCamposTab(false);
             }
-            if (isset(vm.item.filtros.mainField)) {
+            if (isset(vm.item.filtros.mainField)&& !mult) {
               query += " and i.descricao LIKE '"+vm.item.filtros.mainField+"%'";
+            }
+            if (isset(vm.item.filtros.mainField)&& mult) {
+              query += " and CONCAT(i.descricao,i.codigo,i.marca,i.ref) LIKE '%"+vm.item.filtros.mainField+"%'";
             }
             if (vm.filtroEstoque.abaixo_saldo_min) {
               query += " and i.saldo <= i.saldo_min ";
@@ -167,11 +182,16 @@
           }
 
          vm.selectItem = function ($event,element) {
+            if (! isset(vm.item.filtros.onChange)) {//caso seja chamado em outra instancia
+              vm.activate();
+            }
+            //voltar os indices para 0
+            vm.item.resetRowIndex();
             var config = {
               templateUrl: 'app/sistema/automacao/item/templates/item-select.html',
               size:'lg',
               data:vm,
-              backdrop:true,
+              backdrop:'static',
               fullscreen:false,
               modal:{},
             };
@@ -183,7 +203,8 @@
           vm.startFoco = function () {
             // função para iniciar o foco do autocomplete na template item-select
             var focus = function () {
-              document.getElementById('autocompleteItem').focus();
+              document.getElementById('filtro').focus();
+              document.getElementById('filtro').select();
             }
             setTimeout(focus,500);
           }

@@ -47,9 +47,33 @@
             },
 
             {
-              state: 'layout.tipomov.mov.movitens',
+              state: 'layout.tipomov.movs.movimentacoes',
               config: {
-                  component:'itemEstoque',
+                  url:'/movimentos',
+                  title:'Movimentos',
+                  component:'movimentacoes',
+                  // views:{
+                  //   '^.^.^.$default':{
+                  //     component:'movimentacoes',
+                  //   }
+                  // },
+              }
+            },
+
+            {
+              state: 'layout.tipomov.movs.itens',
+              config: {
+                  url:'/itens',
+                  title:'Itens das movimentacões',
+                  component:'movItens',
+                  // views:{
+                  //   '^.^.^.$default':{
+                  //     component:'movimentacoes',
+                  //   }
+                  // },
+                  resolve : {
+                      funcoes : resolveItensMovs
+                  }
               }
             }
         ];
@@ -62,6 +86,7 @@
       //fazer o filtro para exibir somente as movs do tipoMov selecionado
       movs.data.filtroExterno = ' and em.id_tipo_mov = '+movs.tipoMov.data.row.id_tipo_mov;
       movs.movDataItens.data.filtroExterno = ' and em.id_tipo_mov = '+movs.tipoMov.data.row.id_tipo_mov;
+      movs.data.setTitle(movs.tipoMov.data.row.descricao);
       movs.activate();
       return movs;
     }
@@ -70,5 +95,11 @@
     function resolveMovimento(MovFuncService,$transition$,movs) {
       movs.startMovimento();
       return movs;
-    }    
+    }
+
+    resolveItensMovs.$inject = ['movs'];
+    function resolveItensMovs(movs) {
+      movs.movDataItens.activate();
+      return movs.movDataItens;
+    }
 })();

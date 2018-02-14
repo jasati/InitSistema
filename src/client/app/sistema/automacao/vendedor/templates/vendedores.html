@@ -1,0 +1,11 @@
+
+<div layout="column" flex>
+	<j-toolbar funcoes="$ctrl.funcoes.data.funcToolbar"></j-toolbar>
+	<filtro	filtros="$ctrl.funcoes.data.filtros"></filtro>
+	<div layout-gt-xs="row" flex>
+		<div layout="column" flex="grow">
+			<j-pagination funcoes="$ctrl.funcoes.data.funcPag"></j-pagination>
+			<j-table funcoes="$ctrl.funcoes.data.funcTable"></j-table>
+		</div>
+	</div>
+</div>

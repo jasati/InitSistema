@@ -17,10 +17,19 @@
 
     <md-divider></md-divider>
     <div layout="row" layout-align="end center">
-        <md-button class="md-raised md-accent"  ng-click="$ctrl.ok(true)">
-          Concluir
-        </md-button>
+        <div show-if-fullscreen="false">
+          <md-button class="md-raised md-accent" id="ok" ng-click="$ctrl.ok(true)" ngsf-toggle-fullscreen>
+            Concluir
+          </md-button>
+        </div>
+        <div show-if-fullscreen>
+          <md-button class="md-raised md-accent" id="ok" ng-click="$ctrl.ok(true)">
+            Concluir
+          </md-button>
+        </div>
+
     </div>
 
   </md-card-content>
+  {{document.getElementById('ok').focus();}}
 </div>

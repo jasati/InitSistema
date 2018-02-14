@@ -1,7 +1,7 @@
 
-<md-toolbar class="md-default md-hue-3"  md-whiteframe="4" md-scroll-shrink ng-if="true">
+<md-toolbar class="md-table-toolbar md-default" flex>
     <div class="md-toolbar-tools">
-        <md-nav-bar md-selected-nav-item="'usuario'" md-truncate>
+        <md-nav-bar  md-truncate>
             <md-nav-item md-nav-sref="layout.ctrlAcesso.usuarios" name="usuario" md-truncate>
                 Usuários
             </md-nav-item>
@@ -11,7 +11,7 @@
         </md-nav-bar>
     </div>
 </md-toolbar>
-
+<md-divider></md-divider>
 <md-content flex>
     <ui-view></ui-view>
 </md-content>

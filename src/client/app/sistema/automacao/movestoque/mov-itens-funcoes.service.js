@@ -7,13 +7,13 @@
 
     MovItensFuncService.$inject = [
       'UtilsFunctions','MovDataSet','UtilsDataFunctionService','FiltroService','ItemFuncService','ItemTabPrecoFuncService',
-      '$state','$mdDialog','$filter'
+      '$state','$mdDialog','$filter','logger'
     ];
 
     /* @ngInject */
     function MovItensFuncService(
       UtilsFunctions,MovDataSet,UtilsDataFunctionService,FiltroService,ItemFuncService,ItemTabPrecoFuncService,
-      $state,$mdDialog,$filter
+      $state,$mdDialog,$filter,logger
     ) {
         this.funcoes = funcoes;
 
@@ -39,6 +39,7 @@
             funcFiltros.filtros.functionRead = vm.filtrar;//setar a função de gatilho para consulta
             vm.data.filtros = funcFiltros.filtros;//injeta as funçoes de filtro na classe
             vm.data.setPagination();
+            vm.data.filtros.setFiltroData(vm.data.filtroData);
             vm.data.filtros.functionRead();//chama a consulta
           }
 
@@ -65,13 +66,14 @@
             });
           }
 
-          vm.selectItem = function ($event) {
+          vm.showItemSelect = function ($event) {
             if (vm.data.rowParent.status != 'F') {
               vm.showDadosPessoa = false;
               if (isset(vm.data.rowParent.id_tp)) {
                 vm.itens.tabela = vm.data.rowParent.id_tp;
               }
-              vm.itens.selectItem($event).then(function (result) {
+              if (!vm.itens.item.row) {
+              vm.itens.selectItem($event,'#movcad').then(function (result) {
                 if (result) {
                   var newItem = UtilsFunctions.copiarObjecto(vm.itens.item.row)
                   //filtrar item para evitar dulplicidade
@@ -94,11 +96,13 @@
                     }
                     vm.data.row.qt = 1;
                     vm.data.row.desconto = 0;
+                    vm.data.row.desc_perc = 0;
                     setTimeout(vm.startFoco, 500);
                     vm.itens.filtrarUnidade();
                   }
                 }
               });
+              }
             }
 
           }
@@ -109,7 +113,7 @@
                 vm.data.adicionar(vm.data.row);
               }
               vm.cancelarItem();
-              vm.selectItem();
+              vm.showItemSelect();
             }
           }
 
@@ -123,12 +127,22 @@
           }
 
           vm.alterarItemMov = function (row,index) {
-            vm.data.alterar(row);
-            vm.data.setIndex(index);
-            if (vm.data.rowParent.tipo_mov == 'E') {
-              vm.data.setNewChilder(ItemTabPrecoFuncService,vm.data.row,true);
+            if (!vm.bloquearAlteracao()) {
+              vm.data.alterar(row);
+              vm.data.rowIndex = index;
+              if (vm.data.rowParent.tipo_mov == 'E') {
+                vm.data.setNewChilder(ItemTabPrecoFuncService,vm.data.row,true);
+              }
+              setTimeout(vm.startFoco, 500);
+            } else {
+              var situacao = '';
+              if (vm.data.rowParent.status=='F') {
+                situacao = "Fechada.";
+              } else {
+                situacao = "Cancelada."
+              }
+              logger.warning('Movimentação não pode ser alterada, porque ela está '+situacao);
             }
-            setTimeout(vm.startFoco, 500);
           }
 
           vm.showTabela = function (row) {
@@ -139,6 +153,17 @@
             
           }
 
+          vm.bloquearAlteracao = function () {
+            if (vm.data.rowParent.tipo_mov == "S" || vm.data.rowParent.tipo_mov == "E") {
+              if (vm.data.rowParent.status == "F" || vm.data.rowParent.status == "C") {
+                return true;
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          }
           vm.cancelarItem = function () {
             vm.itens.item.row = null;
             vm.data.row = null
@@ -250,7 +275,7 @@
             tpl=tpl+"</div>";
             tpl=tpl+"<div class='col-xs-6'>";
             tpl=tpl+"<p><b>CPF/CNPJ </b>: "+master.p_dest_cfp_cnpj+"</p>";            
-            tpl=tpl+"<p><b>Contato .</b>: "+master.p_dest_tel1+"</p>";
+            tpl=tpl+"<p><b>Contato .</b>: "+master.p_dest_tel+"</p>";
             tpl=tpl+"<p><b>Numero . </b>: "+master.numero+"</p>";
             tpl=tpl+"<p><b>Data . . </b>: "+$filter('date')(master.data_emissao,'dd/MM/yyyy HH:mm')+"</p>";
             tpl=tpl+"</div>";

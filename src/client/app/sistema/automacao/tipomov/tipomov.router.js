@@ -23,7 +23,7 @@
                         nav    : 2,
                         icon   : 'swap_vertical_circle',
                         content: 'Movimento de Estoque',
-                        perm   : 0
+                        perm   : 6
                     },
                     resolve : {
                         tipoMov: resolveTipoMov

@@ -22,7 +22,7 @@
           var isset = UtilsFunctions.isset;
           var dataSetProvider = TipoMovDataSet.tipomov();
           vm.data = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
-          vm.data.title = 'Tipos de Movimentação';
+          vm.data.setTitle('Tipos de Movimentação');
           vm.tabela =0;
 
           vm.activate = function () {

@@ -1,0 +1,100 @@
+<div layout="column">
+  <md-toolbar class="md-table-toolbar">
+    <div class="md-toolbar-tools">
+      <md-icon>local_atm</md-icon>
+      <span> Caixa</span>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+  <md-content layout="column" layout-padding>
+
+
+    <div layout="row" layout-align="space-between center">
+      <div ng-switch on="$ctrl.funcoes.data.row.status">
+        <div ng-switch-when="A">
+          <span class="md-display-2" class="text-success">
+            {{$ctrl.funcoes.data.row.id_caixa?'Caixa Aberto':'Abrindo Caixa'}}
+          </span>
+        </div>
+        <div ng-switch-when="F">
+          <span class="md-display-2" class="text-danger">
+            Fechando Caixa
+          </span>
+        </div>
+      </div>
+      <span class="md-title">{{$ctrl.funcoes.data.row.estacao}}</span>
+    </div>
+
+    <div layout="row" layout-align="space-between center">
+      <span class="md-caption"><b>Operador : </b> {{$ctrl.funcoes.data.row.operador}}</span>
+      <span class="md-caption"><b>Filial : </b> {{$ctrl.funcoes.data.row.filial}}</span>
+    </div>
+
+    <div layout="row" layout-align="space-between start">
+      <span><b class="md-caption">Data Abertura :</b> <span class="md-body-1">{{$ctrl.funcoes.data.row.data_ini | date:'dd/MM/yyyy HH:mm'}}</span></span>
+      <span ng-show="$ctrl.funcoes.data.row.status=='F'"><b class="md-caption">Data Fechamento :</b> <span class="md-body-1">{{$ctrl.funcoes.data.row.data_fim | date:'dd/MM/yyyy HH:mm'}}</span></span>
+    </div>
+
+    <div layout="row" layout-align="space-between center" ng-hide="$ctrl.funcoes.data.row.id_caixa">
+      <span class="md-title">Suprimento de Caixa R$</span>
+      <div class="form-group" flex="65" >
+        <input  type="number" class="form-control input-lg" min="0.00" id="suprimento" ng-model="$ctrl.funcoes.data.row.suprimento" ng-keypress="$ctrl.funcoes.onEnter($event,'btn-confirm',false)">
+      </div>
+    </div>
+
+    <div layout="column" flex ng-show="$ctrl.funcoes.data.row.status=='F'" layout-padding>
+      <md-divider></md-divider>
+      <div layout="row" flex layout-align="space-between start">
+        <span class="md-caption">
+          Suprimento do Caixa : 
+        </span>
+        <span class="md-subhead"><b>{{$ctrl.funcoes.data.row.suprimento|currency}}</b></span>
+      </div>
+
+      <div layout="row" flex layout-align="space-between start">
+        <span class="md-caption">
+          Total Caixa : 
+        </span>
+        <span class="md-display-2"><b>{{$ctrl.funcoes.soma($ctrl.funcoes.data.row.child.data.rows,'','valor')|currency}}</b></span>
+      </div>
+
+      <div layout="row" flex>
+        <div layout="column" flex>
+          <md-tabs  class="md-accent" md-selected="$ctrl.funcoes.tabview" flex >
+              <md-tab  md-on-select="$ctrl.funcoes.data.row.child.setSumQry(true)">
+                  <md-tab-label>
+                      <span>Resulmo</span>
+                  </md-tab-label>
+                  <md-tab-body >
+                    <rec-cx-res funcoes="$ctrl.funcoes.data.row.child"></rec-cx-res>
+                  </md-tab-body>
+              </md-tab>
+              <md-tab  md-on-select="$ctrl.funcoes.data.row.child.setSumQry(false)">
+                  <md-tab-label>
+                      <span>Detalhes</span>
+                  </md-tab-label>
+                  <md-tab-body >
+                    <rec-cx-det funcoes="$ctrl.funcoes.data.row.child"></rec-cx-det>
+                  </md-tab-body>
+              </md-tab>
+          </md-tabs>
+        </div>
+      </div>
+
+
+    </div>
+
+  </md-content>
+  <md-card-footer>
+    <md-divider></md-divider>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-show="$ctrl.funcoes.data.row.status=='A'&&$ctrl.funcoes.data.row.id_caixa" class="md-raised md-warn" id="btn-fechar" ng-click="$ctrl.funcoes.fecharCaixa()">Fechar Caixa</md-button>
+      <md-button ng-show="$ctrl.funcoes.data.row.status=='F'&&$ctrl.funcoes.data.row.id_caixa" class="md-raised md-warn" id="btn-fechar" ng-click="$ctrl.funcoes.cancelarFechamento()">Cancelar Fechamento</md-button>
+
+      <md-button ng-show="$ctrl.funcoes.data.row.action" class="md-raised md-primary" ng-disabled="form.$invalid" id="btn-confirm" ng-click="$ctrl.funcoes.data.salvar()">Salvar</md-button>
+      <md-button ng-show="!$ctrl.funcoes.data.row.action" class="md-raised md-primary" ng-disabled="form.$invalid" id="btn-sair" ng-click="$ctrl.ok()">Concluir</md-button>      
+
+  </md-card-actions>
+  </md-card-footer>  
+</div>
+<div ng-init="$ctrl.funcoes.startFoco()"></div>

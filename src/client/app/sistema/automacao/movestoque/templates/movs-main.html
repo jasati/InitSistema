@@ -1,48 +1,46 @@
 <md-content>
-	<md-card>
+
 		<div layout="column" flex>
-	      	<md-toolbar class="md-table-toolbar md-default" >
-		        <div class="md-toolbar-tools">
-		            <md-button class="md-primary" ng-class="{'md-icon-button':$ctrl.movs.data.mediaxs()}"  ng-click="$ctrl.movs.novo()">
-		            	<md-icon>library_add</md-icon> 
-		            	<span hide-xs>{{$ctrl.movs.tipoMov.data.row.descricao}}</span>
-		            	<md-tooltip md-autohide="true">Nova {{$ctrl.movs.tipoMov.data.row.descricao}}</md-tooltip>
-		            </md-button>
-					<md-button class="md-warn" ng-class="{'md-icon-button':$ctrl.movs.data.mediaxs()}" ng-show="$ctrl.movs.tipoMov.data.row.tipo == 'S'" ng-click="$ctrl.movs.carregarPedidos()">
-						<md-icon>library_books</md-icon> 
-						<span hide-xs>Carregar Pedido</span> 
-						<md-tooltip md-autohide="true">Dar baixa no pedido</md-tooltip>
-					</md-button>
-		        </div>
-	      	</md-toolbar>
-			<div layout-gt-xs="row" flex>
-				<div layout="column" flex="grow">
-					<md-tabs class="md-accent" md-dynamic-height md-selected="selectedIndexInteger">
-				        <md-tab label=""  md-on-select="" md-on-deselect="">
-				            <md-tab-label>
-				                <span hide-xs>Movimentos</span>
+
+			<div layout="row" flex>
+			      <md-toolbar class="md-table-toolbar md-default">
+			        <div class="md-toolbar-tools">
+			          	<md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.movs.data.mediaxs()}"  ng-click="$ctrl.movs.novo()">
+			            <md-icon>add</md-icon> 
+			            	<md-tooltip md-autohide="true">Nova {{$ctrl.movs.tipoMov.data.row.descricao}}</md-tooltip>
+			          	</md-button>
+						<md-button ng-class="{'md-icon-button':$ctrl.movs.data.mediaxs()}" ng-show="$ctrl.movs.tipoMov.data.row.tipo == 'S'" ng-click="$ctrl.movs.carregarPedidos()">
+							<md-icon>reply</md-icon> 
+							<span hide-xs>Faturar Pedido</span> 
+							<md-tooltip md-autohide="true">Dar baixa no pedido</md-tooltip>
+						</md-button>
+						<div flex></div>
+						<md-nav-bar
+							md-no-ink-bar="disableInkBar"
+							md-selected-nav-item="0"
+							nav-bar-aria-label="navigation links"
+							flex>
+							<md-nav-item md-nav-sref="layout.tipomov.movs.movimentacoes" name="cadastros">
+				                <span hide-xs>Exibir Movimentações</span>
 				                <md-icon hide-gt-xs>
 				                	{{$ctrl.movs.tipoMov.data.row.tipo=='S'?'call_made':$ctrl.movs.tipoMov.data.row.tipo=='E'?'call_received':'vertical_align_center'}}
 				                </md-icon>
-				            </md-tab-label>
-				            <md-tab-body>
-							    <movimentacoes movs="$ctrl.movs"></movimentacoes>
-				            </md-tab-body>
-				        </md-tab>
-				        <md-tab label=""  md-on-select="$ctrl.movs.movDataItens.activate()" md-on-deselect="">
-				            <md-tab-label>
-				                <span hide-xs>Itens</span>
-				                <md-icon hide-gt-xs>
-				                	format_list_numbered
-				                </md-icon>
-				            </md-tab-label>
-				            <md-tab-body>
-				            	<mov-itens funcoes="$ctrl.movs.movDataItens" tipomov="$ctrl.movs.tipoMov"></mov-itens>
-				            </md-tab-body>
-				        </md-tab>
-					</md-tabs>
-				</div>
+							</md-nav-item>
+							<md-nav-item md-nav-sref="layout.tipomov.movs.itens" name="estoque">
+			                    <span hide-xs>Exibir Itens Movimentados</span>
+			                    <md-icon hide-gt-xs>
+			                      format_list_numbered
+			                    </md-icon>
+							</md-nav-item>
+						</md-nav-bar>			      						
+
+			        </div>
+			      </md-toolbar>
+
+			</div>
+			<md-divider></md-divider>
+			<div ui-view>
 			</div>
 		</div>
-	</md-card>
+
 </md-content>

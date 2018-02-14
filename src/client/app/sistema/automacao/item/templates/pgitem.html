@@ -24,16 +24,44 @@
         <md-icon>group_work</md-icon>
         <span hide-xs>Gerenciar Unidades</span>
       </md-nav-item>
-      <!-- these require actual routing with ui-router or ng-route, so they
-      won't work in the demo
-      <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
-      <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
-      You can also add options for the <code>ui-sref-opts</code> attribute.
-      <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
-        Page Six
-      </md-nav-item>
-      -->
     </md-nav-bar>
+<!--     <div layout="row" flex>
+          <md-toolbar class="md-table-toolbar md-default" flex>
+            <div class="md-toolbar-tools" flex>
+              <md-button class="md-accent md-fab" ng-class="{'md-mini':$ctrl.funcoes.item.mediaxs()}"  ng-click="$ctrl.movs.novo()">
+                <md-icon>add</md-icon> 
+                <md-tooltip md-autohide="true">Nova {{$ctrl.movs.tipoMov.data.row.descricao}}</md-tooltip>
+              </md-button>
+              <md-button class="md-primary" ng-class="{'md-icon-button':$ctrl.movs.data.mediaxs()}"  ng-click="$ctrl.movs.novo()">
+                <md-icon>library_add</md-icon> 
+                <span hide-xs>{{$ctrl.movs.tipoMov.data.row.descricao}}</span>
+                <md-tooltip md-autohide="true">Nova {{$ctrl.movs.tipoMov.data.row.descricao}}</md-tooltip>
+              </md-button>
+            </div>
+          </md-toolbar>
+
+          <md-tabs md-dynamic-height md-selected="0" flex>
+                <md-tab label=""  md-on-select="" md-on-deselect="">
+                    <md-tab-label>
+                        Movimentos
+                        <md-icon hide-gt-xs>
+                          call_made
+                        </md-icon>
+                    </md-tab-label>
+                </md-tab>
+                <md-tab label=""  md-on-select="" md-on-deselect="">
+                    <md-tab-label>
+                        <span >Itens</span>
+                        <md-icon hide-gt-xs>
+                          format_list_numbered
+                        </md-icon>
+                    </md-tab-label>
+
+                </md-tab>
+          </md-tabs>              
+    </div> -->
+
+
     <div ui-view></div>
   </md-card>
 <md-content>

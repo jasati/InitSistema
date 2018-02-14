@@ -41,7 +41,7 @@
 
         function movimento() {
           var component = {
-            templateUrl: 'app/sistema/automacao/movestoque/templates/movimento.html',
+            templateUrl: 'app/sistema/automacao/movestoque/templates/mov-cadastro.html',
             bindings: {
                 movimento: '<',
             }

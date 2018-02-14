@@ -6,13 +6,13 @@
         .service('PerfilFuncService', PerfilFuncService);
 
     PerfilFuncService.$inject = [
-      'UtilsFunctions','Dataset','UtilsDataFunctionService','FiltroService',
+      'UtilsFunctions','Dataset','UtilsDataFunctionService','FiltroService','ModulosFuncService',
       '$state','$mdDialog','$filter'
     ];
 
     /* @ngInject */
     function PerfilFuncService(
-      UtilsFunctions,Dataset,UtilsDataFunctionService,FiltroService,
+      UtilsFunctions,Dataset,UtilsDataFunctionService,FiltroService,ModulosFuncService,
       $state,$mdDialog,$filter
     ) {
         this.funcoes = funcoes;
@@ -25,7 +25,6 @@
           var datasetModulosGrupo = Dataset.modulosGrp();
           var datasetModulosSis = Dataset.modulosSis();
           vm.perfil = new UtilsDataFunctionService.dataFuncoes(dataSetProvider);
-          vm.modulos = new UtilsDataFunctionService.dataFuncoes(datasetModulosPerfil);
           vm.modulosGrp = new UtilsDataFunctionService.dataFuncoes(datasetModulosGrupo);
           vm.modulosSis = new UtilsDataFunctionService.dataFuncoes(datasetModulosSis);
           vm.title = 'Perfil de acesso';
@@ -40,17 +39,12 @@
           }
 
           vm.showModulos = function (row) {
-            var query = " and pm.id_perfil = "+row.id_perfil;
-            vm.modulos.read(query,false);//consulta e se tera o limit
+
+            vm.perfil.alterar(row,'layout.ctrlAcesso.perfils.permissoes');
             vm.modulosGrp.read('',false);
             vm.modulosSis.read('',false);
-            vm.perfil.alterar(row);
-            var state = {
-              child:true,
-              hide:true,
-              state:'layout.ctrlAcesso.perfils.permissoes',
-            }
-            vm.perfil.showState(state);
+
+            vm.perfil.setNewChilder(ModulosFuncService,row,true);
           }
 
           vm.novoPerfil = function(ev) {
@@ -108,7 +102,7 @@
           }
 
           vm.verificarModulos = function () {
-            var qtModulosPerfil = vm.modulos.rows.length;
+            var qtModulosPerfil = vm.perfil.row.child.data.rows.length;
             var qtModulosSis = vm.modulosSis.rows.length;
             if (qtModulosPerfil < qtModulosSis) {
               return true;
@@ -119,7 +113,7 @@
 
           vm.atualizarModulos = function () {
             for (var i = 0; i < vm.modulosSis.rows.length; i++) {
-              var data = $filter('filter')(vm.modulos.rows,{'id_modulo':vm.modulosSis.rows[i].id_modulo},true);
+              var data = $filter('filter')(vm.perfil.row.child.data.rows,{'id_modulo':vm.modulosSis.rows[i].id_modulo},true);
               if (data.length === 0) {
                 var row = {
                   id_modulo:vm.modulosSis.rows[i].id_modulo,
@@ -127,8 +121,7 @@
                   modulo   :vm.modulosSis.rows[i].nome,
                   id_mg    :vm.modulosSis.rows[i].id_mg,
                 };
-                // vm.modulos.novo(row);
-                vm.modulos.adicionar(row);
+                vm.perfil.row.child.data.adicionar(row);
               }
             }
           }

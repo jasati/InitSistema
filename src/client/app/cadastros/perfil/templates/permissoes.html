@@ -9,7 +9,7 @@
       </div>
     </md-toolbar>
     <!--Note: for scrollShrink to work, the toolbar must be a sibling of a md-content element, placed before it.-->
-    <md-content layout-padding>
+    <div layout="column">
 
       <div ng-show="$ctrl.funcoes.verificarModulos()" class="alert alert-warning" role="alert">
         Os modulos do perfil estão desatualizados, click
@@ -17,20 +17,22 @@
         para atualizar.
       </div>
       <aply-updates
-        funcoes="$ctrl.funcoes.modulos" divider="$ctrl.funcoes.divider">
+        funcoes="$ctrl.funcoes.perfil.row.child.data" divider="$ctrl.funcoes.divider">
       </aply-updates>
 
-      <md-list>
+      <md-list class="md-dense" flex>
         <div ng-repeat="mg in $ctrl.funcoes.modulosGrp.rows">
           <md-subheader class="md-no-sticky">{{mg.descricao}}</md-subheader>
-          <md-list-item  ng-repeat="m in $ctrl.funcoes.modulos.rows | filter:{'id_mg':mg.id_mg}">
-            <p>{{m.modulo}}</p>
-            <md-checkbox class="md-secondary" ng-true-value="1" ng-false-value="0"  ng-change="$ctrl.funcoes.modulos.onChange(m)" ng-model="m.permitido" ng-disabled="m.action==='c'"></md-checkbox>
-          </md-list-item>
+            <md-list-item  class="secondary-button-padding" ng-repeat="m in $ctrl.funcoes.perfil.row.child.data.rows | filter:{'id_mg':mg.id_mg}">
+              <div class="md-list-item-text">
+                <span class="md-caption">{{m.modulo}}</span>
+                <md-checkbox class="md-secondary" ng-true-value="1" ng-false-value="0"  ng-change="$ctrl.funcoes.perfil.row.child.data.onChange(m)" ng-model="m.permitido" ng-disabled="m.action==='c'"></md-checkbox>
+              </div>
+            </md-list-item>
           <md-divider></md-divider>
         </div>
 
       </md-list>
 
-    </md-content>
+    </div>
 </div>

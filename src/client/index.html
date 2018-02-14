@@ -30,7 +30,7 @@
     <!-- endbuild -->
     <link rel="stylesheet" href="script/angularjs-color-picker.css">
 </head>
-<body ng-cloak class="fullscreen">
+<body ng-cloak ngsf-fullscreen>
     <section id="content">
         <div ngplus-overlay
              ngplus-overlay-delay-in="50"
@@ -156,6 +156,11 @@
     <script src="/src/client/app/login/login.route.js"></script>
     <script src="/src/client/app/sistema/automacao/automacao-dataset.factory.js"></script>
     <script src="/src/client/app/sistema/automacao/automacao-provider.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/caixa/caixa-dataset.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/caixa/caixa-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/caixa/recebimentos/rec-component.js"></script>
+    <script src="/src/client/app/sistema/automacao/caixa/recebimentos/rec-dataset.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/caixa/recebimentos/rec-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/cliente/cliente-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/cliente/cliente.component.js"></script>
     <script src="/src/client/app/sistema/automacao/cliente/cliente.router.js"></script>
@@ -163,6 +168,10 @@
     <script src="/src/client/app/sistema/automacao/configuracao/config.router.js"></script>
     <script src="/src/client/app/sistema/automacao/configuracao/configTabPreco-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/configuracao/configTabPrecoItens-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/estacao/estacao-dataset.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/estacao/estacao-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/estacao/estacao.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/configuracao/estacao/estacao.router.js"></script>
     <script src="/src/client/app/sistema/automacao/configuracao/meiopag/meiopag-dataset.service.js"></script>
     <script src="/src/client/app/sistema/automacao/configuracao/meiopag/meiopag-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/configuracao/meiopag/meiopag.component.js"></script>
@@ -200,12 +209,19 @@
     <script src="/src/client/app/sistema/automacao/movestoque/mov-itens-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/movestoque/mov.component.js"></script>
     <script src="/src/client/app/sistema/automacao/movestoque/mov.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/pdv/pdv-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/pdv/pdv.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/pdv/pdv.router.js"></script>
     <script src="/src/client/app/sistema/automacao/pessoa/pessoa-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/pessoa/pessoa.component.js"></script>
     <script src="/src/client/app/sistema/automacao/tipomov/tipomov-dataset.service.js"></script>
     <script src="/src/client/app/sistema/automacao/tipomov/tipomov-funcoes.service.js"></script>
     <script src="/src/client/app/sistema/automacao/tipomov/tipomov.component.js"></script>
     <script src="/src/client/app/sistema/automacao/tipomov/tipomov.router.js"></script>
+    <script src="/src/client/app/sistema/automacao/vendedor/vendedor-dataset.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/vendedor/vendedor-funcoes.service.js"></script>
+    <script src="/src/client/app/sistema/automacao/vendedor/vendedor.component.js"></script>
+    <script src="/src/client/app/sistema/automacao/vendedor/vendedor.router.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard-func.service.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard.controller.js"></script>
     <script src="/src/client/app/sistema/dashboard/dashboard.route.js"></script>

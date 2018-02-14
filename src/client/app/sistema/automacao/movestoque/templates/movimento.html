@@ -1,208 +1,213 @@
-<md-content>
-	<md-card layout="column">
-		<!-- TITULO -->
-		<md-card-action layout-padding layout-gt-xs="row" layout-xs="column" flex layout-align-xs-gt="start center" >
 
-			<div layout="row" flex="45">
-				<span ng-class="{'md-subhead':$ctrl.movimento.data.mediaxs(),'md-title':!$ctrl.movimento.data.mediaxs()}" flex> {{$ctrl.movimento.data.label}} {{$ctrl.movimento.data.row.desc_tipo_mov}}</span>
 
-				<span flex="25" class="text-danger" ng-class="{'md-subhead md-offset':$ctrl.movimento.data.mediaxs(),'md-title':!$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.numero" ><b><small> Nº {{$ctrl.movimento.data.row.numero}}</small></b></span>
-			</div>
+<!-- TITULO -->
+<md-card-action layout="row"  flex layout="start center" >
 
-			<div layout="row" flex>
-				<span class="text-info md-title"><b><small> {{$ctrl.movimento.data.row.desc_status}}</small></b></span>
+	<span layout-padding flex="45" class="text-danger" ng-class="{'md-subhead md-offset':$ctrl.movimento.data.mediaxs(),'md-title':!$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.numero"><b><small> Nº {{$ctrl.movimento.data.row.numero}}</small></b></span>
 
-				<span ng-hide="$ctrl.movimento.data.row.child.showDadosPessoa" layout="row" class="md-caption">
-					<i class="text-muted">Informando item</i>
-					<span ng-if="$ctrl.movimento.data.row.tipo_mov == 'E'">
-						<i class="text-muted">emitente :</i> {{$ctrl.movimento.data.row.p_emi_nome_comp}}
-					</span>
-					<span ng-if="$ctrl.movimento.data.row.tipo_mov != 'E'">
-						<i class="text-muted">destinatário :</i> {{$ctrl.movimento.data.row.p_dest_nome_comp}}
-					</span>
-					<md-button class="md-icon-button" ng-click="$ctrl.movimento.data.row.child.showDadosPessoa=true" aria-label="alterar">
-						<md-icon>subdirectory_arrow_left</md-icon>
-						<md-tooltip>Alterar dados do emitente e destinatário</md-tooltip>
-					</md-button>
-				</span>
-			</div>
+	<span layout-padding flex class="text-info" ng-class="{'md-subhead md-offset':$ctrl.movimento.data.mediaxs(),'md-title':!$ctrl.movimento.data.mediaxs()}"><b><small> {{$ctrl.movimento.data.row.desc_status}}</small></b></span>
 
-			<span flex></span>
-			<button class="md-icon-button md-button md-offset" type="button" ng-click="$ctrl.movimento.data.row.child.print1($ctrl.movimento.data.row,$ctrl.movimento.data.row.child.data.rows)" aria-label="print" ng-show="$ctrl.movimento.data.row.status == 'F' && $ctrl.movimento.data.row.tipo_mov != 'E'">
-				<md-tooltip>Imprimir</md-tooltip>
-				<md-icon>print</md-icon>
-			</button>
+	<span flex></span>
+	<button class="md-icon-button md-button md-offset" type="button" ng-click="$ctrl.movimento.data.row.child.print1($ctrl.movimento.data.row,$ctrl.movimento.data.row.child.data.rows)" aria-label="print" ng-show="$ctrl.movimento.data.row.status == 'F' && $ctrl.movimento.data.row.tipo_mov != 'E'">
+		<md-tooltip>Imprimir</md-tooltip>
+		<md-icon>print</md-icon>
+	</button>
 
-		</md-card-action>
+</md-card-action>
 
-		<md-divider></md-divider>
-		<!-- EMITENTE -->
+<md-divider></md-divider>
 
-			<div ng-hide="$ctrl.movimento.data.row.child.data.rows && !$ctrl.movimento.data.row.child.showDadosPessoa">
-				<md-card-actions layout-gt-xs="row" layout-xs="column" flex>
+<div layout-padding  class="atura-content">
+	<!-- EMITENTE -->
+	<div layout-gt-xs="row" layout-xs="column" flex>
+		<div layout="column" flex>
 
-					<md-autocomplete
-						id="p_emi_nome_comp"
-						flex-gt-xs="45"
-						flex-xs="auto"
-						required
-						name="p_emi_nome_comp"
-						class="md-accent"
-						md-require-match="true"
-						md-autofocus
-					  ng-disabled="$ctrl.movimento.bloquearAlteracao()"
-					  md-clear-button="!$ctrl.movimento.bloquearAlteracao()"
-					  md-no-cache="false"
-					  md-search-text="$ctrl.searchEmitente"
-					  md-selected-item="$ctrl.movimento.data.row.p_emi_nome_comp"
-					  md-items="row in $ctrl.movimento.pessoa_emi.filtroAutoComplete($ctrl.searchEmitente,'','f.id_fornecedor desc')"
-					  md-selected-item-change="$ctrl.movimento.changeEmitenteE($ctrl.movimento.data.row,row)"
-					  md-item-text="row.nome_comp"
-					  md-min-length="0"
-					  md-menu-class="autocomplete-custom-template"
-					  placeholder="Emissor da Nota Fiscal"
-					  md-floating-label="Emitente">
-					<md-item-template>
-						<div layout="column">
-					      <div layout="row">
-					        <div flex="60" class="li-table-auto">
-					          <span>{{row.nome_red}}</span>
-					        </div>
-					        <div flex="40" class="li-table-auto">
-					          <span>{{row.cpf_cnpj}}</span>
-					        </div>
-					      </div>
-					      <small class="li-table-auto text-muted">{{row.nome_comp}}</small>
-						</div>
-					</md-item-template>
-					<md-not-found>
-					  O Emitente "{{$ctrl.searchEmitente}}" não foi encontrado.
-					</md-not-found>
-						<div ng-messages="form.p_emi_nome_comp.$error">
-							<div ng-message="required">Informe o emissor da nota fiscal.</div>
-						</div>
-					</md-autocomplete>
-					
-					<div layout="row" flex-gt-xs="55" flex-xs="auto">
-						<md-input-container class="md-accent" flex="20" ng-hide="$ctrl.movimento.data.row.tipo_mov!='E'">
-							<label class="md-body-1">{{$ctrl.movimento.data.row.tipo_mov=='E'?'Numero NF':'Numero'}}</label>
-							<input type="text" required  name="numero" ng-model="$ctrl.movimento.data.row.numero" ng-disabled="$ctrl.movimento.bloquearAlteracao()" >
-							<div ng-messages="form.numero.$error">
-								<div ng-message="required">Informe o numento da nota fiscal.</div>
-							</div>
-						</md-input-container>
-
-						<md-input-container class="md-accent" flex="40">
-							<label class="md-body-1">Data Emissão</label>
-							<input type="date"  name="data_emissao" ng-model="$ctrl.movimento.data.row.data_emissao" ng-disabled="$ctrl.movimento.bloquearAlteracao()">
-						</md-input-container>
-
-						<md-input-container class="md-accent" flex="40">
-							<label class="md-body-1">Data Saída</label>
-							<input type="date" required name="data_saida" ng-model="$ctrl.movimento.data.row.data_saida" ng-disabled="$ctrl.movimento.bloquearAlteracao()">
-							<div ng-messages="form.data_saida.$error">
-								<div ng-message="required">Informe a data de saída da mercadoria</div>
-							</div>
-						</md-input-container>
+			<md-autocomplete
+				id="p_emi_nome_comp"
+				flex-gt-xs="45"
+				flex-xs="auto"
+				required
+				name="p_emi_nome_comp"
+				class="md-accent"
+				md-require-match="true"
+				md-autofocus
+			  ng-disabled="$ctrl.movimento.bloquearAlteracao()"
+			  md-clear-button="!$ctrl.movimento.bloquearAlteracao()"
+			  md-no-cache="false"
+			  md-search-text="$ctrl.searchEmitente"
+			  md-selected-item="$ctrl.movimento.data.row.p_emi_nome_comp"
+			  md-items="row in $ctrl.movimento.pessoa_emi.filtroAutoComplete($ctrl.searchEmitente,'','f.id_fornecedor desc')"
+			  md-selected-item-change="$ctrl.movimento.changeEmitenteE($ctrl.movimento.data.row,row)"
+			  md-item-text="row.nome_comp"
+			  md-min-length="0"
+			  md-menu-class="autocomplete-custom-template"
+			  placeholder="Emissor da Nota Fiscal"
+			  md-floating-label="Empresa Fornecedora">
+			<md-item-template>
+				<div layout="column" >
+			      <div layout="row">
+			        <div flex="60" class="li-table-auto">
+			          <span>{{row.nome_red}}</span>
+			        </div>
+			        <div flex="40" class="li-table-auto">
+			          <span>{{row.cpf_cnpj}}</span>
+			        </div>
+			      </div>
+			      <small class="li-table-auto text-muted">{{row.nome_comp}}</small>
+				</div>
+			</md-item-template>
+			<md-not-found>
+			  O Emitente "{{$ctrl.searchEmitente}}" não foi encontrado.
+			</md-not-found>
+				<div ng-messages="form.p_emi_nome_comp.$error">
+					<div ng-message="required">Informe o emissor da nota fiscal.</div>
+				</div>
+			</md-autocomplete>
+			
+			<div layout="row" flex-gt-xs="55" flex-xs="auto">
+				<md-input-container class="md-accent" flex="20" ng-hide="$ctrl.movimento.data.row.tipo_mov!='E'">
+					<label class="md-body-1">{{$ctrl.movimento.data.row.tipo_mov=='E'?'Numero NF':'Numero'}}</label>
+					<input type="text" required  name="numero" ng-model="$ctrl.movimento.data.row.numero" ng-disabled="$ctrl.movimento.bloquearAlteracao()" >
+					<div ng-messages="form.numero.$error">
+						<div ng-message="required">Informe o numero da nota fiscal.</div>
 					</div>
-				</md-card-actions>
+				</md-input-container>
 
-				<!-- DESTINATARIO -->
+				<md-input-container class="md-accent" flex>
+					<label class="md-body-1">Data Emissão</label>
+					<input type="date"  name="data_emissao" ng-model="$ctrl.movimento.data.row.data_emissao" ng-disabled="$ctrl.movimento.bloquearAlteracao()">
+				</md-input-container>
 
-				<md-card-actions layout-gt-xs="row" layout-xs="column" flex>
-					
-					<md-autocomplete
-						id="p_dest_nome_comp"
-						flex-gt-xs="45"
-						flex-xs="auto"
-						required
-						name="p_dest_nome_comp"
-						class="md-accent"
-						md-autofocus="true"
-						md-require-match="true"
-					  ng-disabled="$ctrl.movimento.bloquearAlteracao()"
-					  md-clear-button="!$ctrl.movimento.bloquearAlteracao()"
-					  md-no-cache="true"
-					  md-search-text="$ctrl.searchDest"
-					  md-selected-item="$ctrl.movimento.data.row.p_dest_nome_comp"
-					  md-items="row in $ctrl.movimento.pessoa_dest.filtroAutoComplete($ctrl.searchDest,'','c.id_cliente desc')"
-					  md-selected-item-change="$ctrl.movimento.changeDestinatarioE($ctrl.movimento.data.row,row)"
-					  md-item-text="row.nome_comp"
-					  md-min-length="0"
-					  md-menu-class="autocomplete-custom-template"
-					  placeholder="Destinatário da Nota Fiscal"
-					  md-floating-label="Destinatário">
-					<md-item-template>
-						<div layout="column">
-					      <div layout="row">
-					        <div flex="40" class="li-table-auto" >
-					          <span md-highlight-flags="^i">{{row.nome_red}}</span>
-					        </div>
-					        <div flex="25" class="li-table-auto">
-					          <span>{{row.tabela}}</span>
-					        </div>
-					        <div flex="35" class="li-table-auto">
-					          <span>{{row.cidade}}</span>
-					        </div>
-					      </div>
-					      <div layout="row" layout-align="start center">
-					      	<small class="text-danger" >{{row.id_cliente}} </small>
-					      	<small class="li-table-auto text-muted" >{{row.nome_comp}} </small>
-					      	<small> Limite : {{row.limite_credito|currency:''}} </small>
-					      </div>
-					      
-					   </div>
- 
-					</md-item-template>
-					<md-not-found>
-					  O Destinatário "{{$ctrl.searchDest}}" não foi encontrado.
-					</md-not-found>
-						<div ng-messages="form.p_dest_nome_comp.$error">
-							<div ng-message="required">Informe o destinatário da nota fiscal.</div>
-						</div>
-					</md-autocomplete>
-
-					<div layout="row" flex-gt-xs="55" flex-xs="auto" ng-hide="$ctrl.movimento.data.row.tipo_mov == 'E'">
-
-						<md-input-container flex>
-							<label class="md-body-1">Tabela do Cliente</label>
-							<input type="text" required  name="tabela" ng-model="$ctrl.movimento.data.row.tabela" ng-disabled="true">
-						</md-input-container>
-
-						<md-input-container flex>
-							<label class="md-body-1">Tabela de preços</label>
-							<md-select ng-model="$ctrl.movimento.data.row.id_tp" ng-disabled="$ctrl.movimento.bloquearAlteracao()">
-						  		<md-option ng-value="tab.id_tp" ng-repeat="tab in $ctrl.movimento.tabelas.data.rows" ng-blur="null">{{tab.descricao}}</md-option>
-							</md-select>
-						</md-input-container>
+				<md-input-container class="md-accent" flex>
+					<label class="md-body-1">Data Saída</label>
+					<input type="date" required name="data_saida" ng-model="$ctrl.movimento.data.row.data_saida" ng-disabled="$ctrl.movimento.bloquearAlteracao()">
+					<div ng-messages="form.data_saida.$error">
+						<div ng-message="required">Informe a data de saída da mercadoria</div>
 					</div>
-				</md-card-actions>
+				</md-input-container>
 			</div>
-		</md-card>
 
-		<itens-saida ng-if="$ctrl.movimento.data.row.tipo_mov != 'E'" funcoes="$ctrl.movimento.data.row.child"></itens-saida>
+			<md-autocomplete
+				ng-hide="$ctrl.movimento.data.row.tipo_mov=='E'"
+				id="vendedor"
+				flex-gt-xs="45"
+				flex-xs="auto"
+				required
+				name="vendedor"
+				class="md-accent"
+				md-require-match="true"
+				md-autofocus
+				ng-disabled="$ctrl.movimento.bloquearAlteracao()"
+			  	md-clear-button="!$ctrl.movimento.bloquearAlteracao()"
+			  	md-no-cache="false"
+			  	md-search-text="$ctrl.searchVend"
+                md-selected-item="$ctrl.movimento.data.row.vendedor_nome_red"
+                md-items="row in $ctrl.movimento.vendedor.filtroAutoComplete($ctrl.searchVend)"
+                md-selected-item-change="$ctrl.movimento.changeAutoCompleteVend($ctrl.movimento.data.row,row)"
+			  	md-item-text="row.nome_comp"
+			  	md-min-length="0"
+			  	md-menu-class="autocomplete-custom-template"
+			  	placeholder="Nome do Vendedor"
+			  	md-floating-label="Vendedor">
+			<md-item-template>
+				<div layout="column" >
+			      <div layout="row">
+			        <div flex="60" class="li-table-auto">
+			          <span>{{row.nome_red}}</span>
+			        </div>
+			        <div flex="40" class="li-table-auto">
+			          <span>{{row.cpf_cnpj}}</span>
+			        </div>
+			      </div>
+			      <small class="li-table-auto text-muted">{{row.nome_comp}}</small>
+				</div>
+			</md-item-template>
+			<md-not-found>
+			  O Vendedor "{{$ctrl.searchVend}}" não foi encontrado.
+			</md-not-found>
+				<div ng-messages="form.p_emi_nome_comp.$error">
+					<div ng-message="required">Informe o vendedor.</div>
+				</div>
+			</md-autocomplete>			
+		</div>
 
-		<itens-entrada ng-if="$ctrl.movimento.data.row.tipo_mov == 'E'" funcoes="$ctrl.movimento.data.row.child"></itens-entrada>
-		
-		<md-card>
+		<!-- DESTINATARIO -->
 
-			<md-input-container class="md-block" class="md-accent">
-				<label class="md-body-1">Observações</label>
-				<textarea ng-model="$ctrl.movimento.data.row.obs" rows="2" ng-disabled="$ctrl.movimento.bloquearAlteracao()"></textarea>
-			</md-input-container>
+		<div layout="column" flex>
+			
+			<md-autocomplete
+				id="p_dest_nome_comp"
+				flex-gt-xs="45"
+				flex-xs="auto"
+				required
+				name="p_dest_nome_comp"
+				class="md-accent"
+				md-autofocus="true"
+				md-require-match="true"
+			  ng-disabled="$ctrl.movimento.bloquearAlteracao()"
+			  md-clear-button="!$ctrl.movimento.bloquearAlteracao()"
+			  md-no-cache="true"
+			  md-search-text="$ctrl.searchDest"
+			  md-selected-item="$ctrl.movimento.data.row.p_dest_nome_comp"
+			  md-items="row in $ctrl.movimento.pessoa_dest.filtroAutoComplete($ctrl.searchDest,'','c.id_cliente desc')"
+			  md-selected-item-change="$ctrl.movimento.changeDestinatarioE($ctrl.movimento.data.row,row)"
+			  md-item-text="row.nome_comp"
+			  md-min-length="0"
+			  md-menu-class="autocomplete-custom-template"
+			  placeholder="Destinatário da Nota Fiscal"
+			  md-floating-label="{{$ctrl.movimento.data.row.tipo_mov=='E'?'Destinatário':'Cliente'}}">
+			<md-item-template>
+				<div layout="column">
+			      <div layout="row">
+			        <div flex="40" class="li-table-auto" >
+			          <span md-highlight-flags="^i">{{row.nome_red}}</span>
+			        </div>
+			        <div flex="25" class="li-table-auto">
+			          <span>{{row.tabela}}</span>
+			        </div>
+			        <div flex="35" class="li-table-auto">
+			          <span>{{row.cidade}}</span>
+			        </div>
+			      </div>
+			      <div layout="row" layout-align="start center">
+			      	<small class="text-danger" >{{row.id_cliente}} </small>
+			      	<small class="li-table-auto text-muted" >{{row.nome_comp}} </small>
+			      	<small> Limite : {{row.limite_credito|currency:''}} </small>
+			      </div>
+			      
+			   </div>
 
-			<md-card-action layout="row" layout-align="end center">
-				<md-button class="md-raised md-warn" ng-show="$ctrl.movimento.data.row.child.data.rows.length>0 && $ctrl.movimento.data.row.status == 'F'" ng-click="$ctrl.movimento.cancelarMov($event)" >
-					Cancelar {{$ctrl.movimento.data.row.desc_tipo_mov}}
-					<md-tooltip md-autohide="true">Conluir a movimentação</md-tooltip>
-				</md-button>
+			</md-item-template>
+			<md-not-found>
+			  O Destinatário "{{$ctrl.searchDest}}" não foi encontrado.
+			</md-not-found>
+				<div ng-messages="form.p_dest_nome_comp.$error">
+					<div ng-message="required">Informe o destinatário da nota fiscal.</div>
+				</div>
+			</md-autocomplete>
 
-				<md-button class="md-raised md-accent" ng-show="$ctrl.movimento.data.row.child.data.rows.length>0 && $ctrl.movimento.data.row.status == 'A'" ng-click="$ctrl.movimento.finalizarMov($event)" ng-disabled="$ctrl.movimento.data.row.tipo_mov=='E'&&!$ctrl.movimento.data.row.numero">
-					Fechar {{$ctrl.movimento.data.row.desc_tipo_mov}}
-					<md-tooltip md-autohide="true">Conluir a movimentação</md-tooltip>
-				</md-button>
-			</md-card-action>			
-		</md-card>
+			<div layout="row" flex-gt-xs="55" flex-xs="auto" ng-hide="$ctrl.movimento.data.row.tipo_mov == 'E'">
 
-</md-content>
-<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+				<md-input-container flex>
+					<label class="md-body-1">Tabela do Cliente</label>
+					<input type="text" required  name="tabela" ng-model="$ctrl.movimento.data.row.tabela" ng-disabled="true">
+				</md-input-container>
+
+				<md-input-container flex>
+					<label class="md-body-1">Tabela de preços</label>
+					<md-select ng-model="$ctrl.movimento.data.row.id_tp" ng-disabled="$ctrl.movimento.bloquearAlteracao()||$ctrl.movimento.data.row.child.data.rows.length>0">
+				  		<md-option ng-value="tab.id_tp" ng-repeat="tab in $ctrl.movimento.tabelas.data.rows" ng-blur="null">{{tab.descricao}}</md-option>
+				  		<md-tooltip>{{$ctrl.movimento.data.row.child.data.rows.length>0?'Já existe itens adicionado com preços dessa tabela, para trocar de tabela remova os itens adicionados':'Tabela de preços dos itens'}}</md-tooltip>
+					</md-select>
+				</md-input-container>
+			</div>
+		</div>
+	</div>
+	<md-input-container class="md-block" class="md-accent">
+		<label class="md-body-1">Observações</label>
+		<textarea ng-model="$ctrl.movimento.data.row.obs" rows="2" ng-disabled="$ctrl.movimento.bloquearAlteracao()"></textarea>
+	</md-input-container>
+</div>
+
+
+

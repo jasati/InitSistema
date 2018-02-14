@@ -18,6 +18,7 @@
                 cliente:'',
                 usuario:'',
                 permissoes:'',
+                filtroData:{},
             };
 
             var service = {
@@ -33,7 +34,9 @@
                 setPubId            : setPubId,
                 getPubId            : getPubId,
                 setPermissoes       : setPermissoes,
-                getPermissoes       : getPermissoes, 
+                getPermissoes       : getPermissoes,
+                setFiltroData       : setFiltroData,
+                getFiltroData       : getFiltroData,
             };
 
             return service;
@@ -95,6 +98,10 @@
                 sessao.usuario = usuario;
             }
 
+            function setFiltroData(prm) {
+                sessao.filtroData = prm;
+            }
+
             function getSessaoEmpresa() {
                 return sessao.empresa;
             }
@@ -128,6 +135,10 @@
 
             function getPermissoes() {
               return sessao.permissoes;
+            }
+
+            function getFiltroData() {
+                return sessao.filtroData;
             }
 
         }

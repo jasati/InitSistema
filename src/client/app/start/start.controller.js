@@ -10,7 +10,7 @@
   function StartController($filter,$http,$stateParams,$state,logger,config,UtilsFunctions,UsuarioFuncService) {
     var vm = this;
     var isset = UtilsFunctions.isset;
-
+    var reconect = 0;
     activate();
 
     function activate() {
@@ -35,6 +35,7 @@
       //Pegando as configurações no config do frontend
       var ambiente = config.sistema.ambiente;
       var api = 'startSistema/'+config.index;
+      
 
       $http({method: 'POST',url: config.urlWebService+api}).then(function (result) {
         if (!result.data.status) {//se ouver status em data é para retornar o erro
@@ -52,7 +53,13 @@
           //iniciar a rota do sistema
           rotaInicial();
         } else {
-          logger.error(result.data.msg);
+          if (reconect<=3) {
+            reconect++;
+            getSistema();
+          } else {
+            logger.error(reconect+' Tentativas de conexão, erro: '+result.data.msg);
+          }
+          
         }
       });
     }
