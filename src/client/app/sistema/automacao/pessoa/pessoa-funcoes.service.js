@@ -28,7 +28,7 @@
           vm.filtrar = function () {
             var query = '';
             if (isset(vm.pessoa.filtros.mainField)) {
-              query += " and CONCAT(p.nome_comp,p.nome_red) LIKE '%"+vm.pessoa.filtros.mainField+"%'";
+              query += " and CONCAT(CASE WHEN p.nome_comp IS NULL THEN '' ELSE p.nome_comp END,CASE WHEN p.nome_red IS NULL THEN '' ELSE p.nome_red END) LIKE '%"+vm.pessoa.filtros.mainField+"%'";
             }
             vm.pessoa.read(query,true);//limitar os registro
           }
@@ -36,7 +36,7 @@
           vm.filtroAutoComplete = function (prm,id,orderBy) {
             var query = "";
             if (isset(prm)) {
-              query = " and CONCAT(p.nome_comp,p.nome_red) LIKE '%"+prm+"%'";
+              query = " and CONCAT(CASE WHEN p.nome_comp IS NULL THEN '' ELSE p.nome_comp END,CASE WHEN p.nome_red IS NULL THEN '' ELSE p.nome_red END) LIKE '%"+prm+"%'";
             }
             if (isset(id)) {
               query += " and p.id_pessoa = "+id;

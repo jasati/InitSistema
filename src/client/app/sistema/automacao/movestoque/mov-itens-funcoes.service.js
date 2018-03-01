@@ -69,6 +69,16 @@
           vm.showItemSelect = function ($event) {
             if (vm.data.rowParent.status != 'F') {
               vm.showDadosPessoa = false;
+              if (isset(vm.data.rowParent.id_tabela)) {
+                vm.itens.idClassTabela = vm.data.rowParent.id_tabela;
+              } else {
+                vm.itens.idClassTabela = '';
+              }
+              if (vm.data.rows.length > 0) {
+                vm.itens.disablTabela = true;
+              } else {
+                vm.itens.disablTabela = false;
+              }
               if (isset(vm.data.rowParent.id_tp)) {
                 vm.itens.tabela = vm.data.rowParent.id_tp;
               }
@@ -100,6 +110,7 @@
                     setTimeout(vm.startFoco, 500);
                     vm.itens.filtrarUnidade();
                   }
+                  vm.data.rowParent.id_tp = vm.itens.tabela;
                 }
               });
               }

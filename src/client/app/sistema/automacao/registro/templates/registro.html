@@ -1,0 +1,84 @@
+<div class="visao">
+	<md-toolbar md-colors="{background:'grey'}">
+		<div class="md-toolbar-tools">
+			<img alt="{{$ctrl.funcoes.altImg}}" src="images/jasati_logo.png" height="35">
+			<span class="md-title" layout-padding>Cadastre-se para ter acesso ao sistema gerencial de comercio on-line</span>
+		</div>
+	</md-toolbar>
+	<md-content layout-padding layout="column" flex>
+		<div layout="row" flex>
+			<div layout="column" flex>
+				<div ng-hide="$ctrl.funcoes.cadastrado">
+					<span class="md-title">Informe os dados abaixo</span>
+					<form name="form" autocomplete="off" novalidate>
+					    <md-input-container class="md-block" >
+					      <label class="md-body-1">Nome da Empresa</label>
+					      <input type="text" required  name="razao" ng-model="$ctrl.funcoes.form.razao" >
+					      <div ng-messages="form.razao.$error">
+					        <div ng-message="required">Informe a razão social da empresa.</div>
+					      </div>
+					    </md-input-container>
+
+						<md-input-container class="md-block">
+							<label class="md-body-1">CNPJ</label>
+							<input type="text" required  name="cpf_cnpj" ng-model="$ctrl.funcoes.form.cpf_cnpj" >
+							<div ng-messages="form.cpf_cnpj.$error">
+								<div ng-message="required">Informe o cnpj da empresa ou seu cpf</div>
+							</div>
+						</md-input-container>
+
+						<md-input-container class="md-block" >
+							<label class="md-body-1">Cidade</label>
+							<input type="text" required name="cidade" ng-model="$ctrl.funcoes.form.cidade" >
+							<div ng-messages="form.cidade.$error">
+								<div ng-message="required">Informe a cidade da empresa</div>
+							</div>
+						</md-input-container>
+
+						<md-input-container class="md-block" >
+							<label class="md-body-1">Endereço</label>
+							<input type="text" required name="endereco" ng-model="$ctrl.funcoes.form.endereco" >
+							<div ng-messages="form.endereco.$error">
+								<div ng-message="required">Informe o endereço da empresa ou seu cpf</div>
+							</div>
+						</md-input-container>
+
+						<md-input-container class="md-block" >
+							<label class="md-body-1">Seu Nome</label>
+							<input type="text" required name="nome" ng-model="$ctrl.funcoes.form.nome" >
+							<div ng-messages="form.nome.$error">
+								<div ng-message="required">Informe o nome do responsável</div>
+							</div>
+						</md-input-container>
+
+						<md-input-container class="md-block" >
+							<label class="md-body-1">Seu Email</label>
+							<input type="email" required name="email" ng-model="$ctrl.funcoes.form.email" >
+							<div ng-messages="form.email.$error">
+								<div ng-message="required">Informe o email do responsável</div>
+							</div>
+						</md-input-container>
+					</form>
+					<div layout="row" flex layout-align="end center">
+						<md-button class="md-raised md-accent" ng-disabled="form.$invalid" ng-click="$ctrl.funcoes.registrarEmp($ctrl.funcoes.form)">Confirmar Cadastro</md-button>
+					</div>
+				</div>
+				<div ng-show="$ctrl.funcoes.cadastrado">
+					<p class="md-display-3">
+						Seu cadastro foi efetuado com sucesso!
+					</p>
+					<p class="md-title">
+						Os dados de acesso ao sistema, foi enviado para seu email.
+					</p>
+				</div>
+			</div>
+			<div layout="column" flex layout-margin layout-align="center center" md-colors="{background: 'grey-700'}">
+				<p class="md-display-3">Jasati Comercio</p>
+				<p class="md-display-2">WebApp</p>
+				<img src="images/jasati_logo.png" height="200" >
+			</div>
+
+		</div>
+
+	</md-content>
+</div>

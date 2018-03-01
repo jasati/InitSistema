@@ -9,6 +9,7 @@
 			            <md-icon>add</md-icon> 
 			            	<md-tooltip md-autohide="true">Nova {{$ctrl.movs.tipoMov.data.row.descricao}}</md-tooltip>
 			          	</md-button>
+			          	<span ng-class="{'md-subhead':$ctrl.movs.tipoMov.data.mediaxs()}" ng-hide="$ctrl.movs.tipoMov.data.mediaxs()">{{$ctrl.movs.tipoMov.data.row.descricao}}</span>
 						<md-button ng-class="{'md-icon-button':$ctrl.movs.data.mediaxs()}" ng-show="$ctrl.movs.tipoMov.data.row.tipo == 'S'" ng-click="$ctrl.movs.carregarPedidos()">
 							<md-icon>reply</md-icon> 
 							<span hide-xs>Faturar Pedido</span> 
@@ -21,18 +22,18 @@
 							nav-bar-aria-label="navigation links"
 							flex>
 							<md-nav-item md-nav-sref="layout.tipomov.movs.movimentacoes" name="cadastros">
-				                <span hide-xs>Exibir Movimentações</span>
+				                <span hide-xs>Exibir {{$ctrl.movs.tipoMov.data.row.descricao}}</span>
 				                <md-icon hide-gt-xs>
 				                	{{$ctrl.movs.tipoMov.data.row.tipo=='S'?'call_made':$ctrl.movs.tipoMov.data.row.tipo=='E'?'call_received':'vertical_align_center'}}
 				                </md-icon>
 							</md-nav-item>
 							<md-nav-item md-nav-sref="layout.tipomov.movs.itens" name="estoque">
-			                    <span hide-xs>Exibir Itens Movimentados</span>
+			                    <span hide-xs>Exibir Itens {{$ctrl.movs.tipoMov.data.row.descricao}}</span>
 			                    <md-icon hide-gt-xs>
 			                      format_list_numbered
 			                    </md-icon>
 							</md-nav-item>
-						</md-nav-bar>			      						
+						</md-nav-bar>
 
 			        </div>
 			      </md-toolbar>

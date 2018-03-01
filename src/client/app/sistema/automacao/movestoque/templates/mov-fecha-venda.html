@@ -17,12 +17,12 @@
 
     <md-divider></md-divider>
     <div layout="row" layout-align="end center">
-        <div show-if-fullscreen="false">
+        <div ng-show="$ctrl.funcoes.pdv">
           <md-button class="md-raised md-accent" id="ok" ng-click="$ctrl.ok(true)" ngsf-toggle-fullscreen>
             Concluir
           </md-button>
         </div>
-        <div show-if-fullscreen>
+        <div ng-show="!$ctrl.funcoes.pdv">
           <md-button class="md-raised md-accent" id="ok" ng-click="$ctrl.ok(true)">
             Concluir
           </md-button>

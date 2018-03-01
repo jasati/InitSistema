@@ -104,7 +104,14 @@ WHERE 1
               '(SELECT (SUM(emi.qt*emi.valor)+SUM(emi.acres-emi.desconto)) FROM estoque_mov_itens emi WHERE emi.id_mov = em.id_mov) as total';
 
           var camposFiltro = [
-            {field:"data_mov",alias:"Data",type:"string"}
+            {field:"em.status",alias:"Status",type:"fixed",values:[{value:"A",alias:"Aberto"},{value:"F",alias:"Fechado"},{value:"C",alias:"Cancelado"}]},
+            {field:"em.numero",alias:"Número",type:"string"},
+            {field:"vv.nome_red",alias:"Vendedor",type:"string"},
+          ];
+
+          // filtroDefault é a pesquisa que ja vem padrao pelo sistema
+          var filtroDefault = [
+            {campo:"em.status",express:"=",value:"F",alias:"Situação",aliasValue:"Fechado",type:"fixed"},
           ];
 
 	        var tableCols = [
@@ -146,7 +153,9 @@ WHERE 1
         	dataSet.id_tabela      = 'id_mov';
         	dataSet.id_tabelaQuery = 'em.id_mov';
           dataSet.orderBy        = 'em.data_mov';
+          dataSet.filtroDefault  = filtroDefault,
         	dataSet.tableCols      = tableCols;
+          dataSet.camposFiltro   = camposFiltro;
         	dataSet.camposData     = ['data_mov','data_emissao','data_saida'];
           dataSet.camposInvalidos  = camposInvalidos;
           dataSet.camposForeignKey = ['id_filial','id_tipo_mov'];//campos chave estrangeira

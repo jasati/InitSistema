@@ -24,7 +24,7 @@
                         nav    : 5,
                         icon   : 'shopping_cart',
                         content: 'Estações de Venda',
-                        perm   : 6
+                        perm   : 8
                     },
                     resolve : {
                         funcoes: resolveEstacoes

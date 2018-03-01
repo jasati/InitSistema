@@ -50,6 +50,36 @@
             <md-autocomplete
                 flex
                 md-no-cache="false"
+                md-search-text="$ctrl.searchFil"
+                md-selected-item="$ctrl.funcoes.dados.row.filial"
+                md-items="row in $ctrl.funcoes.filial.filtroAutoComplete($ctrl.searchFil)"
+                md-selected-item-change="$ctrl.funcoes.changeAutoCompleteFil($ctrl.funcoes.dados.row,row)"
+                md-item-text="row.nome_red"
+                md-min-length="0"
+                md-clear-button="true"
+                md-floating-label="Filial que estará logado">
+              <md-list class="md-dense">
+                <md-list-item class="md-2-line">
+                    <div class="md-list-item-text" layout="column">
+                      <div layout="row">
+                        <h3 flex="60" md-highlight-text="$ctrl.searchFil" md-highlight-flags="^i">{{row.nome_red}}</h3>
+                        <h4 flex="40" md-highlight-text="$ctrl.searchFil" md-highlight-flags="^i">{{row.cpf_cnpj}}</h4>
+                      </div>
+                      <p flex class="text-muted" md-highlight-text="$ctrl.searchFil" md-highlight-flags="^i">{{row.nome_comp}}</p>
+                    </div>
+
+                </md-list-item>
+              </md-list>
+
+              <md-not-found>
+                A filial "{{$ctrl.searchFil}}" não foi encontrado.
+              </md-not-found>
+            </md-autocomplete>
+
+
+            <md-autocomplete
+                flex
+                md-no-cache="false"
                 md-search-text="$ctrl.searchVend"
                 md-selected-item="$ctrl.funcoes.dados.row.vendedor"
                 md-items="row in $ctrl.funcoes.vendedor.filtroAutoComplete($ctrl.searchVend)"
@@ -75,6 +105,8 @@
                 O vendedor "{{$ctrl.searchVend}}" não foi encontrado.
               </md-not-found>
             </md-autocomplete>
+
+
 
             <div ng-show="$ctrl.funcoes.dados.row.id_usuario===$ctrl.funcoes.userLogado.id_usuario">
               <md-button class="md-raised md-accent" ng-click="showAltSenha=true">

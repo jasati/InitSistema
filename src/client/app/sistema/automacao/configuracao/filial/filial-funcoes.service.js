@@ -66,12 +66,12 @@
 
           vm.novo = function (data) {
             var prm = {tipo:0};
-            vm.data.novo(prm,'layout.vendedores.cadastro');
+            vm.data.novo(prm,'layout.pgconfig.filial.filialCad');
             vm.pessoaFunc.pessoa.novo(prm);
           }
 
           vm.alterar = function (row) {
-            vm.data.alterar(row,'layout.vendedores.cadastro');
+            vm.data.alterar(row,'layout.pgconfig.filial.filialCad');
             vm.pessoaFunc.load(row.id_pessoa);
           }
 

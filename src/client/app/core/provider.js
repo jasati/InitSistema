@@ -18,6 +18,7 @@
                 cliente:'',
                 usuario:'',
                 permissoes:'',
+                filiais:'',
                 filtroData:{},
             };
 

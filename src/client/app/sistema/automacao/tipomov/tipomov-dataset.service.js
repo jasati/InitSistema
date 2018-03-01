@@ -13,7 +13,7 @@
         	var dataSet = new AutomacaoProvider.provider();
         	//realizar as configurações do dataset
            
-          var campos = 'id_tipo_mov, id_empresa, descricao, tipo, status, alt_cad_item, mov_estoque, CASE WHEN tipo = "S" THEN "Saida do estoque" WHEN tipo = "E" THEN "Entrada no estoque" WHEN tipo = "P" THEN "Não movimenta estoque" END AS desc_tipo';
+          var campos = 'tme.id_tipo_mov, tme.id_empresa, tme.descricao, tme.tipo, tme.status, tme.alt_cad_item, tme.mov_estoque, CASE WHEN tme.tipo = "S" THEN "Saida do estoque" WHEN tme.tipo = "E" THEN "Entrada no estoque" WHEN tme.tipo = "P" THEN "Não movimenta estoque" END AS desc_tipo, (SELECT COUNT(em.id_mov) FROM estoque_mov em WHERE em.id_tipo_mov = tme.id_tipo_mov) as qt_mov';
 
           var camposFiltro = [
               {field:"tipo",alias:"Tipo",type:"string"}
@@ -40,11 +40,11 @@
         	dataSet.inner_join     = inner_join;
         	dataSet.left_join      = left_join;
         	dataSet.modulo         = 'tipo_mov_estoque';
-        	dataSet.moduloQuery    = 'tipo_mov_estoque';
+        	dataSet.moduloQuery    = 'tipo_mov_estoque tme';
         	dataSet.id_tabela      = 'id_tipo_mov';
-        	dataSet.id_tabelaQuery = 'id_tipo_mov';
+        	dataSet.id_tabelaQuery = 'tme.id_tipo_mov';
         	dataSet.tableCols      = tableCols;
-          dataSet.camposInvalidos= ['action','desc_tipo'];
+          dataSet.camposInvalidos= ['action','desc_tipo','qt_mov'];
           dataSet.camposForeignKey = ['id_empresa'];//campos chave estrangeira
         	return  dataSet;
 

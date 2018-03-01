@@ -43,15 +43,24 @@
           }
 
           vm.filtrar = function () {
-            var query = '';
+            var query = ' and tme.status = 1';
             if (isset(vm.data.filtros.mainField)) {
-              query += " and descricao LIKE '"+vm.data.filtros.mainField+"%'";
+              query += " and tme.descricao LIKE '"+vm.data.filtros.mainField+"%'";
             }
             vm.data.read(query,false);//nao limitar os registro
           }
 
-          vm.filtroAutoComplete = function (prm) {
-            var query = " and descricao LIKE '"+prm+"%'";
+          vm.filtroAutoComplete = function (prm,tipo,id) {
+            var query = " and tme.status = 1 ";
+            if (isset(prm)) {
+              query += " and tme.descricao LIKE '"+prm+"%'";;
+            }
+            if (isset(tipo)) {
+              query += " and tme.tipo = '"+tipo+"'";
+            }
+            if (isset(id)) {
+              query += " and tme.id_tipo_mov = "+id;
+            }            
             return vm.data.load(query,true).then(function (result) {
               return result.reg;
             });
@@ -106,6 +115,12 @@
                   }
                 });
               }
+            });
+          }
+
+          vm.qtMovsOnTipo = function (tipo,id) {
+            return vm.filtroAutoComplete('',tipo,id).then(function (result) {
+              return result[0];
             });
           }
 

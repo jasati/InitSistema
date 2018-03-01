@@ -20,7 +20,7 @@
                   title:'Filiais',
                   component:'filialListagem',
                   resolve : {
-                      meiopag: resolveFilial
+                      funcoes: resolveFilial
                   }
               }
             },
@@ -36,9 +36,9 @@
         ];
     }
 
-    resolveFilial.$inject = ['VendedorFuncService','$transitions','$state','layoute'];
-    function resolveFilial(VendedorFuncService,$transitions,$state,layoute) {
-      var funcoes = new VendedorFuncService.funcoes();
+    resolveFilial.$inject = ['FilialFuncService','$transitions','$state','layoute'];
+    function resolveFilial(FilialFuncService,$transitions,$state,layoute) {
+      var funcoes = new FilialFuncService.funcoes();
       //configurar filtros
       funcoes.activate();
       $transitions.onSuccess({}, function(transition) {

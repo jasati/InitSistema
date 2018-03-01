@@ -52,11 +52,9 @@
                   url:'/movimentos',
                   title:'Movimentos',
                   component:'movimentacoes',
-                  // views:{
-                  //   '^.^.^.$default':{
-                  //     component:'movimentacoes',
-                  //   }
-                  // },
+                  resolve : {
+                      funcoes : resolveMovimentos
+                  }
               }
             },
 
@@ -94,6 +92,11 @@
     resolveMovimento.$inject = ['MovFuncService','$transition$','movs'];
     function resolveMovimento(MovFuncService,$transition$,movs) {
       movs.startMovimento();
+      return movs;
+    }
+
+    resolveMovimentos.$inject = ['movs'];
+    function resolveMovimentos(movs) {
       return movs;
     }
 

@@ -40,7 +40,6 @@
             var query = '';
             vm.modulosGrp.read(query);
           }
-          vm.activate();
         }
     }
 })();

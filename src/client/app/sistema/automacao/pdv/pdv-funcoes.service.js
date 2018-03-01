@@ -45,7 +45,10 @@
                         vm.tipomov.data.read('',true).then(function (result) {
                           vm.tipomov.data.row = result.reg[0];
                           vm.tipomov.data.setNewChilder(MovFuncService,vm.tipomov.data.row,false);
+                          vm.tipomov.data.row.child.pdv = true;
                           vm.setFocusCodBarras();
+                          vm.loadQtPedidos();
+                          vm.startTimeLoadPed();
                         });
 
                       } else {
@@ -118,6 +121,7 @@
             }
           }
 
+
           vm.cancelaVenda = function (ev) {
             if (vm.tipomov.data.row.child.data.row) {
               var msg = 'Confirma o cancelamento da venda em andamento?';
@@ -172,6 +176,7 @@
                     item.desconto = 0;
                     vm.tipomov.data.row.child.data.row.child.data.novo(item);
                     vm.setFocusQt();
+                    vm.desableCancelItem();
                   }
                 });
               }
@@ -184,7 +189,7 @@
                 vm.tipomov.data.row.child.data.row.child.data.adicionar(item);
                 vm.itens.item.row = null;
                 vm.itens.item.filtros.mainField = "";
-                vm.setFocusCodBarras();
+                vm.setFocusCodBarras(true);
               } else {
                 logger.warning('Quantidade invalida!');
               }
@@ -216,22 +221,56 @@
 
 
             //busca item, caso nao encontre ou tenha a qantidade maior que 1 exibir a consulta do item
-            vm.itens.tabela = vm.pdv.data.empresa.config_id_tp_padrao;
-            return vm.itens.filtrar(true).then(function (result) {
-              if (result.qtde == 0 || result.qtde > 1) {
-                return vm.itens.selectItem(ev).then(function (result) {
-                  return vm.itens.item.row;
-                });
-              } else if (result.qtde == 1) {
-                vm.itens.item.alterar(result.reg[0]);
-                return vm.itens.item.row;
+            if (vm.modoPdv==0) {
+              if (vm.tipomov.data.row.child.data.row.child.data.rows.length > 0) {
+                vm.itens.disablTabela = true;
+              } else {
+                vm.itens.disablTabela = false;
               }
-            });
+              vm.itens.tabela = vm.tipomov.data.row.child.data.row.id_tp;
+              return vm.itens.filtrar(true).then(function (result) {
+                if (result.qtde == 0 || result.qtde > 1) {
+                  return vm.itens.selectItem(ev).then(function (result) {
+                    vm.tipomov.data.row.child.data.row.id_tp = vm.itens.tabela;
+                    return vm.itens.item.row;
+                  });
+                } else if (result.qtde == 1) {
+                  vm.itens.item.alterar(result.reg[0]);
+                  return vm.itens.item.row;
+                }
+              });
+            } else {
+              vm.itens.tabela = vm.pdv.data.empresa.config_id_tp_padrao;
+              return vm.itens.filtrar(true).then(function (result) {
+                if (result.qtde == 0 || result.qtde > 1) {
+                  return vm.itens.selectItem(ev).then(function (result) {
+                    return vm.itens.item.row;
+                  });
+                } else if (result.qtde == 1) {
+                  vm.itens.item.alterar(result.reg[0]);
+                  return vm.itens.item.row;
+                }
+              });
+            }
+
           }
 
-          vm.cancelaItem = function (prm) {
-            // body...
+          vm.cancelarItem = function () {
+            if (vm.tipomov.data.row.child.data.row) {
+              if (vm.activeCancelItem) {
+                vm.tipomov.data.row.child.data.row.child.data.removerIndex();
+                vm.desableCancelItem();
+              } else {
+                vm.activeCancelItem = true;
+                vm.tipomov.data.row.child.data.row.child.data.rowIndex = 0;
+              }
+            }
           }
+
+          vm.desableCancelItem = function () {
+            vm.activeCancelItem = false;
+            vm.tipomov.data.row.child.data.row.child.data.rowIndex = -1;
+          }          
 
           vm.desconto = function () {
             var config = {
@@ -355,6 +394,7 @@
                         vm.tipomov.data.showModal(prm).then(function (result) {
                           vm.limparDados();
                           vm.setModosPdv(0);
+                          vm.loadQtPedidos();
                         });
                       });
                     }
@@ -364,18 +404,61 @@
             });
           }
 
+          vm.startTimeLoadPed = function () {
+            vm.timeLoadPed = setInterval(vm.loadQtPedidos,300000);
+          }
+
+          vm.endTimeLoadPed = function () {
+            clearInterval(vm.timeLoadPed);
+          }
+
+          vm.loadQtPedidos = function () {
+            vm.tipomov.qtMovsOnTipo('P').then(function (result) {
+              vm.pedido = result;
+            });
+          }
+
+          vm.loadPedidos = function () {
+            var config = {
+              templateUrl: 'app/sistema/automacao/pdv/templates/pdv-select-ped.html',
+              size:'',
+              data:vm.tipomov.data.row.child,
+              backdrop:true,
+              fullscreen:false,
+              modal:{},
+            };
+            vm.tipomov.data.row.child.data.showModal(config).then(function (result) {
+              if (result) {
+                result.status         = 'A';
+                result.desc_status    = 'ABERTO';
+                result.desc_tipo_mov  = vm.tipomov.data.row.descricao;
+                result.tipo_mov       = vm.tipomov.data.row.tipo;
+                result.id_tipo_mov    = vm.tipomov.data.row.id_tipo_mov;
+                vm.tipomov.data.row.child.alterar(result);
+                vm.setFocusCodBarras();
+              }
+            });
+          }
+
           vm.sair = function () {
             if (!vm.tipomov.data.row.child.data.row) {
+              vm.endTimeLoadPed();
               $state.go('layout');
             }
           }
 
-          vm.setFocusCodBarras = function () {
-            var focus = function () {
+          vm.setFocusCodBarras = function (imediato) {
+            if (imediato&&vm.modoPdv==0) {
               document.getElementById('cod-barras').focus();
               document.getElementById('cod-barras').select();
+            } else {
+              var focus = function () {
+                document.getElementById('cod-barras').focus();
+                document.getElementById('cod-barras').select();
+              }
+              setTimeout(focus,500);
             }
-            setTimeout(focus,500);
+
           }
 
           vm.setFocusCabecario = function () {
@@ -390,8 +473,9 @@
               document.getElementById('qt').focus();
               document.getElementById('qt').select();
             }
-            setTimeout(focus,500);
+            setTimeout(focus,200);
           }
+
           vm.setFocusDesc = function () {
             var focus = function () {
               document.getElementById('desc_perc').focus();
@@ -440,6 +524,16 @@
             var keyCode = ev.which || ev.keyCode;
             //alert(keyCode);
             switch(keyCode){
+              case 38:
+                if (vm.tipomov.data.row.child.data.row.child&&vm.activeCancelItem) {
+                  vm.tipomov.data.row.child.data.row.child.data.keyDownPress(ev);
+                }
+              break;
+              case 40:
+                if (vm.tipomov.data.row.child.data.row.child&&vm.activeCancelItem) {
+                  vm.tipomov.data.row.child.data.row.child.data.keyDownPress(ev);
+                }
+              break;
               case 45:
                 //Abre Venda Ins
                 if (vm.pdv.data.row.child.data.row.status =='A') {
@@ -468,17 +562,24 @@
                   }
                 } else {
                   //pedido
+                  vm.loadPedidos();
                 }
               break;
               case 115:
-                //fecha caixa F4
-                if (vm.pdv.data.row.child.data.row.status =='A') {
-                  vm.fechaCaixa();
+                if (vm.tipomov.data.row.child.data.row) {
+                  //cancelar venda F4
+                  vm.cancelaVenda(ev);
+                } else {
+                  //fecha caixa F4
+                  if (vm.pdv.data.row.child.data.row.status =='A') {
+                    vm.fechaCaixa();
+                  }
                 }
+
               break;
               case 46:
-                //cancelar del
-                vm.cancelaVenda(ev);
+                //cancelar item del
+                vm.cancelarItem();
               break;
               case 118:
                 //F7 Fechar venda

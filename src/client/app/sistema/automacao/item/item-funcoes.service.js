@@ -32,6 +32,8 @@
           vm.divider = 'botton';
           vm.item.title = 'Itens do estoque';
           vm.tabela='';
+          vm.disablTabela = false;//parametro para ser usado para desabilitar o combo de selecionar as tabelas de preço, para nao ser inserido itens com tabelas de preços difirentes
+          vm.idClassTabela = '';//classeficação da tabela, filtrar somente as tabelas da classe
           vm.filtroEstoque = {
             abaixo_saldo_min:false,
             abaixo_saldo_max:false,
@@ -124,7 +126,9 @@
           }
 
           vm.filtrarTabela = function () {
-            if (vm.tabPrazos.data.rows.length == 0) {
+            if (isset(vm.idClassTabela)) {
+              vm.tabPrazos.data.read(' and tp.id_tabela = '+vm.idClassTabela);
+            } else {
               vm.tabPrazos.data.read('');
             }
           }

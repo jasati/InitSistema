@@ -4,6 +4,8 @@
     <md-icon>search</md-icon>
     <span>Localizar Item</span>
     <span flex></span>
+
+
     <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.funcoes.item.filtros.setConfigFiltro()" aria-label="Filtro">
       <md-tooltip>filtro Avançado</md-tooltip>
       <md-icon>filter_list</md-icon>
@@ -24,6 +26,12 @@
         <md-tooltip>Esse filtro lista todos os registros que CONTÉM a expressão digitada. Para uma busca mais especifica, click em filtro Avançado</md-tooltip>
         <input md-autofocus id="filtro" ng-model="$ctrl.funcoes.item.filtros.mainField"  ng-change="$ctrl.funcoes.item.filtros.onChange()" placeholder="Digite a descrição do item e tecle enter para confirmar ou esq para cancelar." >
     </form>
+    <md-input-container flex="30" >
+      <label class="md-body-1">Tabela de preços</label>
+      <md-select ng-model="$ctrl.funcoes.tabela" md-on-open="$ctrl.funcoes.filtrarTabela()" ng-change="$ctrl.funcoes.filtrar()" ng-disabled="$ctrl.funcoes.disablTabela">
+        <md-option ng-value="tab.id_tp" ng-repeat="tab in $ctrl.funcoes.tabPrazos.data.rows" >{{tab.tabela}} {{tab.descricao}}</md-option>
+      </md-select>
+    </md-input-container>
   </div>
 
   <div ng-if="$ctrl.funcoes.item.rows.length === 0 && $ctrl.funcoes.item.filtros.mainField" layout-padding layout-margin layout-align="center center" layout="row" class="alert alert-warning" role="alert">
@@ -34,12 +42,16 @@
     <md-list class="md-dense" flex >
       <md-list-item class="md-2-line" ng-class="{'selected':$ctrl.funcoes.item.rowIndex==$index}" md-virtual-repeat="row in $ctrl.funcoes.item.loadVirtualRepeat" md-on-demand="true" ng-click="$ctrl.funcoes.item.rowIndexClick($index)?$ctrl.ok($ctrl.funcoes.item.row):null" >
         <div layout="column" class="md-list-item-text">
-          <h3><b>{{row.descricao}}</b></h3>
+          <div layout="row" flex layout-align="space-between center">
+            <h3><b>{{row.descricao}}</b></h3>
+            <h3><b class="text-danger">{{row.valor | currency:''}}</b> </h3>
+          </div>
+
           <div layout="row" flex>
             <h4 flex class="text-warning">{{row.codigo}} </h4>
             <p flex>{{row.marca}} </p>
             <p flex>{{row.sigla}} </p>
-            <h3 flex><b class="text-danger">{{row.valor | currency:''}}</b> </h3>
+            <p flex><small class="text-muted">saldo : </small> {{row.saldo | currency:''}} </p>
           </div>
           <p style="font-size: 70%">{{row.detalhes}}</p>
         </div>

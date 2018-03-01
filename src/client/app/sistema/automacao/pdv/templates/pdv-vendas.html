@@ -88,7 +88,7 @@
 				          </tr>
 				        </thead>
 				        <tbody>
-				          <tr class="striped" md-select="row" md-select-id="id_item_mov" ng-repeat="row in $ctrl.funcoes.tipomov.data.row.child.data.row.child.data.rows track by $index" ">
+				          <tr class="striped" ng-class="{'selected':$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.rowIndex==$index}" md-select="row" md-select-id="id_item_mov" ng-repeat="row in $ctrl.funcoes.tipomov.data.row.child.data.row.child.data.rows track by $index" ">
 				            <td md-cell>{{row.qt | currency :'' }}</td>
 				            <td md-cell>{{row.descricao}}</td>
 				            <td md-cell>{{row.marca}}</td>
@@ -120,18 +120,23 @@
 	          	<md-button ng-click="$ctrl.funcoes.abreVenda()" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
 		            <span class="md-caption">INS - Abrir Venda</span>
 	          	</md-button>
-	          	<md-button ng-click="$ctrl.funcoes.abreVenda()" ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
+	          	<md-button ng-click="$ctrl.funcoes.abreCaixa()" ng-show="$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
 		            <span class="md-caption">INS - Abrir Caixa</span>
 	          	</md-button>	          	
 	          	<md-button ng-click="$ctrl.funcoes.setModosPdv(1)">
 		            <span class="md-caption">F2 - Consultar</span>
 	          	</md-button>
-<!-- 	          	<md-button ng-click="$ctrl.funcoes.onKeydown($event)" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
-		            <span class="md-caption">F3 - Vender Pedido</span>
-	          	</md-button> -->
-	          	<md-button ng-click="$ctrl.funcoes.cancelaVenda($event)" ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row">
-		            <span class="md-caption">DEL - Cancelar</span>
+	          	<md-button ng-click="$ctrl.funcoes.loadPedidos()" class="md-warn md-raised md-hue-2" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'||$ctrl.funcoes.pedido.qt_mov==0">
+		            <span class="md-caption"> Você tem <span class="badget">{{$ctrl.funcoes.pedido.qt_mov}}</span> {{$ctrl.funcoes.pedido.descricao}} - F9</span>
 	          	</md-button>
+	          	<md-button ng-click="$ctrl.funcoes.cancelarItem(x)" ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row.child.data.rows.length > 0">
+		            <span class="md-caption">DEL - {{!$ctrl.funcoes.activeCancelItem?'ativar cancelar item':'cancelar item'}}</span>
+	          	</md-button>
+
+	          	<md-button ng-click="$ctrl.funcoes.cancelaVenda($event)" ng-show="$ctrl.funcoes.tipomov.data.row.child.data.row">
+		            <span class="md-caption">F4 - Cancelar Venda</span>
+	          	</md-button>
+
 	          	<md-button ng-click="$ctrl.funcoes.fechaCaixa()" ng-hide="$ctrl.funcoes.tipomov.data.row.child.data.row||$ctrl.funcoes.pdv.data.row.child.data.row.status=='F'">
 		            <span class="md-caption">F4 - Fechar Caixa</span>
 	          	</md-button>
@@ -153,4 +158,3 @@
 		</div>
 	</div>
 </div>
-

@@ -11,6 +11,7 @@
       'PerfilFuncService',
       'EmpresaFuncService',
       'VendedorFuncService',
+      'FilialFuncService',
       'config'
     ];
     /* @ngInject */
@@ -22,6 +23,7 @@
       PerfilFuncService,
       EmpresaFuncService,
       VendedorFuncService,
+      FilialFuncService,
       config
     ) {
       this.funcoes = funcoes;
@@ -43,6 +45,7 @@
     		func.logando = false;
         func.userLogado = dataSetProvider.provider.getSessaoUsuario();
         func.vendedor = new VendedorFuncService.funcoes();
+        func.filial = new FilialFuncService.funcoes();
         func.alterarSenha = {
           senhaInvalida : false,
           oldSenha : '',
@@ -73,6 +76,18 @@
             rowEdit.id_vendedor = null;
           }
         }
+
+        func.changeAutoCompleteFil = function (rowEdit,rowSelect) {
+          if (isset(rowSelect)) {
+            if (isset(rowSelect.nome_red)) {
+              rowEdit.filial = rowSelect.nome_red;
+              rowEdit.id_filial = rowSelect.id_filial;
+            }
+          } else {
+            rowEdit.filial = '';
+            rowEdit.id_filial = null;
+          }
+        }        
 
     		func.activate = function() {
 	            var promises = [func.setFieldsQry()];
@@ -157,7 +172,7 @@
         func.validarSenha = function (email) {
           func.alterarSenha.senhaInvalida = false;
           var dts = func.dados.getDataset(true);
-          var query = " and email = '"+email+"' and senha = '"+func.alterarSenha.oldSenha+"'";
+          var query = " and u.email = '"+email+"' and u.senha = '"+func.alterarSenha.oldSenha+"'";
           dataSetProvider.provider.setValor(dts,'consulta',query);
           var post = {
             dataset:dts,
@@ -183,7 +198,7 @@
           });
         }
 
-        function gerarSenha() {
+        func.gerarSenha = function() {
             var dt = new Date();
             var senha = dt.getDate()+dt.getTime();
             var mensx="";
@@ -275,10 +290,11 @@
 
         func.salvarUsuario = function () {
           if (func.dados.actionRow == 'create') {
-            func.dados.salvar().then(function (result) {
+            return func.dados.salvar().then(function (result) {
               if (result) {
-                enviarSenhaEmail(func.dados.row).then(function (result) {
+                return enviarSenhaEmail(func.dados.row).then(function (result) {
                   logger.success('Email com os dados de acesso foi enviado para '+func.dados.row.email);
+                  return true;
                 });
               }
             });
@@ -289,7 +305,7 @@
         func.cadastro = function (action,row,parent) {
           switch (action) {
             case 'create':
-              row.senha = gerarSenha();
+              row.senha = func.gerarSenha();
               func.dados.novo(row);
               break;
             case 'update':

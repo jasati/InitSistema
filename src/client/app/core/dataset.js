@@ -292,6 +292,7 @@ LEFT JOIN pessoas p ON e.config_id_pessoa_cons = p.id_pessoa
         		groupBy         : '',
             provider        : Provider,
             camposFiltro    : camposFiltro,
+            camposData      : [],
             filtroDefault   : filtroDefault,
         	};
         	return dataset;
@@ -334,6 +335,7 @@ LEFT JOIN pessoas p ON e.config_id_pessoa_cons = p.id_pessoa
             groupBy         : '',
             provider        : Provider,
             camposFiltro    : camposFiltro,
+            camposData      : [],
             filtroDefault   : filtroDefault,
           };
           return dataset;
@@ -376,6 +378,7 @@ LEFT JOIN pessoas p ON e.config_id_pessoa_cons = p.id_pessoa
             groupBy         : '',
             provider        : Provider,
             camposFiltro    : camposFiltro,
+            camposData      : [],
             filtroDefault   : filtroDefault,
           };
           return dataset;

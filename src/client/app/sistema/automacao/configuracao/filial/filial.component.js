@@ -6,9 +6,9 @@
 
         function filialListagem() {
           var component = {
-            templateUrl: 'app/sistema/automacao/configuracao/filial/templates/filial-listagem.html',
+            templateUrl: 'app/sistema/automacao/configuracao/filial/templates/filiais.html',
             bindings: {
-              filial: '<',
+              funcoes: '<',
             }
           }
           return component;
@@ -24,7 +24,7 @@
           var component = {
             templateUrl: 'app/sistema/automacao/configuracao/filial/templates/filial-cadastro.html',
             bindings: {
-              filial: '<',
+              funcoes: '<',
             }
           }
           return component;

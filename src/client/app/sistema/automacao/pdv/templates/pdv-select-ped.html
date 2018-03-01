@@ -1,0 +1,52 @@
+<md-toolbar class="md-table-toolbar md-accent">
+  <div class="md-toolbar-tools">
+    <md-icon>search</md-icon>
+    <span>Localizar Pedidos</span>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="close">
+        <md-icon>close</md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<form name="formMov" novalidate autocomplete="off" >  
+  <md-autocomplete
+    required
+    id="autocompleteMov"
+    md-autofocus="true"
+    md-no-cache="true"
+    md-search-text="$ctrl.searchMov"
+    md-items="row in $ctrl.funcoes.filtroAutoComplete($ctrl.searchMov,'','P')"
+    md-selected-item-change="row?$ctrl.ok(row):null"
+    md-item-text="row.numero"
+    md-min-length="0"
+    md-menu-class="autocomplete-custom-template"
+    md-dropdown-items="10"
+    md-delay="500"
+    md-top-index="$ctrl.index"
+    placeholder="Selecione o pedido">
+  <md-item-template >
+    <div layout="column">
+      <div layout="row">
+        <div flex="10" class="li-table-auto">
+          <span class="text-danger"><b>{{row.numero}}</b></span>
+        </div>
+        <div flex="40" class="li-table-auto">
+          <span>{{row.p_dest_nome_red}}</span>
+        </div>
+        <div flex="30" class="li-table-auto">
+          <span>{{row.vendedor_nome_red}}</span>
+        </div>
+        <div flex="20" class="li-table-auto">
+          <span ><b>{{row.total | currency}}</b></span>
+        </div>
+      </div>
+      <small flex class="li-table-auto text-muted">{{row.p_dest_nome_comp}}</small>
+    </div>
+  </md-item-template>
+  <md-not-found>
+    O pedido "{{$ctrl.searchMov}}" não foi encontrado.
+  </md-not-found>
+  </md-autocomplete>
+</form>
+<div ng-init="$ctrl.funcoes.startFoco()">
+</div>

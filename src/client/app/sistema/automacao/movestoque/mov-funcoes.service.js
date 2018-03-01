@@ -59,17 +59,23 @@
           vm.filtrar = function () {
             var query = '';
             if (isset(vm.data.filtros.mainField)) {
-              query += " and pessoa_mov_nome_comp LIKE '"+vm.data.filtros.mainField+"%'";
+              query += " and CONCAT(CASE WHEN pd.nome_comp IS NULL THEN '' ELSE pd.nome_comp END,CASE WHEN pd.nome_red IS NULL THEN '' ELSE pd.nome_red END) LIKE '%"+vm.data.filtros.mainField+"%'";
             }
             return vm.data.read(query,true).then(function (result) {
               return result.reg;
             });
           }
 
-          vm.filtroAutoComplete = function (prm,tipo) {
-            var query = " and CONCAT(em.numero,pd.nome_comp,pd.nome_red) LIKE '%"+prm+"%'";
+          vm.filtroAutoComplete = function (prm,id_tipo,tipo) {
+            var query = "";
+            if (isset(prm)) {
+              query += " and CONCAT(em.numero,pd.nome_comp,pd.nome_red) LIKE '%"+prm+"%'";
+            }
+            if (isset(id_tipo)) {
+              query += " and em.id_tipo_mov = "+id_tipo;
+            }
             if (isset(tipo)) {
-              query = " and em.id_tipo_mov = "+tipo;
+              query += " and tmp.tipo = '"+tipo+"'";
             }
             return vm.data.load(query,true).then(function (result) {
               return result.reg;
@@ -159,7 +165,7 @@
                 if (isset(id_consumidor_padrao)) {
                   if (isset(vm.data.row.id_vendedor)) {
                     vm.tabview = 1;//tab itens
-                    vm.data.row.child.selectItem(undefined);
+                    vm.data.row.child.showItemSelect(undefined);
                   } else {
                     document.getElementById('vendedor').focus();
                   }

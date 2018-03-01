@@ -1,12 +1,12 @@
 <md-content flex >
 	<j-toolbar funcoes="$ctrl.meiopag.data.funcToolbar"></j-toolbar>
+	<div layout="column" flex="noshrink">
+		<div ui-view></div>
+	</div>	
 	<filtro	filtros="$ctrl.meiopag.data.filtros"></filtro>
 	<div layout-gt-xs="row" flex>
 		<div layout="column" flex="grow" class="animacao">
 			<j-table flex funcoes="$ctrl.meiopag.data.funcTable"></j-table>
-		</div>
-		<div layout="column" flex="noshrink">
-			<div ui-view></div>
 		</div>
 	</div>
 </md-content>
