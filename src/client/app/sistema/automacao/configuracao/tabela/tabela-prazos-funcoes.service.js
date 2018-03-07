@@ -125,6 +125,28 @@
             }
           }
 
+          vm.selectTabela = function (element) {
+            var config = {
+              templateUrl: 'app/sistema/automacao/configuracao/tabela/templates/tab-prazo-select.html',
+              size:'',
+              data:vm,
+              backdrop:'static',
+              fullscreen:false,
+              modal:{},
+            };
+            return vm.data.showModal(config,element).then(function (result) {
+              return result;
+            });
+          }
+
+          vm.startFoco = function () {
+            // função para iniciar o foco do autocomplete na template select
+            var focus = function () {
+              document.getElementById('autocomplete').focus();
+            }
+            setTimeout(focus,500);
+          }          
+
 
         }
     }

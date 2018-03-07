@@ -67,7 +67,7 @@
           }
 
           vm.showItemSelect = function ($event) {
-            if (vm.data.rowParent.status != 'F') {
+            if (!vm.bloquearAlteracao()) {
               vm.showDadosPessoa = false;
               if (isset(vm.data.rowParent.id_tabela)) {
                 vm.itens.idClassTabela = vm.data.rowParent.id_tabela;
@@ -110,7 +110,10 @@
                     setTimeout(vm.startFoco, 500);
                     vm.itens.filtrarUnidade();
                   }
-                  vm.data.rowParent.id_tp = vm.itens.tabela;
+                  if (vm.data.rowParent.tipo_mov != 'E') {
+                    //evitar de colocar o valor 0 em entradas
+                    vm.data.rowParent.id_tp = vm.itens.tabela;
+                  }
                 }
               });
               }
@@ -165,16 +168,13 @@
           }
 
           vm.bloquearAlteracao = function () {
-            if (vm.data.rowParent.tipo_mov == "S" || vm.data.rowParent.tipo_mov == "E") {
-              if (vm.data.rowParent.status == "F" || vm.data.rowParent.status == "C") {
-                return true;
-              } else {
-                return false;
-              }
+            if (vm.data.rowParent.status == "F" || vm.data.rowParent.status == "C") {
+              return true;
             } else {
               return false;
             }
           }
+
           vm.cancelarItem = function () {
             vm.itens.item.row = null;
             vm.data.row = null
@@ -261,16 +261,40 @@
             row.valor=row.custo
           }
 
-          vm.alterarTabela = function (perc) {
-            angular.forEach(vm.data.rows, function(value, key){
-              var valor = Number(((perc * value.preco /100)+value.preco).toFixed(2));
-              value.perc_tabela = perc;
-              value.valor = valor;
-              vm.data.onChange(value);
-            });
+          vm.alterarTabela = function (id_tabela,el) {
+            var buscaTab = function (el) {
+              return vm.itens.tabPrazos.selectTabela(el).then(function (tabResult) {
+                return tabResult;
+              });
+            }
+            var buscaItens = function (idTab) {
+              //armazena os ids dos itens que seráo troacado os preços pelo preço da tabela
+              for (var i = 0; i < vm.data.rows.length; i++) {
+                idItensAlterarTab += vm.data.rows[i].id_item;
+                if ((i+1)<vm.data.rows.length) {
+                  idItensAlterarTab += ',';
+                }
+              }
+              var qry = " and tp.id_tp = "+idTab;
+              qry += " and i.id_item in ("+idItensAlterarTab+")";
+              vm.itens.item.load(qry,false).then(function (result) {
+                for (var i = 0; i < result.reg.length; i++) {
+                  var item = $filter('filter')(vm.data.rows,{id_item:result.reg[i].id_item},true);
+                  item[0].valor = result.reg[i].valor;
+                }
+              });
+            }
+            var idItensAlterarTab = '';
+            var tabela = '';
+            if (isset(id_tabela)) {
+              buscaItens(id_tabela);
+            } else {
+              buscaTab(el).then(function (resultTab) {
+                buscaItens(resultTab.id_tp);
+                vm.data.rowParent.id_tp = resultTab.id_tp;
+              });
+            }
           }
-
-
 
           vm.print1 = function (master,detal) {
             var styleTable = UtilsFunctions.stylePrintTable();
@@ -293,7 +317,7 @@
 
             /*corpo*/
 
-            tpl=tpl+"<div class=''><table class='table table-condensed table-striped'>";
+            tpl=tpl+"<div class=''><table class='table table-condensed'>";
             tpl=tpl+"<thead><tr>";
             tpl=tpl+"<th style='width: 5%'>Qtde.</th>";
             tpl=tpl+"<th style='width: 40%'>Item</th>";

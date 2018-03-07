@@ -172,10 +172,17 @@
                 vm.consultaItem(ev,'#pdv').then(function (item) {
                   if (item) {
                     vm.itens.item.filtros.mainField = item.codigo;
-                    item.qt = 1;
+                    vm.itemSearch = item.codigo;
+                    if (!isset(item.qt)) {
+                      item.qt = 1;
+                    }
                     item.desconto = 0;
                     vm.tipomov.data.row.child.data.row.child.data.novo(item);
-                    vm.setFocusQt();
+                    if (vm.pdv.data.empresa.config_show_qt_pdv) {
+                      vm.setFocusQt();
+                    } else {
+                      vm.novoItem(vm.tipomov.data.row.child.data.row.child.data.row);
+                    }
                     vm.desableCancelItem();
                   }
                 });
@@ -189,6 +196,7 @@
                 vm.tipomov.data.row.child.data.row.child.data.adicionar(item);
                 vm.itens.item.row = null;
                 vm.itens.item.filtros.mainField = "";
+                vm.itemSearch = "";
                 vm.setFocusCodBarras(true);
               } else {
                 logger.warning('Quantidade invalida!');
@@ -197,29 +205,25 @@
           }
 
           vm.consultaItem = function (ev) {
-            // var qt=null, operador=null, codDesc=null, cod="", desc="";
-            // operador = /[\W]/.exec(vm.itemSearch);
-            // if (operador) {
-            //     operador = operador.toString(operador);
-            // };
-            // qt = /[0-9]*/.exec(vm.itemSearch);
-            // if (qt) {
-            //     qt = qt.toString(qt)
-            // };
-            // codDesc = /\W.*$/.exec(vm.itemSearch)
-            // if (codDesc) {
-            //     codDesc = codDesc.toString(codDesc);
-            //     codDesc = codDesc.replace("*","");
-            // };
-            
-            // if (Number(codDesc)) {
-            //     cod = codDesc;
-            // } else {
-            //     desc = codDesc===null?vm.itemSearch:codDesc;
-
-            // }            
-
-
+            var qt=null, operador=null, codDesc=null, cod="", desc="";
+            operador = /[\W]/.exec(vm.itemSearch);
+            if (operador) {
+                operador = operador.toString(operador);
+            };
+            qt = /[0-9]*/.exec(vm.itemSearch);
+            if (isset(qt[0])) {
+              qt = Number(qt[0]);
+            } else {
+              qt = 1;
+            }
+            codDesc = /\W.*$/.exec(vm.itemSearch)
+            if (codDesc) {
+                codDesc = codDesc.toString(codDesc);
+                codDesc = codDesc.replace("*","");
+            } else {
+              codDesc = vm.itemSearch;
+            }
+            vm.itens.item.filtros.mainField = codDesc;
             //busca item, caso nao encontre ou tenha a qantidade maior que 1 exibir a consulta do item
             if (vm.modoPdv==0) {
               if (vm.tipomov.data.row.child.data.row.child.data.rows.length > 0) {
@@ -236,6 +240,9 @@
                   });
                 } else if (result.qtde == 1) {
                   vm.itens.item.alterar(result.reg[0]);
+                  if (isset(qt)) {
+                    vm.itens.item.row.qt = qt
+                  }
                   return vm.itens.item.row;
                 }
               });
@@ -295,6 +302,10 @@
               vm.tipomov.data.row.child.data.row.child.data.rows[i].desconto = descReal;
               vm.tipomov.data.row.child.data.row.child.data.rows[i].desc_perc = valPerc;
             }
+          }
+
+          vm.alterarTabela = function () {
+            vm.tipomov.data.row.child.data.row.child.alterarTabela();
           }
 
           vm.abreCaixa = function () {
@@ -448,7 +459,7 @@
           }
 
           vm.setFocusCodBarras = function (imediato) {
-            if (imediato&&vm.modoPdv==0) {
+            if (vm.modoPdv==0&&imediato) {
               document.getElementById('cod-barras').focus();
               document.getElementById('cod-barras').select();
             } else {
@@ -458,7 +469,6 @@
               }
               setTimeout(focus,500);
             }
-
           }
 
           vm.setFocusCabecario = function () {
@@ -491,7 +501,9 @@
               switch (funcao){
                 case 'informaItem':
                   if (vm.tipomov.data.row.child.data.row) {
-                    vm.informaItem(ev);
+                    if (!vm.itens.item.row) {
+                      vm.informaItem(ev);
+                    }
                   } else {
                     if (vm.modoPdv==0) {
                       if (vm.pdv.data.row.child.data.row.status =='A') {
@@ -590,8 +602,13 @@
                 }
               break;
               case 121:
+              //F10
                 if (vm.modoPdv==2) {
-                  vm.concluirVenda();
+                  if (vm.totalizacao.totalRec()>=vm.totalizacao.totalVenda()) {
+                    vm.concluirVenda();
+                  }
+                } else if (vm.modoPdv==0) {
+                  vm.alterarTabela();
                 }
               break;
             }

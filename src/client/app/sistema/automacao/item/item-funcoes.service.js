@@ -64,7 +64,7 @@
               query += " and i.descricao LIKE '"+vm.item.filtros.mainField+"%'";
             }
             if (isset(vm.item.filtros.mainField)&& mult) {
-              query += " and CONCAT(i.descricao,i.codigo,i.marca,i.ref) LIKE '%"+vm.item.filtros.mainField+"%'";
+              query += " and CONCAT(CASE WHEN i.descricao is null THEN '' ELSE i.descricao END, CASE WHEN i.codigo IS NULL THEN '' ELSE i.codigo END, CASE WHEN i.ref IS NULL THEN '' ELSE i.ref END) LIKE '%"+vm.item.filtros.mainField+"%'";
             }
             if (vm.filtroEstoque.abaixo_saldo_min) {
               query += " and i.saldo <= i.saldo_min ";
@@ -203,6 +203,8 @@
               return result;
             });
           }
+
+          
 
           vm.startFoco = function () {
             // função para iniciar o foco do autocomplete na template item-select

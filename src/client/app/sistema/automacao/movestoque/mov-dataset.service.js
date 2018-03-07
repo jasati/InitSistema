@@ -140,7 +140,7 @@ WHERE 1
               'p_emi_numero','p_emi_uf','p_emi_tel','p_emi_cel1','p_emi_complemento',
               'p_dest_nome_comp','p_dest_nome_red','p_dest_cpf_cnpj','p_dest_logradouro',
               'p_dest_numero','p_dest_uf','p_dest_tel','p_dest_cel1','p_dest_complemento','p_dest_cidade',
-              'limite_credito','total','total_desc','total_acres','id_tabela','id_fornecedor','tabela','subtotal'
+              'limite_credito','total','total_desc','total_acres','id_tabela','id_fornecedor','tabela','subtotal','tabela_preco'
             ];
 
 

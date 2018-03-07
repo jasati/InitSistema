@@ -13,7 +13,7 @@
         	var dataSet = new AutomacaoProvider.provider();
         	//realizar as configurações do dataset
            
-          var campos = 'tme.id_tipo_mov, tme.id_empresa, tme.descricao, tme.tipo, tme.status, tme.alt_cad_item, tme.mov_estoque, CASE WHEN tme.tipo = "S" THEN "Saida do estoque" WHEN tme.tipo = "E" THEN "Entrada no estoque" WHEN tme.tipo = "P" THEN "Não movimenta estoque" END AS desc_tipo, (SELECT COUNT(em.id_mov) FROM estoque_mov em WHERE em.id_tipo_mov = tme.id_tipo_mov) as qt_mov';
+          var campos = 'tme.id_tipo_mov, tme.id_empresa, tme.descricao, tme.tipo, tme.status, tme.alt_cad_item, tme.mov_estoque, CASE WHEN tme.tipo = "S" THEN "Saida do estoque" WHEN tme.tipo = "E" THEN "Entrada no estoque" WHEN tme.tipo = "P" THEN "Não movimenta estoque" END AS desc_tipo, (SELECT COUNT(em.id_mov) FROM estoque_mov em WHERE em.id_tipo_mov = tme.id_tipo_mov and em.status="F") as qt_mov';
 
           var camposFiltro = [
               {field:"tipo",alias:"Tipo",type:"string"}

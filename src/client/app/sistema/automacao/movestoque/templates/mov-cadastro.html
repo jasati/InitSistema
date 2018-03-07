@@ -22,12 +22,17 @@
 	</md-tabs>
 	<md-divider></md-divider>
 	<md-card-action layout="row" layout-align-gt-xs="end center" layout-align-xs="center center">
-		<md-button class="md-raised md-warn" ng-class="{'flex':$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.child.data.rows.length>0 && $ctrl.movimento.data.row.status == 'F'" ng-click="$ctrl.movimento.cancelarMov($event)" >
-			Cancelar {{$ctrl.movimento.data.row.desc_tipo_mov}}
-			<md-tooltip md-autohide="true">Conluir a movimentação</md-tooltip>
+		<md-button class="md-raised md-primary" ng-class="{'flex':$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.id_mov && $ctrl.movimento.data.row.tipo_mov == 'P' && $ctrl.movimento.data.row.status == 'A'" ng-click="$ctrl.movimento.salvarPedidoAlterado($event)" >
+			Salvar Alterações
+			<md-tooltip md-autohide="true">Salvar alterações da movimentação</md-tooltip>
 		</md-button>
 
-		<md-button class="md-raised md-accent" ng-class="{'flex':$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.child.data.rows.length>0 && $ctrl.movimento.data.row.status == 'A'" ng-click="$ctrl.movimento.finalizarMov($event)" ng-disabled="$ctrl.movimento.data.row.tipo_mov=='E'&&!$ctrl.movimento.data.row.numero">
+		<md-button class="md-raised md-warn" ng-class="{'flex':$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.child.data.rows.length>0 && $ctrl.movimento.data.row.status == 'F'" ng-click="$ctrl.movimento.cancelarMov($event)" >
+			Cancelar {{$ctrl.movimento.data.row.desc_tipo_mov}}
+			<md-tooltip md-autohide="true">Cancelar a movimentação</md-tooltip>
+		</md-button>
+
+		<md-button class="md-raised md-accent" ng-class="{'flex':$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.child.data.rows.length>0 && $ctrl.movimento.data.row.status == 'A' && !$ctrl.movimento.data.row.id_mov" ng-click="$ctrl.movimento.finalizarMov($event)" ng-disabled="$ctrl.movimento.data.row.tipo_mov=='E'&&!$ctrl.movimento.data.row.numero">
 			Fechar {{$ctrl.movimento.data.row.desc_tipo_mov}}
 			<md-tooltip md-autohide="true">Conluir a movimentação</md-tooltip>
 		</md-button>

@@ -334,7 +334,8 @@
         }
 
         function stylePrintTable() {
-          var style = 'p{padding:0px;margin:0px}'+
+          var style = '@media print {p{padding:0px;margin:0px}'+
+          'body { -webkit-print-color-adjust: exact;}'+
           '.table {width: 100%;max-width: 100%;margin-bottom: 20px; font-size:90%}'+
           'th {text-align: left;}'+
           '.table > thead > tr > th,'+
@@ -366,7 +367,7 @@
           'table th[class*="col-"] {'+
           'position: static;float: none;display: table-cell;}'+
           '.table-responsive {overflow-x: auto;min-height: 0.01%;}'+
-          '.table-striped > tbody > tr:nth-of-type(odd) {background-color: #f9f9f9;}'+
+          '.table-striped > tbody > tr:nth-of-type(odd) {background-color: #f9f9f9 !important;}'+
           '.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {float: left;}'+
           '.col-xs-12 {width: 100%;}.col-xs-11 {width: 91.66666667%;}.col-xs-10 {width: 83.33333333%;}'+
           '.col-xs-9 {width: 75%;}.col-xs-8 {width: 66.66666667%;}.col-xs-7 {width: 58.33333333%;}.col-xs-6 {width: 50%;}'+
@@ -374,7 +375,8 @@
           '.col-xs-1 {width: 8.33333333%;}'+
           '.text-left {text-align: left;}.text-right {text-align: right;}.text-center {text-align: center;}.text-justify {text-align: justify;}.text-nowrap {white-space: nowrap;}'+
           '.text-lowercase {  text-transform: lowercase;}.text-uppercase {text-transform: uppercase;}.text-capitalize {text-transform: capitalize;}'+
-          '.striped:nth-child(even){background-color: #e6e6db;}';
+          '.striped:nth-child(even){background-color: #e6e6db !important;}';
+          '.striped > td{color: #333 !important;}}';
           return style;
         }
         /*

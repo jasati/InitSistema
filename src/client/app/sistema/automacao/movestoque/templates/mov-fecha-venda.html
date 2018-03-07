@@ -10,7 +10,7 @@
       <span class="md-title">
         Imprimir
       </span>
-      <md-button class="md-icon-button" aria-label="Favorite" ng-click="$ctrl.funcoes.data.row.child.print1($ctrl.funcoes.data.row,$ctrl.funcoes.data.row.child.data.rows)">
+      <md-button class="md-icon-button" aria-label="Favorite" ng-click="$ctrl.funcoes.data.row.child.print1($ctrl.funcoes.data.row,$ctrl.funcoes.data.row.child.data.rows);$ctrl.enableFullScreen=true">
         <md-icon>print</md-icon>
       </md-button>
     </div>
@@ -18,10 +18,16 @@
     <md-divider></md-divider>
     <div layout="row" layout-align="end center">
         <div ng-show="$ctrl.funcoes.pdv">
-          <md-button class="md-raised md-accent" id="ok" ng-click="$ctrl.ok(true)" ngsf-toggle-fullscreen>
+          <!-- show quando o botao de imprimir for clicado -->
+          <md-button class="md-raised md-accent" id="ok" ng-click="$ctrl.ok(true)" ngsf-toggle-fullscreen ng-show="$ctrl.enableFullScreen">
+            Concluir
+          </md-button>
+          <!-- show quando o botao de imprimir não for clicado -->
+          <md-button class="md-raised md-accent" id="ok" ng-click="$ctrl.ok(true)" ng-hide="$ctrl.enableFullScreen">
             Concluir
           </md-button>
         </div>
+        <!-- show quando nao for no pdv -->
         <div ng-show="!$ctrl.funcoes.pdv">
           <md-button class="md-raised md-accent" id="ok" ng-click="$ctrl.ok(true)">
             Concluir

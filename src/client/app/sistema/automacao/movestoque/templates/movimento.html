@@ -2,6 +2,11 @@
 
 <!-- TITULO -->
 <md-card-action layout="row"  flex layout="start center" >
+	<!-- exibir botão somente se for pedido -->
+	<md-button class="md-raised md-primary" ng-class="{'flex':$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.id_mov && $ctrl.movimento.data.row.tipo_mov == 'P' && $ctrl.movimento.data.row.status == 'F'" ng-click="$ctrl.movimento.alterarPedido()" >
+		Alterar
+		<md-tooltip md-autohide="true">Alterar {{$ctrl.movimento.data.row.desc_tipo_mov}}</md-tooltip>
+	</md-button>
 
 	<span layout-padding flex="45" class="text-danger" ng-class="{'md-subhead md-offset':$ctrl.movimento.data.mediaxs(),'md-title':!$ctrl.movimento.data.mediaxs()}" ng-show="$ctrl.movimento.data.row.numero"><b><small> Nº {{$ctrl.movimento.data.row.numero}}</small></b></span>
 

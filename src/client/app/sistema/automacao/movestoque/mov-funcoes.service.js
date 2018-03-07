@@ -67,7 +67,7 @@
           }
 
           vm.filtroAutoComplete = function (prm,id_tipo,tipo) {
-            var query = "";
+            var query = " and em.status = 'F'";
             if (isset(prm)) {
               query += " and CONCAT(em.numero,pd.nome_comp,pd.nome_red) LIKE '%"+prm+"%'";
             }
@@ -263,6 +263,17 @@
                 vm.filtrar();
                 $state.go('layout.tipomov.movs');
             });
+          }
+
+          vm.alterarPedido = function () {
+            if (vm.data.row.tipo_mov == 'P') {
+              vm.data.row.status = "A";
+            }
+          }
+
+          vm.salvarPedidoAlterado = function () {
+            vm.data.row.status = "F";
+            vm.salvar();
           }
 
           vm.salvar = function () {

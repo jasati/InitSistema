@@ -153,7 +153,7 @@ LEFT JOIN tipo_mov_estoque tme ON e.config_id_tipo_mov_ven_cons = tme.id_tipo_mo
 LEFT JOIN pessoas p ON e.config_id_pessoa_cons = p.id_pessoa
            */
           // 
-          var campos = 'e.id_empresa, e.nome, e.cpf_cnpj, e.endereco, e.responsavel, e.data_cad, e.email, e.cel, e.status, e.tel1, e.tel2, e.slogan, e.cidade, e.id_galeria, e.fantasia, e.estado, e.cad_confirm, e.config_n_nf, e.config_data_estoque, e.config_id_tp_padrao,e.config_id_tipo_mov_ven_cons,e.config_id_pessoa_cons,  CONCAT(t.descricao," ",tp.descricao) as tabela, g.imagem,  tme.descricao as tipo_mov, CONCAT(p.nome_red," - ",p.nome_comp) as consumidor';
+          var campos = 'e.id_empresa, e.nome, e.cpf_cnpj, e.endereco, e.responsavel, e.data_cad, e.email, e.cel, e.status, e.tel1, e.tel2, e.slogan, e.cidade, e.id_galeria, e.fantasia, e.estado, e.cad_confirm, e.config_n_nf, e.config_data_estoque, e.config_id_tp_padrao,e.config_id_tipo_mov_ven_cons,e.config_id_pessoa_cons,config_show_qt_pdv,  CONCAT(t.descricao," ",tp.descricao) as tabela, g.imagem,  tme.descricao as tipo_mov, CONCAT(p.nome_red," - ",p.nome_comp) as consumidor';
           // camposFiltro são os campos usados para fazer a pesquisa no sistema
           var camposFiltro = [
           ];
